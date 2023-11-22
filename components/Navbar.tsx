@@ -13,7 +13,7 @@ const iconSize: number = 30;
 function flexClasses(active: boolean) {
   return (
     'flex-1 flex flex-col items-center justify-center h-[100%]' +
-    (active ? ' bg-gray-300' : '')
+    (active ? ' bg-gray' : '')
   );
 }
 
