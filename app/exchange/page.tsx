@@ -24,6 +24,15 @@ function Page() {
       bid_count: 2,
     },
     {
+      id: 3,
+      title: '바지',
+      prefer_items: '옷',
+      address: '암사동',
+      created_at: '2023-11-24',
+      status: 'deleted',
+      bid_count: 7,
+    },
+    {
       id: 2,
       title: '비닐봉지',
       prefer_items: '클립',
@@ -33,13 +42,49 @@ function Page() {
       bid_count: 3,
     },
     {
-      id: 3,
-      title: '바지',
-      prefer_items: '옷',
-      address: '암사동',
-      created_at: '2023-11-24',
-      status: 'deleted',
-      bid_count: 7,
+      id: 2,
+      title: '비닐봉지',
+      prefer_items: '클립',
+      address: '천호동 로데오',
+      created_at: '2023-11-23',
+      status: 'completed',
+      bid_count: 3,
+    },
+    {
+      id: 2,
+      title: '비닐봉지',
+      prefer_items: '클립',
+      address: '천호동 로데오',
+      created_at: '2023-11-23',
+      status: 'completed',
+      bid_count: 3,
+    },
+    {
+      id: 2,
+      title: '비닐봉지',
+      prefer_items: '클립',
+      address: '천호동 로데오',
+      created_at: '2023-11-23',
+      status: 'completed',
+      bid_count: 3,
+    },
+    {
+      id: 2,
+      title: '비닐봉지',
+      prefer_items: '클립',
+      address: '천호동 로데오',
+      created_at: '2023-11-23',
+      status: 'completed',
+      bid_count: 3,
+    },
+    {
+      id: 2,
+      title: '비닐봉지',
+      prefer_items: '클립',
+      address: '천호동 로데오',
+      created_at: '2023-11-23',
+      status: 'completed',
+      bid_count: 3,
     },
   ];
   return (
@@ -58,6 +103,11 @@ function Page() {
           {dumyData.map((e: any) => {
             return e.status !== 'deleted' ? <ExchangePost bid={e} /> : <></>;
           })}
+        </div>
+      </div>
+      <div className="sticky  bottom-[115px]">
+        <div className="mx-[20px] bg-base rounded-[25px] inline-block float-right py-[10px] px-[15px] text-white font-[600]">
+          + 글 쓰기
         </div>
       </div>
     </div>

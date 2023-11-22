@@ -22,7 +22,7 @@ export default function RootLayout({
     <html>
       <head />
       <body className="bg-softbase relative">
-        <div className="bg-white max-w-[480px] min-h-[100vh] mx-auto border-gray border-[1px] box-content ">
+        <div className="bg-white max-w-[480px] min-h-[100vh] mx-auto border-gray border-[1px] box-content relative">
           <Header />
           {children}
           <Navbar />
