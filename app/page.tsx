@@ -1,5 +1,5 @@
 'use client';
 
-export default function Home({ children }: { children: React.ReactNode }) {
+export default function Home() {
   return <main>내용</main>;
 }
