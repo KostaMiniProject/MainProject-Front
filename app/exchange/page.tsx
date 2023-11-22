@@ -1,8 +1,47 @@
+'use client';
 import React from 'react';
 import Scarch from '@/components/Search';
 import ExchangePost from '@/components/exchange/ExchangePost';
 
 function Page() {
+  const dumyData: any = [
+    {
+      id: 0,
+      title: '안쓰는 키보드랑 교환 할 사람',
+      prefer_items: '성능좋은 헤드셋',
+      address: '오리동 오리건물',
+      created_at: '2023-11-22',
+      status: 'exchanging',
+      bid_count: 5,
+    },
+    {
+      id: 1,
+      title: '깨끗한 지갑',
+      prefer_items: '비니',
+      address: '천호동 로데오',
+      created_at: '2023-11-23',
+      status: 'raservation',
+      bid_count: 2,
+    },
+    {
+      id: 2,
+      title: '비닐봉지',
+      prefer_items: '클립',
+      address: '천호동 로데오',
+      created_at: '2023-11-23',
+      status: 'completed',
+      bid_count: 3,
+    },
+    {
+      id: 3,
+      title: '바지',
+      prefer_items: '옷',
+      address: '암사동',
+      created_at: '2023-11-24',
+      status: 'deleted',
+      bid_count: 7,
+    },
+  ];
   return (
     <div>
       <Scarch />
@@ -16,9 +55,9 @@ function Page() {
         </div>
         {/* ExchangePost 리스트 */}
         <div>
-          <ExchangePost />
-          <div>List2</div>
-          <div>List3</div>
+          {dumyData.map((e: any) => {
+            return e.status !== 'deleted' ? <ExchangePost bid={e} /> : <></>;
+          })}
         </div>
       </div>
     </div>
