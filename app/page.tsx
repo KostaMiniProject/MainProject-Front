@@ -1,5 +1,5 @@
-import Image from 'next/image';
+'use client';
 
 export default function Home() {
-  return <main>Hello World</main>;
+  return <main>내용</main>;
 }
