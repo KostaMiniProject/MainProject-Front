@@ -8,6 +8,8 @@ import {
   MdPerson,
 } from 'react-icons/md';
 
+const iconSize: number = 30;
+
 function flexClasses(active: boolean) {
   return (
     'flex-1 flex flex-col items-center justify-center h-[100%]' +
@@ -29,35 +31,35 @@ function Navbar() {
           className={flexClasses(activeButton === '물물교환')}
           onClick={() => handleButtonClick('물물교환')}
         >
-          <MdViewInAr size={20} />
+          <MdViewInAr size={iconSize} />
           <div>물물교환</div>
         </div>
         <div
           className={flexClasses(activeButton === '커뮤니티')}
           onClick={() => handleButtonClick('커뮤니티')}
         >
-          <MdOutlineArticle size={20} />
+          <MdOutlineArticle size={iconSize} />
           <div>커뮤니티</div>
         </div>
         <div
           className={flexClasses(activeButton === '지도')}
           onClick={() => handleButtonClick('지도')}
         >
-          <MdMap size={20} />
+          <MdMap size={iconSize} />
           <div>지도</div>
         </div>
         <div
           className={flexClasses(activeButton === '채팅')}
           onClick={() => handleButtonClick('채팅')}
         >
-          <MdChat size={20} />
+          <MdChat size={iconSize} />
           <div>채팅</div>
         </div>
         <div
           className={flexClasses(activeButton === '마이페이지')}
           onClick={() => handleButtonClick('마이페이지')}
         >
-          <MdPerson size={20} />
+          <MdPerson size={iconSize} />
           <div>마이페이지</div>
         </div>
       </div>
