@@ -40,6 +40,7 @@ function ExchangePost({ bid }: { bid: BidType }) {
           <div className="flex">
             {/* 게시날짜 */}
             <div className="text-gray mr-[10px]">{bid.created_at}</div>
+            {/* 스테이트에 따른 상태표시 */}
             {bid.status === status.b ? (
               <div className="bg-base text-white rounded-[15px] px-[10px]">
                 예약중
