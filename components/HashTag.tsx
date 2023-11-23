@@ -1,10 +1,11 @@
 import React from 'react';
 
 function hashTagClass(height: number, fontSize: number) {
-  return (
-    `py-[${height}px] text-[${fontSize}px]` +
-    ' bg-base text-white rounded-[20px] px-[10px] m-[2.5px]'
-  );
+  const ch = `py-[${height}px] `;
+  const cs = `text-[${fontSize}px] `;
+  const result =
+    cs + ch + `bg-base text-white rounded-[20px] px-[10px] m-[2.5px]`;
+  return result;
 }
 
 function HashTag({
