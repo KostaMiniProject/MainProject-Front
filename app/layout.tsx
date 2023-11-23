@@ -21,8 +21,8 @@ export default function RootLayout({
   return (
     <html>
       <head />
-      <body>
-        <div className="bg-red-100 max-w-[480px] h-[100vh] mx-auto">
+      <body className="bg-softbase relative">
+        <div className="bg-white max-w-[480px] min-h-[100vh] mx-auto border-gray border-[1px] box-content relative">
           <Header />
           {children}
           <Navbar />
