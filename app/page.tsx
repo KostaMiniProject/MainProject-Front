@@ -4,10 +4,12 @@ import Scarch from '@/components/Search';
 import ExchangePost from '@/components/exchange/ExchangePost';
 import { getCategory, getExchangePostList } from '@/api/ExchangePostApi';
 import HashTag from '@/components/HashTag';
+import { useRouter } from 'next/navigation';
 
 function Page() {
   const exchangePostData = getExchangePostList();
   const category = getCategory();
+  const router = useRouter();
   return (
     <div className="relative">
       <Scarch />
@@ -23,7 +25,13 @@ function Page() {
         <div>
           {exchangePostData.map((e: any, i: any) => {
             return e.status !== 'deleted' ? (
-              <ExchangePost key={i} bid={e} />
+              <div
+                onClick={() => {
+                  router.push(`/${e.id}`);
+                }}
+              >
+                <ExchangePost key={i} bid={e} />
+              </div>
             ) : (
               <React.Fragment key={i}></React.Fragment>
             );
