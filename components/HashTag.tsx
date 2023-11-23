@@ -1,24 +1,25 @@
 import React from 'react';
 
-function hashTagClass(height: number) {
+function hashTagClass(height: number, fontSize: number) {
   return (
-    `py-[${height}px]` +
-    ' m-[2.5px] bg-base rounded-[25px] inline-block float-right px-[15px] text-white font-[600]'
+    `py-[${height}px] text-[${fontSize}px]` +
+    ' bg-base text-white rounded-[20px] px-[10px] m-[2.5px]'
   );
-  //  + ` py-[${height}px]`
 }
 
 function HashTag({
   text,
   height = 0,
+  fontSize = 12,
   onClick,
 }: {
   text: string;
   height?: number;
+  fontSize?: number;
   onClick?: () => void;
 }) {
   return (
-    <div className={hashTagClass(height)} onClick={onClick}>
+    <div className={hashTagClass(height, fontSize)} onClick={onClick}>
       {text}
     </div>
   );

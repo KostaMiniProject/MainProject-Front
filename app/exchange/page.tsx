@@ -9,7 +9,7 @@ function Page() {
   const exchangePostData = getExchangePostList();
   const category = getCategory();
   return (
-    <div>
+    <div className="relative">
       <Scarch />
       {/* 컨텐츠 */}
       <div className="mx-[15px] min-h-[80vh]">
@@ -26,7 +26,7 @@ function Page() {
           })}
         </div>
       </div>
-      <div className="sticky  bottom-[115px] right-[20px]">
+      <div className="fixed bottom-[100px]">
         <HashTag text="+ 글 쓰기" height={10} />
       </div>
     </div>
