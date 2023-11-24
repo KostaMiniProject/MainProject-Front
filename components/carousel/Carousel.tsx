@@ -20,7 +20,7 @@ function Carousel({ images }: { images: any }) {
   };
   return (
     <div
-      className={`relative w-full h-[260px] bg-black  ease-in-out overflow-hidden`}
+      className={`relative w-full h-full bg-black  ease-in-out overflow-hidden`}
       style={{
         display: 'flex',
       }}

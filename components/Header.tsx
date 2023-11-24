@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 function Header() {
   return (
-    <div className="sticky top-0 w-full z-500 max-w-[480px]">
+    <div className="sticky top-0 w-full z-500 max-w-[480px] z-[9999]">
       <div className="flex h-[60px] bg-white">
         <div className="w-[60px] bg-base flex items-center justify-center relative">
           <div className="">
