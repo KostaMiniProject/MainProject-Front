@@ -4,7 +4,7 @@ import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
 import { getBidList } from '@/api/BidApi';
 import Header from '@/components/Header';
-import { MdMoreVert } from 'react-icons/md';
+import { MdDeleteForever, MdEditNote } from 'react-icons/md';
 
 import TempImg from '@/image/Logo.png';
 
@@ -15,7 +15,12 @@ function Page({ params }: { params: any }) {
   return (
     <div>
       <Header title="교환 상세">
-        <MdMoreVert size={30} />
+        <div className="w-[60px] flex justify-center">
+          <MdDeleteForever size={40} />
+        </div>
+        <div className="w-[60px] flex justify-center">
+          <MdEditNote size={40} />
+        </div>
       </Header>
       <div className="h-[360px]">
         <Carousel images={images} />
@@ -42,7 +47,6 @@ function Page({ params }: { params: any }) {
           <BidItem bid={e} />
         ))}
       </div>
-      <div className="h-[60px]"></div>
     </div>
   );
 }

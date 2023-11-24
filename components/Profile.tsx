@@ -1,8 +1,8 @@
-'use client';
 import React from 'react';
 import Image from 'next/image';
 import { MdInsertEmoticon } from 'react-icons/md';
 import TempImg from '@/image/Logo.png';
+import { getData } from '@/api/ProfileApi';
 
 interface profileType {
   id: number;
@@ -11,7 +11,9 @@ interface profileType {
   rating: number;
 }
 
-function Profile({ profile }: { profile: profileType }) {
+async function Profile({ profile }: { profile: profileType }) {
+  // const data = await getData();
+
   return (
     <div className="flex w-[100%] border-solid border-y-[0.5px] h-[80px]">
       <Image

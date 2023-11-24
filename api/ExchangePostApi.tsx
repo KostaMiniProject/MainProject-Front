@@ -7,6 +7,7 @@ export function getExchangePostList() {
       address: '오리동 오리건물',
       created_at: '2023-11-22',
       status: 'exchanging',
+      img_url: '',
       bid_count: 5,
     },
     {
