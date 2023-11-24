@@ -11,7 +11,7 @@ interface itemType {
 }
 function Item({ item }: { item: itemType }) {
   return (
-    <div className="flex border-solid border-gray border-[0.5px] mt-[15px] rounded-[5px]">
+    <div className="flex border-solid border-gray border-[0.5px] mt-[10px] rounded-[5px]">
       <Image
         src={TempImg}
         alt="아이템 이미지"

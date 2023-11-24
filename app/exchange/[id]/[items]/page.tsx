@@ -6,11 +6,13 @@ import React from 'react';
 import Image from 'next/image';
 import { getItemList } from '@/api/ItemApi';
 import Item from '@/components/item/Item';
+import HashTag from '@/components/HashTag';
+import BottomFixed from '@/components/BottomFixed';
 
 function page({ params }: { params: any }) {
   const itemList = getItemList();
   return (
-    <div>
+    <div className="relative">
       <Header title="입찰 아이템 리스트">
         <div>asdf</div>
       </Header>
@@ -20,6 +22,10 @@ function page({ params }: { params: any }) {
           return <Item item={e} key={i} />;
         })}
       </div>
+      <BottomFixed>
+        <HashTag text="거절하기" height={10} fontSize={20} />
+        <HashTag text="대화하기" height={10} fontSize={20} />
+      </BottomFixed>
     </div>
   );
 }

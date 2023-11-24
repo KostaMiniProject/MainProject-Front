@@ -25,6 +25,7 @@ export default function RootLayout({
         <div className="bg-white max-w-[480px] min-h-[100vh] mx-auto border-gray border-[1px] box-content relative">
           {children}
           <Navbar />
+          <div className="h-[60px]"></div>
         </div>
       </body>
     </html>
