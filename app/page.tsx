@@ -5,6 +5,7 @@ import ExchangePost from '@/components/exchange/ExchangePost';
 import { getCategory, getExchangePostList } from '@/api/ExchangePostApi';
 import HashTag from '@/components/HashTag';
 import { useRouter } from 'next/navigation';
+import BottomFixed from '@/components/BottomFixed';
 
 function Page() {
   const exchangePostData = getExchangePostList();
@@ -14,7 +15,7 @@ function Page() {
     <div className="relative">
       <Scarch />
       {/* 컨텐츠 */}
-      <div className="mx-[15px] min-h-[80vh]">
+      <div className="mx-[15px]">
         {/* 카테고리 */}
         <div className="bg-white flex flex-wrap">
           {category.map((e: any, i: any) => {
@@ -26,10 +27,11 @@ function Page() {
           {exchangePostData.map((e: any, i: any) => {
             return e.status !== 'deleted' ? (
               <div
+                key={i}
                 className="cursor-pointer"
                 onClick={() => {
                   // 연결 페이지
-                  router.push(`/${e.id}`);
+                  router.push(`/exchange/${e.id}`);
                 }}
               >
                 {/* 포스트 아이템 생성 */}
@@ -42,9 +44,9 @@ function Page() {
         </div>
       </div>
       {/* 글쓰기 버튼 */}
-      <div className="fixed bottom-[100px]">
+      <BottomFixed>
         <HashTag text="+ 글 쓰기" height={10} />
-      </div>
+      </BottomFixed>
     </div>
   );
 }

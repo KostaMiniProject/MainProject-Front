@@ -17,6 +17,7 @@ interface BidType {
   address: string;
   created_at: string;
   status: string;
+  img_url: string;
   bid_count: number;
 }
 function ExchangePost({ bid }: { bid: BidType }) {

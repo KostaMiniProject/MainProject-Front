@@ -8,3 +8,13 @@ export function getProfile() {
 
   return dumyData;
 }
+
+export async function getData() {
+  const res = await fetch('http://localhost:8080/users/1');
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  return res.json();
+}

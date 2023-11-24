@@ -8,7 +8,7 @@ function Header({
   children,
   title = '',
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   title?: string;
 }) {
   return (
