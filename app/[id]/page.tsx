@@ -5,6 +5,7 @@ import TempImg from '@/image/Logo.png';
 import BidItem from '@/components/bid/BidItem';
 import { getBidList } from '@/api/BidApi';
 import Header from '@/components/Header';
+import { MdMoreVert } from 'react-icons/md';
 
 function Page({ params }: { params: any }) {
   const images = [TempImg, TempImg, TempImg]; // 이미지 배열
@@ -12,7 +13,9 @@ function Page({ params }: { params: any }) {
   const borderStyle = 'border-solid border-black border-[1px]';
   return (
     <div>
-      <Header />
+      <Header title="교환 상세">
+        <MdMoreVert size={30} />
+      </Header>
       <div className="h-[360px]">
         <Carousel images={images} />
       </div>

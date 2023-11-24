@@ -4,7 +4,13 @@ import { MdMoreVert } from 'react-icons/md';
 import Logo from '@/image/Logo.png';
 import Image from 'next/image';
 
-function Header() {
+function Header({
+  children,
+  title = '',
+}: {
+  children: React.ReactNode;
+  title?: string;
+}) {
   return (
     <div className="sticky top-0 w-full z-500 max-w-[480px] z-[9999]">
       <div className="flex h-[60px] bg-white">
@@ -14,10 +20,10 @@ function Header() {
           </div>
         </div>
         <div className="flex-1 flex items-center m-[10px] text-[24px] font-[800]">
-          헤더내용
+          {title}
         </div>
-        <div className="w-[60px] bg-gray-300 flex items-center justify-center">
-          <MdMoreVert size={30} />
+        <div className="bg-gray-300 flex items-center justify-center">
+          {children}
         </div>
       </div>
     </div>
