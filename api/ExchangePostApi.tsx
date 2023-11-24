@@ -19,6 +19,15 @@ export function getExchangePostList() {
       bid_count: 2,
     },
     {
+      id: 2,
+      title: '바지',
+      prefer_items: '옷',
+      address: '암사동',
+      created_at: '2023-11-24',
+      status: 'completed',
+      bid_count: 7,
+    },
+    {
       id: 3,
       title: '바지',
       prefer_items: '옷',

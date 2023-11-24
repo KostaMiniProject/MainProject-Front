@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import {
   MdViewInAr,
@@ -19,6 +20,7 @@ function flexClasses(active: boolean) {
 
 function Navbar() {
   const [activeButton, setActiveButton] = useState('물물교환');
+  const router = useRouter();
 
   function handleButtonClick(buttonName: string) {
     setActiveButton(buttonName);
@@ -29,7 +31,10 @@ function Navbar() {
       <div className="flex items-center h-[60px] text-sm cursor-pointer">
         <div
           className={flexClasses(activeButton === '물물교환')}
-          onClick={() => handleButtonClick('물물교환')}
+          onClick={() => {
+            handleButtonClick('물물교환');
+            router.push('/');
+          }}
         >
           <MdViewInAr size={iconSize} />
           <div>물물교환</div>
