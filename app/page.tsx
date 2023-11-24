@@ -45,7 +45,9 @@ function Page() {
       </div>
       {/* 글쓰기 버튼 */}
       <BottomFixed>
-        <HashTag text="+ 글 쓰기" height={10} />
+        <div className="flex justify-end">
+          <HashTag text="+ 글 쓰기" height={10} fontSize={16} />
+        </div>
       </BottomFixed>
     </div>
   );

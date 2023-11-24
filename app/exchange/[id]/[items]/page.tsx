@@ -27,8 +27,10 @@ function page({ params }: { params: any }) {
         })}
       </div>
       <BottomFixed>
-        <HashTag text="거절하기" height={10} fontSize={20} />
-        <HashTag text="대화하기" height={10} fontSize={20} />
+        <div className="flex justify-between">
+          <HashTag text="거절하기" height={10} fontSize={20} />
+          <HashTag text="대화하기" height={10} fontSize={20} />
+        </div>
       </BottomFixed>
     </div>
   );
