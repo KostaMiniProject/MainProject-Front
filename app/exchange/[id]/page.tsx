@@ -6,10 +6,8 @@ import { getBidList } from '@/api/BidApi';
 import Header from '@/components/Header';
 import { MdDeleteForever, MdEditNote } from 'react-icons/md';
 
-import TempImg from '@/image/Logo.png';
-
 function Page({ params }: { params: any }) {
-  const images = [TempImg, TempImg, TempImg]; // 이미지 배열
+  const images = ['', '', '']; // 이미지 배열
   const bidList = getBidList();
   const borderStyle = 'border-solid border-black border-[1px]';
   return (

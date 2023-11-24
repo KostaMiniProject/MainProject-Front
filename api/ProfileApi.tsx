@@ -1,8 +1,10 @@
+//사용자 프로필 관련 API
 export function getProfile() {
   const dumyData: any = {
     id: 0,
     name: '오리동햄버거마스터',
     address: '오리동 맥도날드 1번자리',
+    image_url: '',
     rating: 5,
   };
 

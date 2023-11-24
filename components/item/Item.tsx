@@ -7,13 +7,14 @@ interface itemType {
   id: number;
   title: string;
   description: string;
+  image_url: string;
   created_at: string;
 }
 function Item({ item }: { item: itemType }) {
   return (
     <div className="flex border-solid border-gray border-[0.5px] mt-[10px] rounded-[5px]">
       <Image
-        src={TempImg}
+        src={item.image_url}
         alt="아이템 이미지"
         className="w-[80px] h-[80px] my-[5px] mx-[5px]"
       />

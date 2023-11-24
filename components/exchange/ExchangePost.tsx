@@ -1,8 +1,8 @@
 import React from 'react';
-import Image from 'next/image';
 import { MdOutlineListAlt } from 'react-icons/md';
 
 import TempImg from '@/image/Logo.png';
+import Image from 'next/image';
 
 enum status {
   a = 'exchanging',
@@ -17,14 +17,14 @@ interface BidType {
   address: string;
   created_at: string;
   status: string;
-  img_url: string;
+  image_url: string;
   bid_count: number;
 }
 function ExchangePost({ bid }: { bid: BidType }) {
   return (
     <div className="border-gray border-[0.5px] rounded-[5px] flex my-[5px]">
       <Image
-        src={TempImg}
+        src={bid.image_url}
         alt="Item image"
         className="w-[80px] h-[80px] my-[10px] ml-[10px]"
       />
