@@ -29,7 +29,7 @@ function Page() {
                 className="cursor-pointer"
                 onClick={() => {
                   // 연결 페이지
-                  router.push(`/${e.id}`);
+                  router.push(`/exchange/${e.id}`);
                 }}
               >
                 {/* 포스트 아이템 생성 */}
