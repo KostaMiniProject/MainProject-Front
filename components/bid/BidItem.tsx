@@ -2,12 +2,12 @@
 import React from 'react';
 import Image from 'next/image';
 import { MdCancel } from 'react-icons/md';
-import TempImg from '@/image/Logo.png';
 import { usePathname, useRouter } from 'next/navigation';
 
 interface bidType {
   id: number;
   name: string;
+  image_url: string;
   items: string;
 }
 function BidItem({ bid }: { bid: bidType }) {
@@ -27,7 +27,7 @@ function BidItem({ bid }: { bid: bidType }) {
           </div>
           {/* 이미지표시 */}
           <Image
-            src={TempImg}
+            src={bid.image_url}
             alt="대표이미지"
             className="w-[100%] h-[170px]"
           />

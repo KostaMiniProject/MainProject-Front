@@ -8,6 +8,7 @@ interface profileType {
   id: number;
   name: string;
   address: string;
+  image_url: string;
   rating: number;
 }
 
@@ -17,7 +18,7 @@ async function Profile({ profile }: { profile: profileType }) {
   return (
     <div className="flex w-[100%] border-solid border-y-[0.5px] h-[80px]">
       <Image
-        src={TempImg}
+        src={profile.image_url}
         alt="프로필사진"
         className="w-[60px] h-[60px] rounded-[50%] my-auto ml-[15px]"
       />

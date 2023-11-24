@@ -1,3 +1,4 @@
+//교환 게시글 관련 API
 export function getExchangePostList() {
   const dumyData: any = [
     {
@@ -7,7 +8,7 @@ export function getExchangePostList() {
       address: '오리동 오리건물',
       created_at: '2023-11-22',
       status: 'exchanging',
-      img_url: '',
+      image_url: '',
       bid_count: 5,
     },
     {
@@ -17,6 +18,7 @@ export function getExchangePostList() {
       address: '천호동 로데오',
       created_at: '2023-11-23',
       status: 'raservation',
+      image_url: '',
       bid_count: 2,
     },
     {
@@ -26,6 +28,7 @@ export function getExchangePostList() {
       address: '암사동',
       created_at: '2023-11-24',
       status: 'completed',
+      image_url: '',
       bid_count: 7,
     },
     {
@@ -35,6 +38,7 @@ export function getExchangePostList() {
       address: '암사동',
       created_at: '2023-11-24',
       status: 'deleted',
+      image_url: '',
       bid_count: 7,
     },
   ];
