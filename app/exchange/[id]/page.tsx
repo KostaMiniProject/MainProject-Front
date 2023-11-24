@@ -1,11 +1,12 @@
 import { getProfile } from '@/api/ProfileApi';
 import Profile from '@/components/Profile';
 import Carousel from '@/components/carousel/Carousel';
-import TempImg from '@/image/Logo.png';
 import BidItem from '@/components/bid/BidItem';
 import { getBidList } from '@/api/BidApi';
 import Header from '@/components/Header';
 import { MdMoreVert } from 'react-icons/md';
+
+import TempImg from '@/image/Logo.png';
 
 function Page({ params }: { params: any }) {
   const images = [TempImg, TempImg, TempImg]; // 이미지 배열
