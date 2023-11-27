@@ -31,11 +31,9 @@ function BidItem({ bid, postOwner }: { bid: bidType; postOwner: boolean }) {
           )}
 
           {/* 이미지표시 */}
-          <Image
-            src={bid.image_url}
-            alt="대표이미지"
-            className="w-[100%] h-[170px]"
-          />
+          <div className="relative w-[100%] h-[170px] overflow-hidden">
+            <Image src={bid.image_url} alt="대표이미지" fill />
+          </div>
           <div className="font-[600] text-[18px]">{bid.items}</div>
           <div className="text-gray">{bid.name}</div>
         </div>

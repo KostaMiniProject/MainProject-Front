@@ -30,6 +30,7 @@ function Carousel({ images }: { images: any }) {
           key={index}
           src={src}
           alt={`carouselImage-${index}`}
+          fill
           className="duration-300 absolute"
           style={{
             width: '100%',

@@ -5,14 +5,18 @@ export function getProfile(id: number) {
       id: 0,
       name: '오리동햄버거마스터',
       address: '오리동 맥도날드 1번자리',
-      image_url: '',
+      image_url:
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
       rating: 5,
     },
     {
       id: 1,
       name: '백엔드개발자',
       address: '판교 개발 본사',
-      image_url: '',
+      image_url:
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
       rating: -200,
     },
   ];

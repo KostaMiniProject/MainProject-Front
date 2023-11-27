@@ -23,13 +23,16 @@ interface BidType {
 function ExchangePost({ bid }: { bid: BidType }) {
   return (
     <div className="border-gray border-[0.5px] rounded-[5px] flex my-[5px]">
-      <Image
-        src={bid.image_url}
-        alt="Item image"
-        className="w-[80px] h-[80px] my-[10px] ml-[10px]"
-      />
+      <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[10px]">
+        <Image
+          src={bid.image_url}
+          alt="Item image"
+          fill
+          style={{ objectFit: 'cover' }}
+        />
+      </div>
       {/* 우측 데이터부분 */}
-      <div className="my-[10px] w-[100%] mx-[10px] flex-col justify-between">
+      <div className="py-[10px] flex-1 px-[10px] flex-col justify-between">
         {/* 타이틀 */}
         <div className="font-[800] text-[24px] leading-none">{bid.title}</div>
         {/* 주소 */}
