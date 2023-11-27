@@ -10,7 +10,7 @@ import { getBidById } from '@/api/BidApi';
 import Button from '@/components/Button';
 
 function page({ params }: { params: any }) {
-  const itemList = getBidById(params.items);
+  const itemList = getBidById(params.id);
 
   return (
     <div className="relative">

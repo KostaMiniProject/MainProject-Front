@@ -18,7 +18,7 @@ function BidItem({ bid, postOwner }: { bid: bidType; postOwner: boolean }) {
       <div className=" relative bg-white p-[2.5px] rounded-[5px] border-solid border-gray border-[1px]">
         <div
           onClick={() => {
-            router.push(`${currentPath}/${bid.id}`);
+            router.push(`/bid/${bid.id}`);
           }}
         >
           {/* 거절 버튼 */}
