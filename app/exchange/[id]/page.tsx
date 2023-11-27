@@ -6,6 +6,7 @@ import { getBidList } from '@/api/BidApi';
 import Header from '@/components/Header';
 import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
 import { getExchangePost } from '@/api/ExchangePostApi';
+import Button from '@/components/Button';
 
 function Page({ params }: { params: any }) {
   const images = ['', '', '']; // 이미지 배열
@@ -40,27 +41,38 @@ function Page({ params }: { params: any }) {
       {/* 프로필 섹션 */}
       <Profile profile={post_Content.profile} />
       {/* 교환 게시글 본문 */}
-      <div className="flex flex-col m-[15px]">
-        <div className={`${borderStyle} p-[10px] rounded-t-[5px]`}>
+      <div className="flex flex-col m-[15px] bg-softbase p-[5px] rounded-[5px]">
+        <div
+          className={`${borderStyle} p-[10px] rounded-[5px] bg-white border-gray`}
+        >
           {post_Content.content}
         </div>
         <div className="flex">
-          <div
-            className={`${borderStyle} flex-1 text-center py-[10px] rounded-bl-[5px]`}
-          >
-            입찰 목록
+          <div className={` flex-1 text-center `}>
+            <Button
+              text="입찰 목록"
+              fontSize={20}
+              height={5}
+              rounded="soft"
+            ></Button>
           </div>
           {post_Content.post_owner ? (
-            <div
-              className={`${borderStyle} flex-1 text-center py-[10px] rounded-br-[5px]`}
-            >
-              거절 내역 보기
+            <div className={` flex-1 text-center  `}>
+              <Button
+                text="거절 내역 보기"
+                fontSize={20}
+                height={5}
+                rounded="soft"
+              ></Button>
             </div>
           ) : (
-            <div
-              className={`${borderStyle} flex-1 text-center py-[10px] rounded-br-[5px]`}
-            >
-              입찰 하기
+            <div className={` flex-1 text-center `}>
+              <Button
+                text="입찰 하기"
+                fontSize={20}
+                height={5}
+                rounded="soft"
+              ></Button>
             </div>
           )}
         </div>
