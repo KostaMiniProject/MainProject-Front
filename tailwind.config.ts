@@ -11,7 +11,7 @@ const config: Config = {
       transparent: 'transparent',
       current: 'currentColor',
       base: '#e00685',
-      softbase: '#F9D0E8',
+      softbase: '#F9E3F0',
       gray: '#BBBBBB',
       white: '#FFFFFF',
       black: '#000000',
