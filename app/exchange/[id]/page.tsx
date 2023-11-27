@@ -36,7 +36,7 @@ function Page({ params }: { params: any }) {
       {/* 본문 */}
       {/* 캐러셀 섹션 */}
       <div className="h-[360px]">
-        <Carousel images={images} />
+        <Carousel images={post_Content.image_url} />
       </div>
       {/* 프로필 섹션 */}
       <Profile profile={post_Content.profile} />

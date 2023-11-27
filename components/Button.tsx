@@ -14,13 +14,13 @@ function ButtonClass(
   } else if (rounded === 'none') {
     roundedResult = ``;
   }
-  let result = `bg-base text-white rounded-[20px] px-[10px] m-[2.5px] ${roundedResult}`;
+  let result = `bg-base text-white rounded-[20px] px-[10px]  ${roundedResult}`;
   if (btnStyle === 'tag') {
-    result = `bg-white text-black border-solid border-base border-[1px] ${roundedResult} px-[10px] m-[2.5px]`;
+    result = `bg-white text-black border-solid border-base border-[1px] ${roundedResult} px-[10px] `;
   } else if (btnStyle === 'disable') {
-    result = `bg-gray text-white px-[10px] m-[2.5px] ${roundedResult}`;
+    result = `bg-gray text-white px-[10px]  ${roundedResult}`;
   } else {
-    result = `bg-base text-white px-[10px] m-[2.5px] ${roundedResult}`;
+    result = `bg-base text-white px-[10px]  ${roundedResult}`;
   }
   return result;
 }

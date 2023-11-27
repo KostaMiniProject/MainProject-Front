@@ -28,6 +28,8 @@ function Profile({ profile }: { profile: profileType }) {
       <Image
         src={profile.image_url}
         alt="프로필사진"
+        width={60}
+        height={60}
         className="w-[60px] h-[60px] rounded-[50%] my-auto ml-[15px]"
       />
       <div className="flex flex-col justify-between m-[10px]">

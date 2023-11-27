@@ -8,7 +8,9 @@ export function getExchangePostList() {
       address: '오리동 오리건물',
       created_at: '2023-11-22',
       status: 'exchanging',
-      image_url: '',
+      image_url:
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
       bid_count: 5,
     },
     {
@@ -18,7 +20,9 @@ export function getExchangePostList() {
       address: '천호동 로데오',
       created_at: '2023-11-23',
       status: 'raservation',
-      image_url: '',
+      image_url:
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
       bid_count: 2,
     },
     {
@@ -28,7 +32,9 @@ export function getExchangePostList() {
       address: '암사동',
       created_at: '2023-11-24',
       status: 'completed',
-      image_url: '',
+      image_url:
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
       bid_count: 7,
     },
     {
@@ -38,7 +44,9 @@ export function getExchangePostList() {
       address: '암사동',
       created_at: '2023-11-24',
       status: 'deleted',
-      image_url: '',
+      image_url:
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
       bid_count: 7,
     },
   ];
@@ -64,22 +72,33 @@ export function getExchangePost(id: number) {
         id: 0,
         name: '오리동햄버거마스터',
         address: '오리동 맥도날드 1번자리',
-        image_url: '',
+        image_url:
+          'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
         rating: 5,
       },
+      image_url: [
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+      ],
       content: `상태좋음
     빠르게 교환 하실분`,
       bid_list: [
         {
           id: 0,
           name: '오리동햄버거마스터',
-          image_url: '',
+          image_url:
+            'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
           items: '키보드, 마우스, 모니터',
         },
         {
           id: 1,
           name: '김독자',
-          image_url: '',
+          image_url:
+            'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
           items: '클립, 핀셋',
         },
       ],
@@ -90,22 +109,33 @@ export function getExchangePost(id: number) {
         id: 1,
         name: '백엔드개발자',
         address: '판교 개발 본사',
-        image_url: '',
+        image_url:
+          'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
         rating: -100,
       },
+      image_url: [
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+      ],
       content: `잡템
     바꿀사람`,
       bid_list: [
         {
           id: 1,
           name: '김독자',
-          image_url: '',
+          image_url:
+            'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
           items: '클립, 핀셋',
         },
         {
           id: 2,
           name: '홍길도옹',
-          image_url: '',
+          image_url:
+            'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
           items: '안경, 귀마개',
         },
       ],
@@ -116,21 +146,32 @@ export function getExchangePost(id: number) {
         id: 2,
         name: '김독자',
         address: '지구 어딘가의 한 장소',
-        image_url: '',
+        image_url:
+          'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
         rating: 2934,
       },
+      image_url: [
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+      ],
       content: `나랑 교환 하실분`,
       bid_list: [
         {
           id: 1,
           name: '김독자',
-          image_url: '',
+          image_url:
+            'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
           items: '클립, 핀셋',
         },
         {
           id: 2,
           name: '홍길도옹',
-          image_url: '',
+          image_url:
+            'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
           items: '안경, 귀마개',
         },
       ],
