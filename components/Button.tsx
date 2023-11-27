@@ -1,6 +1,6 @@
 import React from 'react';
 
-function hashTagClass(height: number, fontSize: number, btnStyle: string) {
+function ButtonClass(height: number, fontSize: number, btnStyle: string) {
   let result = `bg-base text-white rounded-[20px] px-[10px] m-[2.5px]`;
   if (btnStyle === 'tag') {
     result = `bg-white text-black border-solid border-base border-[1px] rounded-[20px] px-[10px] m-[2.5px]`;
@@ -12,7 +12,7 @@ function hashTagClass(height: number, fontSize: number, btnStyle: string) {
   return result;
 }
 
-function HashTag({
+function Button({
   text,
   height = 0,
   fontSize = 12,
@@ -27,7 +27,7 @@ function HashTag({
 }) {
   return (
     <div
-      className={hashTagClass(height, fontSize, btnStyle)}
+      className={ButtonClass(height, fontSize, btnStyle)}
       onClick={onClick}
       style={{ padding: `${height}px`, fontSize: `${fontSize}px` }}
     >
@@ -36,4 +36,4 @@ function HashTag({
   );
 }
 
-export default HashTag;
+export default Button;

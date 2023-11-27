@@ -3,9 +3,9 @@ import React from 'react';
 import Scarch from '@/components/Search';
 import ExchangePost from '@/components/exchange/ExchangePost';
 import { getCategory, getExchangePostList } from '@/api/ExchangePostApi';
-import HashTag from '@/components/HashTag';
 import { useRouter } from 'next/navigation';
 import BottomFixed from '@/components/BottomFixed';
+import Button from '@/components/Button';
 
 function Page() {
   const exchangePostData = getExchangePostList();
@@ -19,7 +19,7 @@ function Page() {
         {/* 카테고리 */}
         <div className="bg-white flex flex-wrap">
           {category.map((e: any, i: any) => {
-            return <HashTag key={i} text={e} height={5} btnStyle="tag" />;
+            return <Button key={i} text={e} height={5} btnStyle="tag" />;
           })}
         </div>
         {/* ExchangePost 리스트 */}
@@ -46,7 +46,7 @@ function Page() {
       {/* 글쓰기 버튼 */}
       <BottomFixed>
         <div className="flex justify-end">
-          <HashTag text="+ 글 쓰기" height={10} fontSize={16} />
+          <Button text="+ 글 쓰기" height={10} fontSize={16} />
         </div>
       </BottomFixed>
     </div>

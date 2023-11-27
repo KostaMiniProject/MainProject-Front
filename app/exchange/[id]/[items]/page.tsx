@@ -1,17 +1,16 @@
-'use client';
 import { getProfile } from '@/api/ProfileApi';
 import Header from '@/components/Header';
 import Profile from '@/components/Profile';
 import React from 'react';
 
-import { getItemList } from '@/api/ItemApi';
 import Item from '@/components/item/Item';
-import HashTag from '@/components/HashTag';
 import BottomFixed from '@/components/BottomFixed';
 import { MdOutlineReportGmailerrorred } from 'react-icons/md';
+import { getBidById } from '@/api/BidApi';
+import Button from '@/components/Button';
 
 function page({ params }: { params: any }) {
-  const itemList = getItemList();
+  const itemList = getBidById(params.items);
 
   return (
     <div className="relative">
@@ -22,15 +21,22 @@ function page({ params }: { params: any }) {
       </Header>
       <Profile profile={getProfile(1)} />
       <div className="mx-[15px]">
-        {itemList.map((e: any, i: any) => {
+        {itemList.item_list.map((e: any, i: any) => {
           return <Item item={e} key={i} />;
         })}
       </div>
       <BottomFixed>
-        <div className="flex justify-between">
-          <HashTag text="거절하기" height={10} fontSize={20} />
-          <HashTag text="대화하기" height={10} fontSize={20} />
-        </div>
+        {itemList.owner ? (
+          <div className="flex justify-between">
+            <Button text="입찰취소" height={10} fontSize={20} />
+            <Button text="수정하기" height={10} fontSize={20} />
+          </div>
+        ) : (
+          <div className="flex justify-between">
+            <Button text="거절하기" height={10} fontSize={20} />
+            <Button text="대화하기" height={10} fontSize={20} />
+          </div>
+        )}
       </BottomFixed>
     </div>
   );

@@ -10,7 +10,7 @@ interface bidType {
   image_url: string;
   items: string;
 }
-function BidItem({ bid }: { bid: bidType }) {
+function BidItem({ bid, postOwner }: { bid: bidType; postOwner: boolean }) {
   const router = useRouter();
   const currentPath = usePathname();
   return (
@@ -22,9 +22,14 @@ function BidItem({ bid }: { bid: bidType }) {
           }}
         >
           {/* 거절 버튼 */}
-          <div className="absolute right-0 m-[5px]">
-            <MdCancel size={30} />
-          </div>
+          {postOwner ? (
+            <div className="absolute right-0 m-[5px]">
+              <MdCancel size={30} />
+            </div>
+          ) : (
+            <></>
+          )}
+
           {/* 이미지표시 */}
           <Image
             src={bid.image_url}
@@ -35,9 +40,13 @@ function BidItem({ bid }: { bid: bidType }) {
           <div className="text-gray">{bid.name}</div>
         </div>
         {/* 대화하기 버튼 */}
-        <div className="bg-base text-center text-[18px] font-[600] text-white rounded-[5px]">
-          대화하기
-        </div>
+        {postOwner ? (
+          <div className="bg-base text-center text-[18px] font-[600] text-white rounded-[5px]">
+            대화하기
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

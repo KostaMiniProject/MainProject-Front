@@ -67,7 +67,7 @@ function Page({ params }: { params: any }) {
       </div>
       <div className="grid grid-cols-2 m-[15px]">
         {post_Content.bid_list.map((e: any, i: any) => (
-          <BidItem bid={e} />
+          <BidItem bid={e} postOwner={post_Content.post_owner} />
         ))}
       </div>
     </div>
