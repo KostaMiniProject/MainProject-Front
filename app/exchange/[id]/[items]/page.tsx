@@ -20,7 +20,7 @@ function page({ params }: { params: any }) {
           <MdOutlineReportGmailerrorred size={40} />
         </div>
       </Header>
-      <Profile profile={getProfile()} />
+      <Profile profile={getProfile(1)} />
       <div className="mx-[15px]">
         {itemList.map((e: any, i: any) => {
           return <Item item={e} key={i} />;
