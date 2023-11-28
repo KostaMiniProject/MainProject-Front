@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { MdCancel } from 'react-icons/md';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface bidType {
   id: number;
@@ -10,20 +10,32 @@ interface bidType {
   image_url: string;
   items: string;
 }
-function BidItem({ bid, postOwner }: { bid: bidType; postOwner: boolean }) {
+
+function BidItem({
+  bid,
+  postOwner = false,
+}: {
+  bid: bidType;
+  postOwner?: boolean;
+}) {
   const router = useRouter();
-  const currentPath = usePathname();
   return (
     <div>
       <div className=" relative bg-white p-[2.5px] rounded-[5px] border-solid border-gray border-[1px]">
         <div
-          onClick={() => {
+          onClick={(e) => {
             router.push(`/bid/${bid.id}`);
           }}
         >
           {/* 거절 버튼 */}
           {postOwner ? (
-            <div className="absolute right-0 m-[5px]">
+            <div
+              className="absolute right-0 m-[5px] z-10"
+              onClick={(e) => {
+                e.stopPropagation();
+                alert('asdf');
+              }}
+            >
               <MdCancel size={30} />
             </div>
           ) : (
@@ -31,7 +43,7 @@ function BidItem({ bid, postOwner }: { bid: bidType; postOwner: boolean }) {
           )}
 
           {/* 이미지표시 */}
-          <div className="relative w-[100%] h-[170px] overflow-hidden">
+          <div className="relative w-[100%] h-[170px] overflow-hidden z-0">
             <Image src={bid.image_url} alt="대표이미지" fill />
           </div>
           <div className="font-[600] text-[18px]">{bid.items}</div>
