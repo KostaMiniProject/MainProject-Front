@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { MdCancel } from 'react-icons/md';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface bidType {
   id: number;
@@ -10,9 +10,9 @@ interface bidType {
   image_url: string;
   items: string;
 }
+
 function BidItem({ bid, postOwner }: { bid: bidType; postOwner: boolean }) {
   const router = useRouter();
-  const currentPath = usePathname();
   return (
     <div>
       <div className=" relative bg-white p-[2.5px] rounded-[5px] border-solid border-gray border-[1px]">
