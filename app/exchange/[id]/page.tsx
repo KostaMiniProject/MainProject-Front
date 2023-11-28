@@ -1,3 +1,4 @@
+'use client'
 import { getProfile } from '@/api/ProfileApi';
 import Profile from '@/components/Profile';
 import Carousel from '@/components/carousel/Carousel';
@@ -7,10 +8,12 @@ import Header from '@/components/Header';
 import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
 import { getExchangePost } from '@/api/ExchangePostApi';
 import Button from '@/components/Button';
+import { useRouter } from 'next/navigation';
 
 function Page({ params }: { params: any }) {
   const post_Content = getExchangePost(params.id);
   const borderStyle = 'border-solid border-black border-[1px]';
+  const router = useRouter();
   return (
     <div>
       <Header title={post_Content.title} backNav>
@@ -74,7 +77,12 @@ function Page({ params }: { params: any }) {
               ></Button>
             </div>
           ) : (
-            <div className={` flex-1 text-center `}>
+            <div
+              className={` flex-1 text-center `}
+              onClick={() => {
+                router.push('/biding');
+              }}
+            >
               <Button
                 text="입찰 하기"
                 fontSize={20}
