@@ -11,7 +11,9 @@ function Page({ params }: { params: any }) {
 
   return (
     <div>
-      <Header title="아이템 상세">{/* 헤더 아이콘 */}</Header>
+      <Header title="아이템 상세" backNav>
+        {/* 헤더 아이콘 */}
+      </Header>
       <div className="h-[360px]">
         <Carousel images={detail.image_url} />
       </div>

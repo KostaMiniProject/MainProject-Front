@@ -9,12 +9,11 @@ import { getExchangePost } from '@/api/ExchangePostApi';
 import Button from '@/components/Button';
 
 function Page({ params }: { params: any }) {
-  const images = ['', '', '']; // 이미지 배열
   const post_Content = getExchangePost(params.id);
   const borderStyle = 'border-solid border-black border-[1px]';
   return (
     <div>
-      <Header title="교환 상세">
+      <Header title="교환 상세" backNav>
         {/* 헤더 아이콘 */}
         {post_Content.post_owner ? (
           <>

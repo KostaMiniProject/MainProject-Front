@@ -17,7 +17,7 @@ function page({ params }: { params: any }) {
 
   return (
     <div className="relative">
-      <Header title="입찰 아이템 리스트">
+      <Header title="입찰 아이템 리스트" backNav>
         <div className="w-[60px] flex justify-center">
           <MdOutlineReportGmailerrorred size={40} />
         </div>

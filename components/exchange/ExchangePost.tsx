@@ -1,7 +1,6 @@
 import React from 'react';
 import { MdOutlineListAlt } from 'react-icons/md';
 
-import TempImg from '@/image/Logo.png';
 import Image from 'next/image';
 
 enum status {
