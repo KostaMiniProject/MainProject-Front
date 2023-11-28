@@ -67,7 +67,7 @@ export function getCategory() {
 export function getExchangePost(id: number) {
   const dumyData: any = [
     {
-      post_owner: true,
+      post_owner: false,
       title: `이거랑 교환 하실분`,
       prefer_items: '압정',
       address: '오리역',
