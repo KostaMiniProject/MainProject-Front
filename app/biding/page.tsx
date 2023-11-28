@@ -31,24 +31,26 @@ function Page() {
   return (
     <div>
       <Header backNav title="입찰 하기"></Header>
-      {itemList.map((item: any) => (
-        <div
-          key={item.id}
-          style={
-            selectedItems.includes(item.id)
-              ? {
-                  backgroundColor: '#ffe8f9',
-                }
-              : {}
-          }
-          className={`item-wrapper ${
-            selectedItems.includes(item.id) ? 'selected' : ''
-          }`}
-          onClick={() => handleItemClick(item.id)}
-        >
-          <Item item={item} />
-        </div>
-      ))}
+      <div className="m-[15px]">
+        {itemList.map((item: any) => (
+          <div
+            key={item.id}
+            style={
+              selectedItems.includes(item.id)
+                ? {
+                    backgroundColor: '#ffe8f9',
+                  }
+                : {}
+            }
+            className={`item-wrapper ${
+              selectedItems.includes(item.id) ? 'selected' : ''
+            }`}
+            onClick={() => handleItemClick(item.id)}
+          >
+            <Item item={item} />
+          </div>
+        ))}
+      </div>
       <BottomFixed>
         <div className="flex my-[5px]">
           <Button
