@@ -1,3 +1,4 @@
+'use client';
 import { getProfile } from '@/api/ProfileApi';
 import Header from '@/components/Header';
 import Profile from '@/components/Profile';
@@ -8,9 +9,11 @@ import BottomFixed from '@/components/BottomFixed';
 import { MdOutlineReportGmailerrorred } from 'react-icons/md';
 import { getBidById } from '@/api/BidApi';
 import Button from '@/components/Button';
+import { useRouter } from 'next/navigation';
 
 function page({ params }: { params: any }) {
   const itemList = getBidById(params.id);
+  const route = useRouter();
 
   return (
     <div className="relative">
@@ -19,12 +22,23 @@ function page({ params }: { params: any }) {
           <MdOutlineReportGmailerrorred size={40} />
         </div>
       </Header>
+      {/* 프로필 */}
       <Profile profile={getProfile(1)} />
+      {/* 물건 리스트 */}
       <div className="mx-[15px]">
         {itemList.item_list.map((e: any, i: any) => {
-          return <Item item={e} key={i} />;
+          return (
+            <div
+              onClick={() => {
+                route.push(`/itemdetail/${e.id}`);
+              }}
+            >
+              <Item item={e} key={i} />
+            </div>
+          );
         })}
       </div>
+      {/* 하단 고정 버튼 */}
       <BottomFixed>
         {itemList.owner ? (
           <div className="flex justify-between">
