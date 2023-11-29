@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-interface itemType {
+export interface itemType {
   id: number;
   title: string;
   description: string;
