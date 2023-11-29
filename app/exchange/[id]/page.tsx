@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { getProfile } from '@/api/ProfileApi';
 import Profile from '@/components/Profile';
 import Carousel from '@/components/carousel/Carousel';
@@ -88,6 +88,9 @@ function Page({ params }: { params: any }) {
                 fontSize={20}
                 height={5}
                 rounded="soft"
+                onClick={() => {
+                  router.push('/biding');
+                }}
               ></Button>
             </div>
           )}
@@ -96,7 +99,7 @@ function Page({ params }: { params: any }) {
       <div className="grid grid-cols-2 m-[15px]">
         {/* 입찰 리스트 출력 */}
         {post_Content.bid_list.map((e: any, i: any) => (
-          <BidItem bid={e} postOwner={post_Content.post_owner} />
+          <BidItem bid={e} postOwner={post_Content.post_owner} key={i} />
         ))}
       </div>
     </div>

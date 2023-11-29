@@ -31,6 +31,9 @@ function Page() {
   return (
     <div>
       <Header backNav title="입찰 하기"></Header>
+      <div className="text-[18px] font-[600] text-center border-solid border-b-gray border-y-[0.5px] py-[5px] bg-softbase">
+        입찰 할 물건을 선택하세요
+      </div>
       <div className="m-[15px]">
         {itemList.map((item: any) => (
           <div

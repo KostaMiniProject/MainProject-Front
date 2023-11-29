@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
+import Recoil from '@/utility/Recoil';
 
 // const inter = Inter({ subsets: ['latin'] });
 
@@ -21,11 +22,13 @@ export default function RootLayout({
     <html>
       <head />
       <body className="bg-softbase relative">
-        <div className="bg-white max-w-[480px] min-h-[100vh] mx-auto border-gray border-[1px] box-content relative">
-          {children}
-          <Navbar />
-          <div className="h-[60px]"></div>
-        </div>
+        <Recoil>
+          <div className="bg-white max-w-[480px] min-h-[100vh] mx-auto border-gray border-[1px] box-content relative">
+            {children}
+            <Navbar />
+            <div className="h-[60px]"></div>
+          </div>
+        </Recoil>
       </body>
     </html>
   );

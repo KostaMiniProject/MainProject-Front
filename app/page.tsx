@@ -28,7 +28,7 @@ function Page() {
             return e.status !== 'deleted' ? (
               <div
                 key={i}
-                className="cursor-pointer"
+                className="cursor-pointer "
                 onClick={() => {
                   // 연결 페이지
                   router.push(`/exchange/${e.id}`);
