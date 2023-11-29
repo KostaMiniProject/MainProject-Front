@@ -1,19 +1,31 @@
 'use client';
-import React from 'react';
-import Scarch from '@/components/Search';
+import React, { useState } from 'react';
+import InputBox from '@/components/InputBox';
 import ExchangePost from '@/components/exchange/ExchangePost';
 import { getCategory, getExchangePostList } from '@/api/ExchangePostApi';
 import { useRouter } from 'next/navigation';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
+import { MdOutlineSearch } from 'react-icons/md';
 
 function Page() {
   const exchangePostData = getExchangePostList();
   const category = getCategory();
   const router = useRouter();
+  const [keyWord, setKeyWord] = useState<String>('');
   return (
     <div className="relative">
-      <Scarch />
+      <div className=" h-[60px] flex items-center border-b-[1px] border-gray">
+        <InputBox onChange={setKeyWord} />
+        <div
+          onClick={() => {
+            console.log(keyWord);
+          }}
+        >
+          <MdOutlineSearch size={40} />
+        </div>
+      </div>
+
       {/* 컨텐츠 */}
       <div className="mx-[15px]">
         {/* 카테고리 */}
