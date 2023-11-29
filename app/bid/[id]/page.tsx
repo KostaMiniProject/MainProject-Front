@@ -29,6 +29,7 @@ function page({ params }: { params: any }) {
         {itemList.item_list.map((e: any, i: any) => {
           return (
             <div
+              key={i}
               onClick={() => {
                 route.push(`/itemdetail/${e.id}`);
               }}

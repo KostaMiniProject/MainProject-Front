@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { getProfile } from '@/api/ProfileApi';
 import Profile from '@/components/Profile';
 import Carousel from '@/components/carousel/Carousel';
@@ -88,6 +88,9 @@ function Page({ params }: { params: any }) {
                 fontSize={20}
                 height={5}
                 rounded="soft"
+                onClick={() => {
+                  router.push('/biding');
+                }}
               ></Button>
             </div>
           )}
