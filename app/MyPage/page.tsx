@@ -1,3 +1,4 @@
+'use client';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import React from 'react';
@@ -7,7 +8,7 @@ import { MdTagFaces, MdThumbDown, MdThumbUp } from 'react-icons/md';
 function ReviewContainer({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex-1 border-solid border-[2px] border-base rounded-[10px] m-[10px] bg-white">
-      <div className="flex flex-col items-center justify-center h-full p-[10px]">
+      <div className="flex flex-col items-center justify-center h-full p-[20px]">
         {children}
       </div>
     </div>
@@ -17,10 +18,10 @@ function ReviewContainer({ children }: { children: React.ReactNode }) {
 function Page() {
   return (
     <div>
-      <Header backNav title="내 정보" />
+      <Header title="내 정보" />
       <div className="">
         <div className="flex items-center mx-[15px] py-[10px]">
-          <div className="h-[150px] w-[150px] bg-black rounded-[50%] overflow-hidden">
+          <div className="h-[120px] w-[120px] bg-black rounded-[50%] overflow-hidden">
             {/* 프로필 사진 */}
             <div className="text-white">프로필</div>
             <div className="text-white">프로필</div>
@@ -43,15 +44,15 @@ function Page() {
         </div>
         <div className="flex items-center text-center mx-[15px]">
           <ReviewContainer>
-            <MdThumbDown size={'2rm'} color={'#e00685'} />
+            <MdThumbDown size={20} color={'#e00685'} />
             <div className="text-[20px]">0</div>
           </ReviewContainer>
           <ReviewContainer>
-            <MdTagFaces size={'2rm'} color={'#e00685'} />
+            <MdTagFaces size={20} color={'#e00685'} />
             <div className="text-[20px]">0</div>
           </ReviewContainer>
           <ReviewContainer>
-            <MdThumbUp size={'2rm'} color={'#e00685'} />
+            <MdThumbUp size={20} color={'#e00685'} />
             <div className="text-[20px]">0</div>
           </ReviewContainer>
         </div>
