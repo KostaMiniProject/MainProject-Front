@@ -58,7 +58,14 @@ function Page() {
       {/* 글쓰기 버튼 */}
       <BottomFixed>
         <div className="flex justify-end">
-          <Button text="+ 글 쓰기" height={10} fontSize={16} />
+          <Button
+            text="+ 글 쓰기"
+            height={10}
+            fontSize={16}
+            onClick={() => {
+              router.push('/postingexchange');
+            }}
+          />
         </div>
       </BottomFixed>
     </div>

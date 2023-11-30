@@ -5,7 +5,7 @@ import InputBox from '@/components/InputBox';
 import TextAreaBox from '@/components/TextAreaBox';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { MdAddCircle, MdAddCircleOutline, MdCancel } from 'react-icons/md';
+import { MdAddCircleOutline, MdCancel } from 'react-icons/md';
 
 function Page() {
   const [title, setTitle] = useState<String>('');
@@ -27,9 +27,8 @@ function Page() {
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
     if (!files || files.length === 0) return;
-
-    // 이전 이미지 배열에 새로운 이미지 배열을 추가
     setSelectedImages((prevImages) => {
+      // 이전 이미지 배열에 새로운 이미지 배열을 추가
       // 현재 이미지 배열과 새로운 이미지 배열의 합이 5를 초과하면 슬라이스하여 최대 5개로 제한
       const newImages = [...prevImages, ...Array.from(files)];
       return newImages.length > 5 ? newImages.slice(0, 5) : newImages;
@@ -54,7 +53,6 @@ function Page() {
         className="bg-softbase flex"
         style={isMoreView ? {} : { height: '140px', overflow: 'hidden' }}
       >
-        {/* overflow-x-auto를 추가 */}
         <div className="flex flex-wrap flex-1 p-[5px]">
           {selectedImages.map((image, index) => (
             <div

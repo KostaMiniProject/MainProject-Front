@@ -6,10 +6,12 @@ import { getItemList } from '@/api/ItemApi';
 import React, { useState } from 'react';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
+import { useRouter } from 'next/navigation';
 
 function Page() {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const itemList = getItemList();
+  const router = useRouter();
 
   const handleItemClick = (itemId: number) => {
     // 이미 선택된 아이템이면 제거, 아니면 추가
@@ -59,7 +61,9 @@ function Page() {
           <Button
             rounded="rounded"
             text="+ 물건 추가"
-            onClick={() => {}}
+            onClick={() => {
+              router.push('/additem');
+            }}
             height={8}
             fontSize={16}
           />
