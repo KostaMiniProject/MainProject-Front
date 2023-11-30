@@ -1,4 +1,4 @@
-'use client';
+import { getProfileById } from '@/api/ProfileApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import ProfileContainer from '@/components/profile/ProfileContainer';
@@ -16,7 +16,8 @@ function ReviewContainer({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Page() {
+async function Page() {
+  // const myProfile = await getProfileById(1);
   return (
     <div>
       <Header title="내 정보" />
@@ -29,7 +30,7 @@ function Page() {
           </div>
           <div className="flex-1">
             <div className="mx-[15px] text-[24px] font-[600]">
-              아이디(닉네임)
+              {/* {myProfile.name} */}
             </div>
             <div className="flex">
               <div className="ml-auto">
