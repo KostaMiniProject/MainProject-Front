@@ -64,7 +64,7 @@ function Navbar() {
           className={flexClasses(activeButton === '마이페이지')}
           onClick={() => {
             handleButtonClick('마이페이지');
-            router.push('/MyPage');
+            router.push('/profile');
           }}
         >
           <MdPerson size={iconSize} />

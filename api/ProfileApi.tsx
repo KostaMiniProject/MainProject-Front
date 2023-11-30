@@ -1,6 +1,6 @@
 //사용자 프로필 관련 API
 // sendPost 함수를 밖으로 빼서 별도의 모듈로 관리하는 것이 좋습니다.
-async function sendPost() {
+export async function sendPost() {
   try {
     const res = await fetch('https://itsop.shop/signup', {
       method: 'POST',
@@ -15,6 +15,20 @@ async function sendPost() {
       }),
     });
 
+    const data = await res.json();
+    console.log(data);
+    // Response 객체가 아니라 data를 반환하도록 수정
+    return data;
+  } catch (error) {
+    console.error('Error in sendPost:', error);
+    // 오류 발생 시 에러 객체 반환
+    return error;
+  }
+}
+
+export async function getProfileById(id: number) {
+  try {
+    const res = await fetch(`https://itsop.shop/users/${id}`);
     const data = await res.json();
     console.log(data);
     // Response 객체가 아니라 data를 반환하도록 수정
