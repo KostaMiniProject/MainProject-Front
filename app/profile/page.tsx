@@ -1,6 +1,7 @@
 'use client';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
+import ProfileContainer from '@/components/profile/ProfileContainer';
 import React from 'react';
 import { MdTagFaces, MdThumbDown, MdThumbUp } from 'react-icons/md';
 
@@ -56,41 +57,16 @@ function Page() {
             <div className="text-[20px]">0</div>
           </ReviewContainer>
         </div>
-        <div className="mx-[15px] ">
-          <div className="border-base border-[2px] border-solid mt-[5px]">
-            <div className="flex justify-between items-center h-8">
-              <div className="w-36 bg-base h-full flex items-center justify-center">
-                <div className="text-white font-[600]">내 물건</div>
-              </div>
-              <div>더 보기</div>
-            </div>
-            <div>asdfasdf</div>
-          </div>
-        </div>
 
-        <div className="mx-[15px] ">
-          <div className="border-base border-[2px] border-solid mt-[5px]">
-            <div className="flex justify-between items-center h-8">
-              <div className="w-36 bg-base h-full flex items-center justify-center">
-                <div className="text-white font-[600]">내 물건</div>
-              </div>
-              <div>더 보기</div>
-            </div>
-            <div>asdfasdf</div>
-          </div>
-        </div>
-
-        <div className="mx-[15px] ">
-          <div className="border-base border-[2px] border-solid mt-[5px]">
-            <div className="flex justify-between items-center h-8">
-              <div className="w-36 bg-base h-full flex items-center justify-center">
-                <div className="text-white font-[600]">내 물건</div>
-              </div>
-              <div>더 보기</div>
-            </div>
-            <div>asdfasdf</div>
-          </div>
-        </div>
+        <ProfileContainer text="내 물건">
+          <div>ㅁㄴㅇㄹ</div>
+        </ProfileContainer>
+        <ProfileContainer text="거래 내역">
+          <div>ㅁㄴㅇㄹ</div>
+        </ProfileContainer>
+        <ProfileContainer text="찜 목록">
+          <div>ㅁㄴㅇㄹ</div>
+        </ProfileContainer>
       </div>
     </div>
   );
