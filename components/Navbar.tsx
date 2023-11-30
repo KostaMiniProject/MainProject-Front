@@ -41,7 +41,10 @@ function Navbar() {
         </div>
         <div
           className={flexClasses(activeButton === '커뮤니티')}
-          onClick={() => handleButtonClick('커뮤니티')}
+          onClick={() => {
+            handleButtonClick('커뮤니티');
+            router.push('/community');
+          }}
         >
           <MdOutlineArticle size={iconSize} />
           <div>커뮤니티</div>
