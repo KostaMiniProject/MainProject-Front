@@ -19,12 +19,7 @@ function Carousel({ images }: { images: any }) {
 
   return (
     <div className="relative w-full h-0 pb-[100%] overflow-hidden bg-black">
-      <div
-        className="flex absolute top-0 left-0 w-full h-full transition-transform"
-        style={{
-          transform: `translateX(-${currentIndex * 100}%)`,
-        }}
-      >
+      <div className="flex absolute top-0 left-0 w-full h-full transition-transform">
         {images.map((src: any, index: any) => (
           <Image
             key={index}
@@ -33,6 +28,9 @@ function Carousel({ images }: { images: any }) {
             layout="fill"
             objectFit="cover"
             className="duration-300"
+            style={{
+              transform: `translateX(${(index - currentIndex) * 100}%)`,
+            }}
           />
         ))}
       </div>

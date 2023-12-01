@@ -5,8 +5,6 @@ import React from 'react';
 import { MdSearch } from 'react-icons/md';
 import CommunityPost from '@/components/community/CommunityPost';
 
-// ... (이전 코드)
-
 function Page() {
   return (
     <div>
