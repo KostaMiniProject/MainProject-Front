@@ -50,8 +50,12 @@ function BidItem({
               objectFit="cover"
             />
           </div>
-          <div className="font-[600] text-[18px]">{bid.items}</div>
-          <div className="text-gray">{bid.name}</div>
+          <div className="font-[600] text-[18px] whitespace-nowrap text-ellipsis overflow-hidden">
+            {bid.items}
+          </div>
+          <div className="text-gray whitespace-nowrap text-ellipsis overflow-hidden">
+            {bid.name}
+          </div>
         </div>
         {/* 대화하기 버튼 */}
         {postOwner ? (

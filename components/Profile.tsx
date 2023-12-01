@@ -32,7 +32,7 @@ function Profile({ profile }: { profile: profileType }) {
         height={60}
         className="w-[60px] h-[60px] rounded-[50%] my-auto ml-[15px]"
       />
-      <div className="flex flex-col justify-between m-[10px]">
+      <div className="flex flex-col justify-between m-[10px] whitespace-nowrap text-ellipsis overflow-hidden">
         <div className="text-[20px] font-[600]">{profile.name}</div>
         <div className="text-[16px] text-gray">{profile.address}</div>
       </div>
