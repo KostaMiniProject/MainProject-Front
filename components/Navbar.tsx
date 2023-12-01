@@ -27,7 +27,7 @@ function Navbar() {
   }
 
   return (
-    <div className="fixed bottom-0 w-full z-500 max-w-[480px] bg-white ">
+    <div className="fixed bottom-0 w-full z-[9999] max-w-[480px] bg-white ">
       <div className="flex items-center h-[60px] text-sm cursor-pointer">
         <div
           className={flexClasses(activeButton === '물물교환')}
@@ -41,7 +41,10 @@ function Navbar() {
         </div>
         <div
           className={flexClasses(activeButton === '커뮤니티')}
-          onClick={() => handleButtonClick('커뮤니티')}
+          onClick={() => {
+            handleButtonClick('커뮤니티');
+            router.push('/community');
+          }}
         >
           <MdOutlineArticle size={iconSize} />
           <div>커뮤니티</div>

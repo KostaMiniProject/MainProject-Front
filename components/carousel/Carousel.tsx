@@ -7,42 +7,40 @@ import Image from 'next/image';
 function Carousel({ images }: { images: any }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // 다음 이미지로 이동하는 함수
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
-  // 이전 이미지로 이동하는 함수
   const prevImage = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
+
   return (
-    <div
-      className={`relative w-full h-full bg-black  ease-in-out overflow-hidden`}
-      style={{
-        display: 'flex',
-      }}
-    >
-      {images.map((src: any, index: any) => (
-        <Image
-          key={index}
-          src={src}
-          alt={`carouselImage-${index}`}
-          fill
-          className="duration-300 absolute"
-          style={{
-            width: '100%',
-            transform: `translateX(${(index - currentIndex) * 100}%)`,
-          }}
-        />
-      ))}
-      <div className="flex justify-between w-[100%]">
-        <div className=" z-10 my-auto" onClick={prevImage}>
+    <div className="relative w-full h-0 pb-[100%] overflow-hidden bg-black">
+      <div
+        className="flex absolute top-0 left-0 w-full h-full transition-transform"
+        style={{
+          transform: `translateX(-${currentIndex * 100}%)`,
+        }}
+      >
+        {images.map((src: any, index: any) => (
+          <Image
+            key={index}
+            src={src}
+            alt={`carouselImage-${index}`}
+            layout="fill"
+            objectFit="cover"
+            className="duration-300"
+          />
+        ))}
+      </div>
+      <div className="flex justify-between absolute top-0 w-full h-full">
+        <div className="my-auto" onClick={prevImage}>
           <MdKeyboardArrowLeft size={40} color="gray" />
         </div>
-        <div className=" z-10 my-auto" onClick={nextImage}>
+        <div className="my-auto" onClick={nextImage}>
           <MdKeyboardArrowRight size={40} color="gray" />
         </div>
       </div>

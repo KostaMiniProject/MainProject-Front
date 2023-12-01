@@ -22,7 +22,7 @@ interface BidType {
 function ExchangePost({ bid }: { bid: BidType }) {
   return (
     <div className="border-gray border-[0.5px] rounded-[5px] flex my-[5px]">
-      <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[10px]">
+      <div className="relative w-[100%] h-[auto] overflow-hidden my-auto mx-[10px]">
         <Image
           src={bid.image_url}
           alt="Item image"
