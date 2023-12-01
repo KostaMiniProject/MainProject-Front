@@ -2,6 +2,7 @@
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
+import Modal from '@/components/Modal';
 import TextAreaBox from '@/components/TextAreaBox';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -11,6 +12,8 @@ function Page() {
   const [title, setTitle] = useState<String>('');
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isMoreView, setIsMoreView] = useState<Boolean>(false);
+
+  const [modal, setModal] = useState<Boolean>(false);
 
   function handleMoreView() {
     setIsMoreView(!isMoreView);
@@ -37,6 +40,7 @@ function Page() {
 
   function postComplete() {
     alert('asdf');
+    setModal(!modal);
   }
   function openFileInput() {
     // 파일 입력 엘리먼트를 클릭하여 파일 선택 다이얼로그 열기
@@ -117,6 +121,15 @@ function Page() {
               rounded="soft"
               onClick={postComplete}
             />
+            {modal && (
+              <Modal
+                setState={() => {
+                  setModal(false);
+                }}
+              >
+                <div>서버와의 연결이 끊어졌습니다.</div>
+              </Modal>
+            )}
           </div>
         </div>
       </div>
