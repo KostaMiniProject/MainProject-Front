@@ -27,7 +27,7 @@ function Header({
             <Image src={Logo} alt="logo" width={500} height={100} />
           )}
         </div>
-        <div className="flex-1 flex items-center m-[10px] text-[24px] font-[800]">
+        <div className="flex-1 flex items-center m-[10px] text-[24px] font-[800] whitespace-nowrap text-ellipsis overflow-hidden">
           {title}
         </div>
         <div className="bg-gray-300 flex items-center justify-center">

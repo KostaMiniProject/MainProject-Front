@@ -1,5 +1,5 @@
 //사용자 프로필 관련 API
-// sendPost 함수를 밖으로 빼서 별도의 모듈로 관리하는 것이 좋습니다.
+
 export async function sendPost() {
   try {
     const res = await fetch('https://itsop.shop/signup', {

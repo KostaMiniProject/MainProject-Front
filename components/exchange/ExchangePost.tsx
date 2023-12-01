@@ -21,8 +21,8 @@ interface BidType {
 }
 function ExchangePost({ bid }: { bid: BidType }) {
   return (
-    <div className="border-gray border-[0.5px] rounded-[5px] flex my-[5px]">
-      <div className="relative w-[100%] h-[auto] overflow-hidden my-auto mx-[10px]">
+    <div className="border-gray border-[0.5px] rounded-[5px] flex my-[5px] ">
+      <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[10px]">
         <Image
           src={bid.image_url}
           alt="Item image"
@@ -31,9 +31,9 @@ function ExchangePost({ bid }: { bid: BidType }) {
         />
       </div>
       {/* 우측 데이터부분 */}
-      <div className="py-[10px] flex-1 px-[10px] flex-col justify-between">
+      <div className="py-[10px] flex-1 px-[10px] flex-col justify-between whitespace-nowrap text-ellipsis overflow-hidden">
         {/* 타이틀 */}
-        <div className="font-[800] text-[24px] leading-none">{bid.title}</div>
+        <div className="font-[800] text-[24px] leading-none ">{bid.title}</div>
         {/* 주소 */}
         <div className="text-gray text-[16px] leading-none">{bid.address}</div>
         {/* 원하는물건 */}

@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import Image from 'next/image';
 import { MdCancel } from 'react-icons/md';
@@ -21,7 +20,7 @@ function BidItem({
   const router = useRouter();
   return (
     <div>
-      <div className=" relative bg-white p-[2.5px] rounded-[5px] border-solid border-gray border-[1px]">
+      <div className="relative bg-white p-[2.5px] rounded-[5px] border-solid border-gray border-[1px]">
         <div
           onClick={(e) => {
             router.push(`/bid/${bid.id}`);
@@ -43,11 +42,20 @@ function BidItem({
           )}
 
           {/* 이미지표시 */}
-          <div className="relative w-[100%] h-[170px] overflow-hidden z-0">
-            <Image src={bid.image_url} alt="대표이미지" fill />
+          <div className="relative pb-[100%] overflow-hidden z-0">
+            <Image
+              src={bid.image_url}
+              alt="대표이미지"
+              layout="fill"
+              objectFit="cover"
+            />
           </div>
-          <div className="font-[600] text-[18px]">{bid.items}</div>
-          <div className="text-gray">{bid.name}</div>
+          <div className="font-[600] text-[18px] whitespace-nowrap text-ellipsis overflow-hidden">
+            {bid.items}
+          </div>
+          <div className="text-gray whitespace-nowrap text-ellipsis overflow-hidden">
+            {bid.name}
+          </div>
         </div>
         {/* 대화하기 버튼 */}
         {postOwner ? (
