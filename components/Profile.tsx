@@ -8,7 +8,7 @@ interface profileType {
   id: number;
   name: string;
   address: string;
-  image_url: string;
+  imageUrl: string;
   rating: number;
 }
 
@@ -26,8 +26,9 @@ function Profile({ profile }: { profile: profileType }) {
   return (
     <div className="flex w-[100%] border-solid border-y-[0.5px] h-[80px]">
       <Image
-        src={profile.image_url}
+        src={profile.imageUrl}
         alt="프로필사진"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         width={60}
         height={60}
         className="w-[60px] h-[60px] rounded-[50%] my-auto ml-[15px]"

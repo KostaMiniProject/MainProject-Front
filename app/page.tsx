@@ -13,6 +13,7 @@ function Page() {
   const [postData, setPostData] = useState([]);
   const router = useRouter();
   const [keyWord, setKeyWord] = useState('');
+  const [owner, setOwner] = useState(true);
 
   const [accessToken, setAccessToken] = useState();
 
@@ -29,9 +30,10 @@ function Page() {
     fetchPostData();
   }, []);
 
-  async function handleLogin(username: string, password: string) {
+  async function handleLogin(email: string, password: string) {
     try {
-      const token = await Login(username, password);
+      const token: any = await Login(email, password);
+      console.log(token);
       // 토큰을 저장하고 필요한 작업 수행
       setAccessToken(token);
       // 다른 작업 수행 (예: 페이지 리디렉션)
@@ -43,63 +45,65 @@ function Page() {
 
   return (
     <div className="relative">
-      <div
-        onClick={() => {
-          handleLogin('hongildong@gmail.com', 'asdfQWER1234!');
-        }}
-      >
-        로그인 하기
-      </div>
-      <div className="h-[60px] flex items-center border-b-[1px] border-gray">
-        <InputBox onChange={setKeyWord} />
+      <div>
         <div
           onClick={() => {
-            console.log(keyWord);
+            handleLogin('2', '2');
           }}
         >
-          <MdOutlineSearch size={40} />
+          로그인 하기
         </div>
-      </div>
-
-      {/* 컨텐츠 */}
-      <div className="">
-        <div className="text-[16px] font-[600] border-b-[0.5px] border-gray p-[10px]">
-          현재 진행중인 교환
-        </div>
-        {/* ExchangePost 리스트 */}
-        <div>
-          {postData.map((e: any, i: any) => {
-            return e.status !== 'deleted' ? (
-              <div
-                key={i}
-                className="cursor-pointer border-b-[0.5px] box-border border-gray"
-                onClick={() => {
-                  // 연결 페이지
-                  router.push(`/exchange/${e.exchangePostId}`);
-                }}
-              >
-                {/* 포스트 아이템 생성 */}
-                <ExchangePost key={i} bid={e} />
-              </div>
-            ) : (
-              <React.Fragment key={i}></React.Fragment>
-            );
-          })}
-        </div>
-      </div>
-      {/* 글쓰기 버튼 */}
-      <BottomFixed>
-        <div className="flex justify-end">
-          <Button
-            text="+ 글 쓰기"
-            height={10}
-            fontSize={16}
+        <div className="h-[60px] flex items-center border-b-[1px] border-gray">
+          <InputBox onChange={setKeyWord} />
+          <div
             onClick={() => {
-              router.push('/postingexchange');
+              console.log(keyWord);
             }}
-          />
+          >
+            <MdOutlineSearch size={40} />
+          </div>
         </div>
-      </BottomFixed>
+
+        {/* 컨텐츠 */}
+        <div className="">
+          <div className="text-[16px] font-[600] border-b-[0.5px] border-gray p-[10px]">
+            현재 진행중인 교환
+          </div>
+          {/* ExchangePost 리스트 */}
+          <div>
+            {postData.map((e: any, i: any) => {
+              return e.status !== 'deleted' ? (
+                <div
+                  key={i}
+                  className="cursor-pointer border-b-[0.5px] box-border border-gray"
+                  onClick={() => {
+                    // 연결 페이지
+                    router.push(`/exchange/${e.exchangePostId}`);
+                  }}
+                >
+                  {/* 포스트 아이템 생성 */}
+                  <ExchangePost key={i} bid={e} />
+                </div>
+              ) : (
+                <React.Fragment key={i}></React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+        {/* 글쓰기 버튼 */}
+        <BottomFixed>
+          <div className="flex justify-end">
+            <Button
+              text="+ 글 쓰기"
+              height={10}
+              fontSize={16}
+              onClick={() => {
+                router.push('/postingexchange');
+              }}
+            />
+          </div>
+        </BottomFixed>
+      </div>
     </div>
   );
 }

@@ -16,17 +16,18 @@ interface BidType {
   address: string;
   created_at: string;
   status: string;
-  image_url: string;
-  bid_count: number;
+  imgUrl: string;
+  bidCount: number;
 }
 function ExchangePost({ bid }: { bid: BidType }) {
   return (
     <div className=" flex my-[5px] ">
       <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[5px]">
         <Image
-          src={bid.image_url}
+          src={bid.imgUrl}
           alt="Item image"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           style={{ objectFit: 'cover' }}
         />
       </div>
@@ -64,7 +65,7 @@ function ExchangePost({ bid }: { bid: BidType }) {
             {/* 입찰 수 */}
             <div className="flex items-center">
               <MdOutlineListAlt />
-              <div>{bid.bid_count}</div>
+              <div>{bid.bidCount}</div>
             </div>
           </div>
         </div>
