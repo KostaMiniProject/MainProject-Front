@@ -2,7 +2,11 @@
 import React, { useState } from 'react';
 import InputBox from '@/components/InputBox';
 import ExchangePost from '@/components/exchange/ExchangePost';
-import { getCategory, getExchangePostList } from '@/api/ExchangePostApi';
+import {
+  getCategory,
+  getExchangePostList,
+  getPostList,
+} from '@/api/ExchangePostApi';
 import { useRouter } from 'next/navigation';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
@@ -10,9 +14,11 @@ import { MdOutlineSearch } from 'react-icons/md';
 
 function Page() {
   const exchangePostData = getExchangePostList();
+  const getPostData = getPostList();
   const category = getCategory();
   const router = useRouter();
   const [keyWord, setKeyWord] = useState<String>('');
+  console.log(getPostData);
   return (
     <div className="relative">
       <div className=" h-[60px] flex items-center border-b-[1px] border-gray">
@@ -27,12 +33,9 @@ function Page() {
       </div>
 
       {/* 컨텐츠 */}
-      <div className="mx-[15px]">
-        {/* 카테고리 */}
-        <div className="bg-white flex flex-wrap">
-          {category.map((e: any, i: any) => {
-            return <Button key={i} text={e} height={5} btnStyle="tag" />;
-          })}
+      <div className="">
+        <div className="text-[16px] font-[600] border-b-[0.5px] border-gray p-[10px]">
+          현재 진행중인 교환
         </div>
         {/* ExchangePost 리스트 */}
         <div>
@@ -40,7 +43,7 @@ function Page() {
             return e.status !== 'deleted' ? (
               <div
                 key={i}
-                className="cursor-pointer "
+                className="cursor-pointer border-b-[0.5px] box-border border-gray"
                 onClick={() => {
                   // 연결 페이지
                   router.push(`/exchange/${e.id}`);

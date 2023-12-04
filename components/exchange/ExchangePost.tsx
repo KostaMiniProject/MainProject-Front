@@ -21,7 +21,7 @@ interface BidType {
 }
 function ExchangePost({ bid }: { bid: BidType }) {
   return (
-    <div className="border-gray border-[0.5px] rounded-[5px] flex my-[5px] ">
+    <div className=" flex my-[5px] ">
       <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[10px]">
         <Image
           src={bid.image_url}
@@ -33,28 +33,32 @@ function ExchangePost({ bid }: { bid: BidType }) {
       {/* 우측 데이터부분 */}
       <div className="py-[10px] flex-1 px-[10px] flex-col justify-between whitespace-nowrap text-ellipsis overflow-hidden">
         {/* 타이틀 */}
-        <div className="font-[800] text-[24px] leading-none ">{bid.title}</div>
+        <div className="font-[800] text-[16px] leading-none ">{bid.title}</div>
         {/* 주소 */}
-        <div className="text-gray text-[16px] leading-none">{bid.address}</div>
+        <div className="text-gray text-[12px] leading-none">{bid.address}</div>
         {/* 원하는물건 */}
-        <div className="font-[600] leading-none">{bid.prefer_items}</div>
-        {/* 게시날짜와 입찰 수 */}
-        <div className="flex justify-between">
-          <div className="flex">
-            {/* 게시날짜 */}
-            <div className="text-gray mr-[10px]">{bid.created_at}</div>
+        <div className="font-[600] leading-none">
+          <div className="flex text-[12px]">
+            {bid.prefer_items}
             {/* 스테이트에 따른 상태표시 */}
             {bid.status === status.b ? (
-              <div className="bg-base text-white rounded-[15px] px-[10px]">
+              <div className="bg-base text-white rounded-[15px] px-[10px] text-[14px]">
                 예약중
               </div>
             ) : bid.status === status.c ? (
-              <div className="bg-gray text-white rounded-[15px] px-[10px]">
+              <div className="bg-gray text-white rounded-[15px] px-[10px] text-[14px]">
                 거래완료
               </div>
             ) : (
               <></>
             )}
+          </div>
+        </div>
+        {/* 게시날짜와 입찰 수 */}
+        <div className="flex justify-between">
+          <div className="flex">
+            {/* 게시날짜 */}
+            <div className="text-gray mr-[10px]">{bid.created_at}</div>
           </div>
           <div className="flex">
             {/* 입찰 수 */}

@@ -79,6 +79,7 @@ function Page() {
           />
         </div>
       </BottomFixed>
+      <div className="h-[110px]" />
     </div>
   );
 }

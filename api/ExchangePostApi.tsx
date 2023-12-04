@@ -25,7 +25,20 @@ export async function sendPost() {
     return error;
   }
 }
+export async function getPostList() {
+  try {
+    const res = await fetch('https://itsop.shop/api/exchange-posts');
 
+    const data = await res.json();
+    console.log(data);
+    // Response 객체가 아니라 data를 반환하도록 수정
+    return data;
+  } catch (error) {
+    console.error('Error in sendPost:', error);
+    // 오류 발생 시 에러 객체 반환
+    return error;
+  }
+}
 export function getExchangePostList() {
   const dumyData: any = [
     {
