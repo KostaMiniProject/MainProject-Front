@@ -22,7 +22,7 @@ interface BidType {
 function ExchangePost({ bid }: { bid: BidType }) {
   return (
     <div className=" flex my-[5px] ">
-      <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[10px]">
+      <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[5px]">
         <Image
           src={bid.image_url}
           alt="Item image"
@@ -31,7 +31,7 @@ function ExchangePost({ bid }: { bid: BidType }) {
         />
       </div>
       {/* 우측 데이터부분 */}
-      <div className="py-[10px] flex-1 px-[10px] flex-col justify-between whitespace-nowrap text-ellipsis overflow-hidden">
+      <div className=" flex-1 px-[5px] flex-col whitespace-nowrap text-ellipsis overflow-hidden">
         {/* 타이틀 */}
         <div className="font-[800] text-[16px] leading-none ">{bid.title}</div>
         {/* 주소 */}

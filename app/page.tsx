@@ -2,11 +2,7 @@
 import React, { useState } from 'react';
 import InputBox from '@/components/InputBox';
 import ExchangePost from '@/components/exchange/ExchangePost';
-import {
-  getCategory,
-  getExchangePostList,
-  getPostList,
-} from '@/api/ExchangePostApi';
+import { getExchangePostList, getPostList } from '@/api/ExchangePostApi';
 import { useRouter } from 'next/navigation';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
@@ -15,7 +11,6 @@ import { MdOutlineSearch } from 'react-icons/md';
 function Page() {
   const exchangePostData = getExchangePostList();
   const getPostData = getPostList();
-  const category = getCategory();
   const router = useRouter();
   const [keyWord, setKeyWord] = useState<String>('');
   console.log(getPostData);
