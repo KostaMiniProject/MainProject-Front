@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 interface bidType {
   id: number;
   name: string;
-  image_url: string;
+  imageUrl: string;
   items: string;
 }
 
@@ -44,7 +44,7 @@ function BidItem({
           {/* 이미지표시 */}
           <div className="relative pb-[100%] overflow-hidden z-0">
             <Image
-              src={bid.image_url}
+              src={bid.imageUrl}
               alt="대표이미지"
               layout="fill"
               objectFit="cover"

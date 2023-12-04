@@ -10,11 +10,12 @@ import {
 } from 'react-icons/md';
 
 const iconSize: number = 30;
+const baseColor: string = '#FFD5EB';
 
 function flexClasses(active: boolean) {
   return (
     'flex-1 flex flex-col items-center justify-center h-[100%]' +
-    (active ? ' bg-gray' : '')
+    (active ? ' ' : '')
   );
 }
 
@@ -36,7 +37,10 @@ function Navbar() {
             router.push('/');
           }}
         >
-          <MdViewInAr size={iconSize} />
+          <MdViewInAr
+            size={iconSize}
+            color={activeButton === '물물교환' ? baseColor : 'black'}
+          />
           <div>물물교환</div>
         </div>
         <div
@@ -46,21 +50,30 @@ function Navbar() {
             router.push('/community');
           }}
         >
-          <MdOutlineArticle size={iconSize} />
+          <MdOutlineArticle
+            size={iconSize}
+            color={activeButton === '커뮤니티' ? baseColor : 'black'}
+          />
           <div>커뮤니티</div>
         </div>
         <div
           className={flexClasses(activeButton === '지도')}
           onClick={() => handleButtonClick('지도')}
         >
-          <MdMap size={iconSize} />
+          <MdMap
+            size={iconSize}
+            color={activeButton === '지도' ? baseColor : 'black'}
+          />
           <div>지도</div>
         </div>
         <div
           className={flexClasses(activeButton === '채팅')}
           onClick={() => handleButtonClick('채팅')}
         >
-          <MdChat size={iconSize} />
+          <MdChat
+            size={iconSize}
+            color={activeButton === '채팅' ? baseColor : 'black'}
+          />
           <div>채팅</div>
         </div>
         <div
@@ -70,7 +83,10 @@ function Navbar() {
             router.push('/profile');
           }}
         >
-          <MdPerson size={iconSize} />
+          <MdPerson
+            size={iconSize}
+            color={activeButton === '마이페이지' ? baseColor : 'black'}
+          />
           <div>마이페이지</div>
         </div>
       </div>
