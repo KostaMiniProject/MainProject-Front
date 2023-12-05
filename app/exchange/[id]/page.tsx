@@ -11,6 +11,7 @@ import { getExchangePost } from '@/api/ExchangePostApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '@/api/Cookie';
+import Image from 'next/image';
 
 interface PostContent {
   title: string;
@@ -28,10 +29,17 @@ interface PostContent {
     imageUrl: string;
     rating: number;
   };
-  prefer_items: string;
+  preferItems: string;
   address: string;
   content: string;
   bidList: any[];
+  // bidlist
+  // {
+  //   id: number;
+  //   name: string;
+  //   imageUrl: string;
+  //   items: string;
+  // }
 }
 
 function Page({ params }: { params: any }) {
@@ -73,18 +81,57 @@ function Page({ params }: { params: any }) {
         </div>
       </Header>
       {postContent.postOwner ? (
-        <div>
-          <div className="flex">
-            <div>사진</div>
+        <div className="">
+          <div className="flex border-gray border-y-[0.5px] border-solid">
+            <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[5px]">
+              <Image
+                src={postContent.item.imageUrls[0]}
+                alt="Item image"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
             <div>
-              <div>물건 이름</div>
-              <div>거래 장소</div>
+              <div className="font-[600]">{postContent.item.title}</div>
+              <div className="text-[12px] text-gray">{postContent.address}</div>
             </div>
           </div>
-          <div> 입찰 목록 거절내역</div>
-          <div>아이템</div>
-          <div>아이템</div>
-          <div>아이템</div>
+          <div className="border-gray border-b-[0.5px] border-solid">
+            <div className="m-[10px] flex justify-between font-[600]">
+              <div>입찰목록</div>
+              <div>거절목록</div>
+            </div>
+          </div>
+          <div>
+            <div>
+              {postContent.bidList.map((e: any, i: any) => (
+                <div key={i} className="relative border-gray border-b-[0.5px]">
+                  <div className="flex m-[5px]">
+                    <div className="relative w-[80px] h-[80px] overflow-hidden">
+                      <Image
+                        src={e.imageUrl}
+                        alt="Item image"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                    <div className="flex-1 mx-[5px]">
+                      <div className="font-[600]">{e.items}</div>
+                      <div className="text-gray text-[12px]">{e.name}</div>
+                    </div>
+                    <div className="w-[80px] h-[80px] relative flex">
+                      <div className="flex-1 flex justify-center flex-col bg-base rounded-[5px] justify-center">
+                        <div className="text-center">채 팅</div>
+                      </div>
+                      <div className="mx-[5px]">X</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       ) : (
         <>
@@ -103,7 +150,7 @@ function Page({ params }: { params: any }) {
                 물건 이름 : {postContent.item.title}
               </div>
               <div className="text-[18px] font-[600] ">
-                원하는 물건 : {postContent.prefer_items}
+                원하는 물건 : {postContent.preferItems}
               </div>
               <div>거래 장소 : {postContent.address}</div>
               <div>물건 상세 : {postContent.content}</div>
