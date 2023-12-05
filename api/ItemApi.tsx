@@ -1,36 +1,106 @@
 //입찰 아이템 상세 리스트 관련 API
-export function getItemList() {
-  const dumyData: any = [
-    {
-      id: 0,
-      title: '클립',
-      description: `물건 상태가 좋을 뿐더러 깨끗하게 닦에서 빛이납니다`,
-      image_url:
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
 
-      created_at: '2023-11-24',
+import { getCookie } from './Cookie';
+export async function postItem(formData: FormData) {
+  const token = getCookie('token');
+  const res = await fetch('https://itsop.shop/api/items', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      // 토큰이 있다면 추가하세요
+      Authorization: `Bearer ${token}`,
+      // 'Content-Type': 'multipart/form-data',
     },
-    {
-      id: 1,
-      title: '모니터',
-      description: `조금 기스가 있지만 작동은 합니다`,
-      image_url:
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-
-      created_at: '2023-11-24',
-    },
-    {
-      id: 2,
-      title: '안경',
-      description: `렌즈가 다 뽀사져서 테만 남았어요`,
-      image_url:
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-      created_at: '2023-11-24',
-    },
-  ];
-
-  return dumyData;
+  })
+    .then((data) => {
+      console.log('Upload successful:', data);
+      // 성공적으로 업로드되었을 때 처리
+    })
+    .catch((error) => {
+      console.error('Error uploading:', error);
+      // 업로드 중 에러 발생 시 처리
+    });
 }
+export async function getItemList() {
+  try {
+    // 토큰을 쿠키에서 가져오기
+    const token = getCookie('token');
+
+    const res = await fetch('https://itsop.shop/api/items', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // 기타 필요한 헤더도 추가할 수 있습니다.
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await res.json();
+    console.log(data);
+    // Response 객체가 아니라 data를 반환하도록 수정
+    return data;
+  } catch (error) {
+    console.error('Error in getPostList:', error);
+    // 오류 발생 시 에러 객체 반환
+    return error;
+  }
+}
+
+export async function getItemById(id: number | string) {
+  try {
+    // 토큰을 쿠키에서 가져오기
+    const token = getCookie('token');
+
+    const res = await fetch(`https://itsop.shop/api/items/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // 기타 필요한 헤더도 추가할 수 있습니다.
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await res.json();
+    console.log(data);
+    // Response 객체가 아니라 data를 반환하도록 수정
+    return data;
+  } catch (error) {
+    console.error('Error in getPostList:', error);
+    // 오류 발생 시 에러 객체 반환
+    return error;
+  }
+}
+
+// export function getItemList() {
+//   const dumyData: any = [
+//     {
+//       id: 0,
+//       title: '클립',
+//       description: `물건 상태가 좋을 뿐더러 깨끗하게 닦에서 빛이납니다`,
+//       image_url:
+//         'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
+//       created_at: '2023-11-24',
+//     },
+//     {
+//       id: 1,
+//       title: '모니터',
+//       description: `조금 기스가 있지만 작동은 합니다`,
+//       image_url:
+//         'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
+//       created_at: '2023-11-24',
+//     },
+//     {
+//       id: 2,
+//       title: '안경',
+//       description: `렌즈가 다 뽀사져서 테만 남았어요`,
+//       image_url:
+//         'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+//       created_at: '2023-11-24',
+//     },
+//   ];
+
+//   return dumyData;
+// }
 
 export function getItemDetailById(id: number) {
   const dumyData: any = [

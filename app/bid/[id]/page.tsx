@@ -3,7 +3,6 @@ import { getProfile } from '@/api/ProfileApi';
 import Header from '@/components/Header';
 import Profile from '@/components/Profile';
 import React from 'react';
-
 import Item from '@/components/item/Item';
 import BottomFixed from '@/components/BottomFixed';
 import { MdOutlineReportGmailerrorred } from 'react-icons/md';

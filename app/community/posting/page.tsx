@@ -1,9 +1,8 @@
 'use client';
-import { getCookie } from '@/api/Cookie';
-import { postItem } from '@/api/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
+import Modal from '@/components/Modal';
 import TextAreaBox from '@/components/TextAreaBox';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -11,9 +10,10 @@ import { MdAddCircleOutline, MdCancel } from 'react-icons/md';
 
 function Page() {
   const [title, setTitle] = useState<String>('');
-  const [content, setContent] = useState<String>('');
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isMoreView, setIsMoreView] = useState<Boolean>(false);
+
+  const [modal, setModal] = useState<Boolean>(false);
 
   function handleMoreView() {
     setIsMoreView(!isMoreView);
@@ -38,33 +38,9 @@ function Page() {
     });
   }
 
-  async function postComplete() {
-    const formData = new FormData();
-
-    // 기타 데이터를 JSON 형태로 FormData에 추가
-    const postItemData = {
-      title: title,
-      description: content,
-    };
-    formData.append(
-      'itemSaveDto',
-      new Blob([JSON.stringify(postItemData)], { type: 'application/json' })
-    );
-
-    // 이미지 파일을 FormData에 추가
-    selectedImages.forEach((image) => {
-      formData.append('file', image);
-    });
-
-    try {
-      // 서버로 POST 요청 보내기
-      await postItem(formData);
-      console.log('Upload successful');
-      // 성공적으로 업로드되었을 때 처리
-    } catch (error) {
-      console.error('Error uploading:', error);
-      // 업로드 중 에러 발생 시 처리
-    }
+  function postComplete() {
+    alert('asdf');
+    setModal(!modal);
   }
   function openFileInput() {
     // 파일 입력 엘리먼트를 클릭하여 파일 선택 다이얼로그 열기
@@ -76,7 +52,7 @@ function Page() {
 
   return (
     <div>
-      <Header backNav title="아이템 추가"></Header>
+      <Header backNav title="커뮤니티 글 작성"></Header>
       <div
         className="bg-softbase flex"
         style={isMoreView ? {} : { height: '140px', overflow: 'hidden' }}
@@ -135,7 +111,7 @@ function Page() {
           </div>
           <div className="my-[5px]">
             <div className="text-[20px] font-[600] flex">▶상세 설명</div>
-            <TextAreaBox onChange={setContent}></TextAreaBox>
+            <TextAreaBox onChange={setTitle}></TextAreaBox>
           </div>
           <div className="text-center my-[15px]">
             <Button
@@ -145,6 +121,15 @@ function Page() {
               rounded="soft"
               onClick={postComplete}
             />
+            {modal && (
+              <Modal
+                setState={() => {
+                  setModal(false);
+                }}
+              >
+                <div>서버와의 연결이 끊어졌습니다.</div>
+              </Modal>
+            )}
           </div>
         </div>
       </div>
