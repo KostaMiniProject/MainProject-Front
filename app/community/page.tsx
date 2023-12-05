@@ -19,9 +19,6 @@ function Page() {
       </div>
       <div className="mx-[15px]">
         <CommunityPost></CommunityPost>
-        <CommunityPost></CommunityPost>
-        <CommunityPost></CommunityPost>
-        <CommunityPost></CommunityPost>
       </div>
     </div>
   );
