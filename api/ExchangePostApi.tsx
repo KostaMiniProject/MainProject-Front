@@ -2,19 +2,42 @@
 
 import { getCookie } from './Cookie';
 
-export async function sendPost() {
+// export async function sendPost() {
+//   try {
+//     const res = await fetch('https://itsop.shop/signup', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         email: 'abcd@gmail.com',
+//         name: 'abcd',
+//         address: '경기도 성남시 분당구 성남대로 지하55',
+//         phone: '010-1234-5678',
+//       }),
+//     });
+
+//     const data = await res.json();
+//     console.log(data);
+//     // Response 객체가 아니라 data를 반환하도록 수정
+//     return data;
+//   } catch (error) {
+//     console.error('Error in sendPost:', error);
+//     // 오류 발생 시 에러 객체 반환
+//     return error;
+//   }
+// }
+export async function postExchangePost(jsonData: any) {
   try {
-    const res = await fetch('https://itsop.shop/signup', {
+    const token = getCookie('token');
+
+    const res = await fetch('https://itsop.shop/api/exchange-posts', {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        email: 'abcd@gmail.com',
-        name: 'abcd',
-        address: '경기도 성남시 분당구 성남대로 지하55',
-        phone: '010-1234-5678',
-      }),
+      body: JSON.stringify(jsonData),
     });
 
     const data = await res.json();

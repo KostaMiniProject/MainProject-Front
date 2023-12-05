@@ -1,4 +1,6 @@
 'use client';
+import { getCookie } from '@/api/Cookie';
+import { postItem } from '@/api/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
@@ -9,6 +11,7 @@ import { MdAddCircleOutline, MdCancel } from 'react-icons/md';
 
 function Page() {
   const [title, setTitle] = useState<String>('');
+  const [content, setContent] = useState<String>('');
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isMoreView, setIsMoreView] = useState<Boolean>(false);
 
@@ -35,8 +38,33 @@ function Page() {
     });
   }
 
-  function postComplete() {
-    alert('asdf');
+  async function postComplete() {
+    const formData = new FormData();
+
+    // 기타 데이터를 JSON 형태로 FormData에 추가
+    const postItemData = {
+      title: title,
+      description: content,
+    };
+    formData.append(
+      'itemSaveDto',
+      new Blob([JSON.stringify(postItemData)], { type: 'application/json' })
+    );
+
+    // 이미지 파일을 FormData에 추가
+    selectedImages.forEach((image) => {
+      formData.append('file', image);
+    });
+
+    try {
+      // 서버로 POST 요청 보내기
+      await postItem(formData);
+      console.log('Upload successful');
+      // 성공적으로 업로드되었을 때 처리
+    } catch (error) {
+      console.error('Error uploading:', error);
+      // 업로드 중 에러 발생 시 처리
+    }
   }
   function openFileInput() {
     // 파일 입력 엘리먼트를 클릭하여 파일 선택 다이얼로그 열기
@@ -107,7 +135,7 @@ function Page() {
           </div>
           <div className="my-[5px]">
             <div className="text-[20px] font-[600] flex">▶상세 설명</div>
-            <TextAreaBox onChange={setTitle}></TextAreaBox>
+            <TextAreaBox onChange={setContent}></TextAreaBox>
           </div>
           <div className="text-center my-[15px]">
             <Button

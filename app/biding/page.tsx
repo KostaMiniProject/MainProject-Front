@@ -3,15 +3,22 @@
 import Header from '@/components/Header';
 import Item from '@/components/item/Item';
 import { getItemList } from '@/api/ItemApi';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 
 function Page() {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  const itemList = getItemList();
+  const [itemList, setItemList] = useState([]); // 아이템 목록을 상태로 관리
   const router = useRouter();
+
+  useEffect(() => {
+    // 비동기로 아이템 목록을 불러오고 상태에 설정
+    getItemList().then((data) => {
+      setItemList(data);
+    });
+  }, []);
 
   const handleItemClick = (itemId: number) => {
     // 이미 선택된 아이템이면 제거, 아니면 추가

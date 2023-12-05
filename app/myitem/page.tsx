@@ -1,6 +1,6 @@
 'use client';
 import Header from '@/components/Header';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Item from '@/components/item/Item';
 import BottomFixed from '@/components/BottomFixed';
@@ -11,9 +11,16 @@ import InputBox from '@/components/InputBox';
 import { MdOutlineSearch } from 'react-icons/md';
 
 function page() {
-  const itemList = getItemList();
+  const [itemList, setItemList] = useState([]);
   const route = useRouter();
   const [keyword, setKeyWord] = useState<String>('');
+
+  useEffect(() => {
+    // 비동기로 아이템 목록을 불러오고 상태에 설정
+    getItemList().then((data) => {
+      setItemList(data);
+    });
+  }, []);
 
   return (
     <div className="relative">

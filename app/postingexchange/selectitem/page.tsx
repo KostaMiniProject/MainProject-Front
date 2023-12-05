@@ -3,15 +3,29 @@
 import Header from '@/components/Header';
 import Item from '@/components/item/Item';
 import { getItemList } from '@/api/ItemApi';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 
 function Page() {
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
-  const itemList = getItemList();
+  const [itemList, setItemList] = useState([]);
   const router = useRouter();
+
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 데이터를 가져옴
+    const fetchData = async () => {
+      try {
+        const items = await getItemList();
+        setItemList(items);
+      } catch (error) {
+        console.error('아이템 목록을 불러오는 중 에러 발생:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleItemClick = (itemId: number) => {
     // 이미 선택된 아이템이면 선택 해제, 아니면 선택
@@ -21,14 +35,7 @@ function Page() {
   };
 
   const handleSendData = () => {
-    // 선택된 아이템을 JSON 데이터로 전송
-    const selectedItemsData = itemList.filter(
-      (item: any) => item.id === selectedItem
-    );
-
-    // JSON 데이터를 query string으로 변환
-    const queryString = `selectedItems=${JSON.stringify(selectedItemsData)}`;
-
+    const queryString = `selectedItems=${selectedItem}`;
     // postingexchange 페이지로 이동
     router.push(`/postingexchange?${queryString}`);
   };
@@ -44,16 +51,16 @@ function Page() {
           <div
             key={item.id}
             style={
-              selectedItem === item.id
+              selectedItem === item.itemId
                 ? {
                     backgroundColor: '#ffe8f9',
                   }
                 : {}
             }
             className={`item-wrapper ${
-              selectedItem === item.id ? 'selected' : ''
+              selectedItem === item.itemId ? 'selected' : ''
             }`}
-            onClick={() => handleItemClick(item.id)}
+            onClick={() => handleItemClick(item.itemId)}
           >
             <Item item={item} />
           </div>
@@ -64,7 +71,9 @@ function Page() {
           <Button
             rounded="rounded"
             text="+ 물건 추가"
-            onClick={() => {}}
+            onClick={() => {
+              router.push('/additem');
+            }}
             height={8}
             fontSize={16}
           />

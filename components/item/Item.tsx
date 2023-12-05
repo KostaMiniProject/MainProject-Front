@@ -2,18 +2,18 @@ import Image from 'next/image';
 import React from 'react';
 
 export interface itemType {
-  id: number;
+  itemId: number;
   title: string;
   description: string;
-  image_url: string;
-  created_at: string;
+  images: any;
+  createdAt: string;
 }
 function Item({ item }: { item: itemType }) {
   return (
     <div className="flex border-solid border-gray border-[0.5px] mt-[10px] rounded-[5px]">
       <div className="relative w-[80px] h-[80px] overflow-hidden my-[10px] mx-[10px]">
         <Image
-          src={item.image_url}
+          src={item.images[0]}
           alt="Item image"
           fill
           style={{ objectFit: 'cover' }}
