@@ -45,6 +45,30 @@ export async function getItemList() {
   }
 }
 
+export async function getItemById(id: number | string) {
+  try {
+    // 토큰을 쿠키에서 가져오기
+    const token = getCookie('token');
+
+    const res = await fetch(`https://itsop.shop/api/items/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // 기타 필요한 헤더도 추가할 수 있습니다.
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await res.json();
+    console.log(data);
+    // Response 객체가 아니라 data를 반환하도록 수정
+    return data;
+  } catch (error) {
+    console.error('Error in getPostList:', error);
+    // 오류 발생 시 에러 객체 반환
+    return error;
+  }
+}
+
 // export function getItemList() {
 //   const dumyData: any = [
 //     {
