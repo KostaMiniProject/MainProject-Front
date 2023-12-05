@@ -13,15 +13,14 @@ function Page() {
   const [postData, setPostData] = useState([]);
   const router = useRouter();
   const [keyWord, setKeyWord] = useState('');
-  const [owner, setOwner] = useState(true);
-  const [searchFocus, setSearchFocus] = useState(false);
+  const [pageNation, setPageNation] = useState(0);
 
   const [accessToken, setAccessToken] = useState();
 
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        const data = await getPostList();
+        const data = await getPostList(pageNation);
         setPostData(data.data);
       } catch (error) {
         console.error('Error fetching post data:', error);
