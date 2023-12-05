@@ -34,7 +34,7 @@ export async function postExchangePost(jsonData: any) {
     const res = await fetch('https://itsop.shop/api/exchange-posts', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(jsonData),
@@ -50,18 +50,21 @@ export async function postExchangePost(jsonData: any) {
     return error;
   }
 }
-export async function getPostList() {
+export async function getPostList(page: number) {
   try {
     // 토큰을 쿠키에서 가져오기
     const token = getCookie('token');
 
-    const res = await fetch('https://itsop.shop/api/exchange-posts', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // 기타 필요한 헤더도 추가할 수 있습니다.
-        'Content-Type': 'application/json',
-      },
-    });
+    const res = await fetch(
+      `https://itsop.shop/api/exchange-posts?page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // 기타 필요한 헤더도 추가할 수 있습니다.
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
     const data = await res.json();
     console.log(data);
