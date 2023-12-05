@@ -25,10 +25,8 @@ function Page() {
     const selectedItemsData = itemList.filter(
       (item: any) => item.id === selectedItem
     );
-
     // JSON 데이터를 query string으로 변환
-    const queryString = `selectedItems=${JSON.stringify(selectedItemsData)}`;
-
+    const queryString = `selectedItems=${selectedItem}`;
     // postingexchange 페이지로 이동
     router.push(`/postingexchange?${queryString}`);
   };

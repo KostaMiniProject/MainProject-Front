@@ -98,7 +98,7 @@ function Page() {
               height={10}
               fontSize={16}
               onClick={() => {
-                router.push('/postingexchange');
+                router.push('/postingexchange/selectitem');
               }}
             />
           </div>
