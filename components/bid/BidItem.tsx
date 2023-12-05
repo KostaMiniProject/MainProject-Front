@@ -46,8 +46,9 @@ function BidItem({
             <Image
               src={bid.imageUrl}
               alt="대표이미지"
-              layout="fill"
-              objectFit="cover"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{ objectFit: 'cover' }}
             />
           </div>
           <div className="font-[600] text-[18px] whitespace-nowrap text-ellipsis overflow-hidden">

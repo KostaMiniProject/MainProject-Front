@@ -18,17 +18,19 @@ function Carousel({ images }: { images: any }) {
   };
 
   return (
-    <div className="relative w-full h-0 pb-[100%] overflow-hidden bg-black">
+    <div className="relative w-full h-0 pb-[80%] overflow-hidden bg-black">
       <div className="flex absolute top-0 left-0 w-full h-full transition-transform">
         {images.map((src: any, index: any) => (
           <Image
             key={index}
             src={src}
             alt={`carouselImage-${index}`}
-            layout="fill"
-            objectFit="cover"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="duration-300"
             style={{
+              objectFit: 'cover',
               transform: `translateX(${(index - currentIndex) * 100}%)`,
             }}
           />
