@@ -6,6 +6,7 @@ import React from 'react';
 import { MdTagFaces, MdThumbDown, MdThumbUp } from 'react-icons/md';
 import { removeCookie } from '@/api/Cookie';
 import { useRouter } from 'next/navigation';
+import { withAuthorization } from '@/HOC/withAuthorization';
 
 // ReviewContainer 컴포넌트
 function ReviewContainer({ children }: { children: React.ReactNode }) {
@@ -18,15 +19,14 @@ function ReviewContainer({ children }: { children: React.ReactNode }) {
   );
 }
 function handleLogout() {
-  const router = useRouter();
   // 쿠키에서 토큰 및 사용자 ID 삭제
   removeCookie('token');
   removeCookie('userId');
-  router.push('/login');
 }
 
-async function Page() {
-  // const myProfile = await getProfileById(1);
+function page() {
+  const router = useRouter();
+
   return (
     <div>
       <Header title="내 정보">
@@ -35,7 +35,11 @@ async function Page() {
           fontSize={16}
           height={5}
           rounded="soft"
-          onClick={handleLogout}
+          onClick={() => {
+            router.push('/login');
+
+            handleLogout();
+          }}
         />
       </Header>
       <div className="">
@@ -90,4 +94,4 @@ async function Page() {
   );
 }
 
-export default Page;
+export default withAuthorization(page, ['user']);
