@@ -7,8 +7,9 @@ import React, { useEffect, useState } from 'react';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
+import { withAuthorization } from '@/HOC/withAuthorization';
 
-function Page() {
+function page() {
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
   const [itemList, setItemList] = useState([]);
   const router = useRouter();
@@ -102,4 +103,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default withAuthorization(page, ['user']);

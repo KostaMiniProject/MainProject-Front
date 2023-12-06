@@ -56,7 +56,7 @@ function Page() {
         description: content,
       };
       formData.append(
-        'itemSaveDto',
+        'itemSaveDTO',
         new Blob([JSON.stringify(postItemData)], { type: 'application/json' })
       );
 

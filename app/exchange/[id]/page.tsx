@@ -1,12 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getProfile } from '@/api/ProfileApi';
 import Profile from '@/components/Profile';
 import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
-import { getBidList } from '@/api/BidApi';
 import Header from '@/components/Header';
-import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
+import { MdReport } from 'react-icons/md';
 import { getExchangePost } from '@/api/ExchangePostApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
@@ -52,6 +50,7 @@ function Page({ params }: { params: any }) {
     const fetchPostContent = async () => {
       try {
         const data = await getExchangePost(params.id);
+        console.log(data);
         setPostContent(data);
       } catch (error) {
         console.error('Error fetching exchange post data:', error);

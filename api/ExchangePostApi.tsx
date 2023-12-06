@@ -84,7 +84,7 @@ export async function getExchangePost(postId: number) {
 
     const res = await fetch(`https://itsop.shop/api/exchange-posts/${postId}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
         // 기타 필요한 헤더도 추가할 수 있습니다.
         'Content-Type': 'application/json',
       },
