@@ -1,6 +1,11 @@
 import { atom } from 'recoil';
 
-export const customStatue = atom({
-  key: 'custom',
-  default: [],
+export const token = atom({
+  key: 'token',
+  default: '',
+});
+
+export const userId = atom({
+  key: 'userId',
+  default: -1,
 });

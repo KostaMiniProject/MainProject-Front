@@ -6,11 +6,15 @@ import InputBox from '@/components/InputBox';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { Login } from '@/api/Login';
+import { useRecoilState } from 'recoil';
+import { token, userId } from '@/store/atoms';
 
 function page() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [accessToken, setAccessToken] = useState();
+  // const [accessToken, setAccessToken] = useState();
+  const [accessToken, setAccessToken] = useRecoilState(token);
+  const [accessUserId, setAccessUserId] = useRecoilState(userId);
   const router = useRouter();
   function handleSignUp() {
     router.push('/signup');
@@ -18,10 +22,11 @@ function page() {
 
   async function handleLogin(email: string, password: string) {
     try {
-      const token: any = await Login(email, password);
-      console.log(token);
+      const loginToken: any = await Login(email, password);
+      console.log(loginToken);
       // 토큰을 저장하고 필요한 작업 수행
-      setAccessToken(token);
+      setAccessToken(loginToken.token);
+      setAccessUserId(loginToken.userId);
       router.push('/');
       // 다른 작업 수행 (예: 페이지 리디렉션)
     } catch (error: any) {
