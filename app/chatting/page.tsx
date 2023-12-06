@@ -77,4 +77,4 @@ const Page: React.FC = () => {
   );
 };
 
-export default withAuthorization(Page, ['admin']);
+export default withAuthorization(Page, ['user']);

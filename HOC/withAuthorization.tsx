@@ -13,9 +13,8 @@ function checkAuthorization(isLogin: boolean) {
 }
 
 export function withAuthorization(WrappedComponent: any, requiredRoles: any) {
-  const WithAuthorization = (props: any) => {
+  function WithAuthorization(props: any) {
     const router = useRouter();
-    const isLogin: boolean = useRecoilValue(isToken);
     const [accessToken, setAccessToken] = useRecoilState(token);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -40,7 +39,7 @@ export function withAuthorization(WrappedComponent: any, requiredRoles: any) {
     }
 
     return <WrappedComponent {...props} />;
-  };
+  }
 
   return WithAuthorization;
 }
