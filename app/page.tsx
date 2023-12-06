@@ -15,8 +15,6 @@ function Page() {
   const [keyWord, setKeyWord] = useState('');
   const [pageNation, setPageNation] = useState(0);
 
-  const [accessToken, setAccessToken] = useState();
-
   useEffect(() => {
     const fetchPostData = async () => {
       try {
@@ -30,29 +28,9 @@ function Page() {
     fetchPostData();
   }, []);
 
-  async function handleLogin(email: string, password: string) {
-    try {
-      const token: any = await Login(email, password);
-      console.log(token);
-      // 토큰을 저장하고 필요한 작업 수행
-      setAccessToken(token);
-      // 다른 작업 수행 (예: 페이지 리디렉션)
-    } catch (error: any) {
-      // 로그인 실패 시의 처리
-      console.error('로그인 실패:', error.message);
-    }
-  }
-
   return (
     <div className="relative">
       <div>
-        <div
-          onClick={() => {
-            handleLogin('2', '2');
-          }}
-        >
-          로그인 하기
-        </div>
         <div className="h-[60px] flex items-center border-b-[1px] border-gray">
           <InputBox
             onChange={setKeyWord}
