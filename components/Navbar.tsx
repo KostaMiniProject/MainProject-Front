@@ -68,7 +68,10 @@ function Navbar() {
         </div>
         <div
           className={flexClasses(activeButton === '채팅')}
-          onClick={() => handleButtonClick('채팅')}
+          onClick={() => {
+            handleButtonClick('채팅');
+            router.push('/chatting');
+          }}
         >
           <MdChat
             size={iconSize}

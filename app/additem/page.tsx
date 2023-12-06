@@ -1,11 +1,11 @@
 'use client';
-import { getCookie } from '@/api/Cookie';
 import { postItem } from '@/api/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
 import TextAreaBox from '@/components/TextAreaBox';
 import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { MdAddCircleOutline, MdCancel } from 'react-icons/md';
 
@@ -14,6 +14,8 @@ function Page() {
   const [content, setContent] = useState<String>('');
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isMoreView, setIsMoreView] = useState<Boolean>(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   function handleMoreView() {
     setIsMoreView(!isMoreView);
@@ -39,31 +41,45 @@ function Page() {
   }
 
   async function postComplete() {
-    const formData = new FormData();
+    if (selectedImages.length <= 0) {
+      alert('사진을 1개 이상 등록 해 주세요');
+    } else if (title.length <= 0) {
+      alert('제목을 입력 해 주세요');
+    } else if (content.length <= 0) {
+      alert('상세 설명을 입력 해 주세요');
+    } else {
+      const formData = new FormData();
 
-    // 기타 데이터를 JSON 형태로 FormData에 추가
-    const postItemData = {
-      title: title,
-      description: content,
-    };
-    formData.append(
-      'itemSaveDto',
-      new Blob([JSON.stringify(postItemData)], { type: 'application/json' })
-    );
+      // 기타 데이터를 JSON 형태로 FormData에 추가
+      const postItemData = {
+        title: title,
+        description: content,
+      };
+      formData.append(
+        'itemSaveDTO',
+        new Blob([JSON.stringify(postItemData)], { type: 'application/json' })
+      );
 
-    // 이미지 파일을 FormData에 추가
-    selectedImages.forEach((image) => {
-      formData.append('file', image);
-    });
+      // 이미지 파일을 FormData에 추가
+      selectedImages.forEach((image) => {
+        formData.append('file', image);
+      });
 
-    try {
-      // 서버로 POST 요청 보내기
-      await postItem(formData);
-      console.log('Upload successful');
-      // 성공적으로 업로드되었을 때 처리
-    } catch (error) {
-      console.error('Error uploading:', error);
-      // 업로드 중 에러 발생 시 처리
+      try {
+        // 서버로 POST 요청 보내기
+        await postItem(formData);
+        console.log('Upload successful');
+        handlePostingAfter();
+      } catch (error) {
+        console.error('Error uploading:', error);
+        // 업로드 중 에러 발생 시 처리
+      }
+    }
+  }
+  function handlePostingAfter() {
+    const param = searchParams.get('action');
+    if (param === 'posting') {
+      router.push('/postingexchange/selectitem');
     }
   }
   function openFileInput() {
