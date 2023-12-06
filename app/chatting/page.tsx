@@ -1,45 +1,54 @@
 'use client';
-import { Socket } from 'socket.io-client';
-
 import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+import SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
+
+interface IMessage {
+  senderId: number;
+  content: string;
+  chatRoomId: number;
+}
 
 const Page: React.FC = () => {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [messages, setMessages] = useState<
-    { sender: string; content: string }[]
-  >([]);
+  const [stompClient, setStompClient] = useState<Client | null>(null);
+  const [messages, setMessages] = useState<IMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
 
   useEffect(() => {
-    // 서버의 WebSocket 엔드포인트에 연결
-    const newSocket = io('http://localhost:8080/chat');
-    setSocket(newSocket);
+    const socket = new SockJS('https://itsop.shop/ws');
+    const client = new Client({
+      webSocketFactory: () => socket,
+    });
 
-    // 컴포넌트가 언마운트될 때 소켓 연결 해제
+    client.onConnect = () => {
+      console.log('Connected!');
+      client.subscribe('/sub/messages', (message) => {
+        if (message.body) {
+          const receivedMessage: IMessage = JSON.parse(message.body);
+          setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+        }
+      });
+    };
+
+    client.activate();
+    setStompClient(client);
+
     return () => {
-      newSocket.disconnect();
+      client.deactivate();
     };
   }, []);
 
-  useEffect(() => {
-    if (!socket) return;
-
-    // 새로운 메시지를 받았을 때의 이벤트 리스너
-    socket.on('message', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
-    return () => {
-      socket.off('message');
-    };
-  }, [socket]);
-
   const sendMessage = () => {
-    if (socket && newMessage.trim() !== '') {
-      // 서버로 메시지 전송
-      socket.emit('sendMessage', { content: newMessage, sender: 'User' });
+    if (stompClient && newMessage.trim() !== '') {
+      const message: IMessage = {
+        senderId: 3,
+        content: newMessage,
+        chatRoomId: 1,
+      };
+      stompClient.publish({
+        destination: '/pub/send',
+        body: JSON.stringify(message),
+      });
       setNewMessage('');
     }
   };
@@ -50,7 +59,7 @@ const Page: React.FC = () => {
         <ul>
           {messages.map((message, index) => (
             <li key={index}>
-              <strong>{message.sender}:</strong> {message.content}
+              <strong>{message.senderId}:</strong> {message.content}
             </li>
           ))}
         </ul>
