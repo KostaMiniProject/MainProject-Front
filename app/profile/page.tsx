@@ -1,9 +1,11 @@
-import { getProfileById } from '@/api/ProfileApi';
+'use client';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import ProfileContainer from '@/components/profile/ProfileContainer';
 import React from 'react';
 import { MdTagFaces, MdThumbDown, MdThumbUp } from 'react-icons/md';
+import { removeCookie } from '@/api/Cookie';
+import { useRouter } from 'next/navigation';
 
 // ReviewContainer 컴포넌트
 function ReviewContainer({ children }: { children: React.ReactNode }) {
@@ -15,12 +17,27 @@ function ReviewContainer({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+function handleLogout() {
+  const router = useRouter();
+  // 쿠키에서 토큰 및 사용자 ID 삭제
+  removeCookie('token');
+  removeCookie('userId');
+  router.push('/login');
+}
 
 async function Page() {
   // const myProfile = await getProfileById(1);
   return (
     <div>
-      <Header title="내 정보" />
+      <Header title="내 정보">
+        <Button
+          text="로그아웃"
+          fontSize={16}
+          height={5}
+          rounded="soft"
+          onClick={handleLogout}
+        />
+      </Header>
       <div className="">
         <div className="flex items-center mx-[15px] py-[10px]">
           <div className="h-[120px] w-[120px] bg-black rounded-[50%] overflow-hidden">

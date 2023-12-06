@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
+import { withAuthorization } from '@/HOC/withAuthorization';
 
 interface IMessage {
   senderId: number;
@@ -76,4 +77,4 @@ const Page: React.FC = () => {
   );
 };
 
-export default Page;
+export default withAuthorization(Page, ['user']);
