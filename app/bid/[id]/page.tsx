@@ -2,17 +2,67 @@
 import { getProfile } from '@/api/ProfileApi';
 import Header from '@/components/Header';
 import Profile from '@/components/Profile';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Item from '@/components/item/Item';
 import BottomFixed from '@/components/BottomFixed';
 import { MdOutlineReportGmailerrorred } from 'react-icons/md';
-import { getBidById } from '@/api/BidApi';
+import { getBidItemList } from '@/api/BidApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
+/**
+ * 요청 해야함ㄴ
+{
+  isOwner: "true"
+  profile: {
+    id: ,
+    name: ,
+    address: ,
+    imageUrl: ,
+    rating: ,
+  }
+  items: {
+    id: ,
+    title: ,
+    description: ,
+    imageUrls: ,
+  }
+}
+
+ */
+interface ItemList {
+  isOwner: boolean;
+  bidderNickname: string;
+  bidderProfileImageUrl: string | null;
+  bidderAddress: string;
+  items: {
+    title: string;
+    description: string;
+    imageUrls: string[];
+  }[];
+}
 
 function page({ params }: { params: any }) {
-  const itemList = getBidById(params.id);
+  const [itemList, setItemList] = useState<ItemList | null>(null);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const fetchedItemList = await getBidItemList(params.id);
+        setItemList(fetchedItemList);
+        console.log(fetchedItemList);
+      } catch (error) {
+        console.error('Error fetching item list:', error);
+      }
+    }
+    fetchData();
+  }, [params.id]);
   const route = useRouter();
+  const {
+    isOwner,
+    bidderNickname: nickname,
+    bidderProfileImageUrl: profileImage,
+    bidderAddress: address,
+    items,
+  } = itemList || {};
 
   return (
     <div className="relative">
@@ -25,22 +75,23 @@ function page({ params }: { params: any }) {
       <Profile profile={getProfile(1)} />
       {/* 물건 리스트 */}
       <div className="mx-[15px]">
-        {itemList.item_list.map((e: any, i: any) => {
-          return (
-            <div
-              key={i}
-              onClick={() => {
-                route.push(`/itemdetail/${e.id}`);
-              }}
-            >
-              <Item item={e} key={i} />
-            </div>
-          );
-        })}
+        {itemList &&
+          itemList.items.map((e: any, i: any) => {
+            return (
+              <div
+                key={i}
+                onClick={() => {
+                  route.push(`/itemdetail/${e.id}`);
+                }}
+              >
+                <Item item={e} key={i} />
+              </div>
+            );
+          })}
       </div>
       {/* 하단 고정 버튼 */}
       <BottomFixed>
-        {itemList.owner ? (
+        {itemList && itemList.isOwner ? (
           <div className="flex justify-between">
             <Button text="입찰취소" height={10} fontSize={20} />
             <Button text="수정하기" height={10} fontSize={20} />

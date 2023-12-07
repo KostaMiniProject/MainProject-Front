@@ -10,7 +10,14 @@ import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '@/api/Cookie';
 import Image from 'next/image';
+import Link from 'next/link';
 
+interface bidContent {
+  id: number;
+  name: string;
+  imageUrl: string;
+  items: string;
+}
 interface PostContent {
   title: string;
   post_owner: string;
@@ -30,7 +37,7 @@ interface PostContent {
   preferItems: string;
   address: string;
   content: string;
-  bidList: any[];
+  bidList: bidContent[];
   // bidlist
   // {
   //   id: number;
@@ -182,7 +189,9 @@ function Page({ params }: { params: any }) {
           <div className="grid grid-cols-2 m-[15px]">
             {/* 입찰 리스트 출력 */}
             {postContent.bidList.map((e: any, i: any) => (
-              <BidItem bid={e} key={i} />
+              <Link href={`/bid/${e.id}`}>
+                <BidItem bid={e} key={i} />
+              </Link>
             ))}
           </div>
         </>

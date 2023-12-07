@@ -1,34 +1,62 @@
 //입찰 리스트 관련 API
-export function getBidList() {
-  const dumyData: any = [
-    {
-      id: 0,
-      name: '오리동햄버거마스터',
-      image_url:
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+// import { getCookie } from './Cookie';
 
-      items: '키보드, 마우스, 모니터',
-    },
-    {
-      id: 1,
-      name: '김독자',
-      image_url:
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+export async function getBidItemList(id: number) {
+  try {
+    // const token = getCookie('token');
+    // 토큰을 쿠키에서 가져오기
 
-      items: '클립, 핀셋',
-    },
-    {
-      id: 2,
-      name: '홍길도옹',
-      image_url:
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+    const res = await fetch(
+      `https://itsop.shop/api/exchange-posts/bids/${id}`,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          // 기타 필요한 헤더도 추가할 수 있습니다.
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-      items: '안경, 귀마개',
-    },
-  ];
-
-  return dumyData;
+    const data = await res.json();
+    console.log(data);
+    // Response 객체가 아니라 data를 반환하도록 수정
+    return data;
+  } catch (error) {
+    console.error('Error in getPostList:', error);
+    // 오류 발생 시 에러 객체 반환
+    return error;
+  }
 }
+// export function getBidList() {
+//   const dumyData: any = [
+//     {
+//       id: 0,
+//       name: '오리동햄버거마스터',
+//       image_url:
+//         'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
+//       items: '키보드, 마우스, 모니터',
+//     },
+//     {
+//       id: 1,
+//       name: '김독자',
+//       image_url:
+//         'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
+//       items: '클립, 핀셋',
+//     },
+//     {
+//       id: 2,
+//       name: '홍길도옹',
+//       image_url:
+//         'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+
+//       items: '안경, 귀마개',
+//     },
+//   ];
+
+//   return dumyData;
+// }
 
 export function getBidById(id: number) {
   const dumyData: any = [
