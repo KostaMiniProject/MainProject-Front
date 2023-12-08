@@ -24,6 +24,7 @@ const Page: React.FC = () => {
     client.onConnect = () => {
       console.log('Connected!');
       client.subscribe('/sub/messages', (message) => {
+        console.log('메세지수신');
         if (message.body) {
           const receivedMessage: IMessage = JSON.parse(message.body);
           setMessages((prevMessages) => [...prevMessages, receivedMessage]);
@@ -44,7 +45,7 @@ const Page: React.FC = () => {
       const message: IMessage = {
         senderId: 3,
         content: newMessage,
-        chatRoomId: 1,
+        chatRoomId: 3,
       };
       stompClient.publish({
         destination: '/pub/send',

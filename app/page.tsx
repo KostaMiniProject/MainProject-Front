@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { MdOutlineSearch } from 'react-icons/md';
-import { Login } from '@/api/Login';
+import { testLogin } from '@/api/Login';
 
 function Page() {
   const [postData, setPostData] = useState([]);
@@ -28,14 +28,25 @@ function Page() {
     fetchPostData();
   }, []);
 
+  async function tests() {
+    testLogin('1', '1');
+  }
+
   return (
     <div className="relative">
+      <button
+        onClick={() => {
+          tests();
+        }}
+      >
+        테스트버튼
+      </button>
       <div>
         <div className="h-[60px] flex items-center border-b-[1px] border-gray">
           <InputBox
             onChange={setKeyWord}
             onFocusChange={(bool) => {
-              router.push('/search');
+              // router.push('/search');
             }}
           />
           <div

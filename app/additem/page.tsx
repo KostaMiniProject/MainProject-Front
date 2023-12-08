@@ -64,7 +64,6 @@ function Page() {
       selectedImages.forEach((image) => {
         formData.append('file', image);
       });
-
       try {
         // 서버로 POST 요청 보내기
         await postItem(formData);
