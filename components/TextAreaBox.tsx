@@ -1,7 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 
-function TextAreaBox({ onChange }: { onChange: (value: string) => void }) {
+function TextAreaBox({
+  onChange,
+  content,
+}: {
+  onChange: (value: string) => void;
+  content?: string;
+}) {
   const [color, setColor] = useState('');
 
   const handleFocus = () => {
@@ -25,6 +31,7 @@ function TextAreaBox({ onChange }: { onChange: (value: string) => void }) {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
+        value={content}
       />
     </div>
   );

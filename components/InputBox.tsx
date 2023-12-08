@@ -6,10 +6,12 @@ function InputBox({
   onChange,
   onFocusChange,
   type = 'text',
+  content,
 }: {
   onChange: (value: string) => void;
   onFocusChange?: (isFocused: boolean) => void;
   type?: string;
+  content?: string;
 }) {
   const [color, setColor] = useState('');
 
@@ -40,6 +42,7 @@ function InputBox({
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
+        value={content}
       />
     </div>
   );

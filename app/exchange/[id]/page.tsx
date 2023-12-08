@@ -4,7 +4,7 @@ import Profile from '@/components/Profile';
 import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
 import Header from '@/components/Header';
-import { MdReport } from 'react-icons/md';
+import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
 import { getExchangePost } from '@/api/ExchangePostApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
@@ -20,8 +20,8 @@ interface bidContent {
 }
 interface PostContent {
   title: string;
-  post_owner: string;
   item: {
+    id: number;
     description: string;
     title: string;
     imageUrls: string[];
@@ -49,7 +49,6 @@ interface PostContent {
 
 function Page({ params }: { params: any }) {
   const [postContent, setPostContent] = useState<PostContent | null>(null);
-  // const [isOwner, setIsOwner] = useState<boolean>(false);
   const router = useRouter();
   const userId: string | undefined = getCookie('userId');
 
@@ -82,9 +81,23 @@ function Page({ params }: { params: any }) {
   return (
     <div>
       <Header title={postContent.title} backNav>
-        <div>
-          <MdReport size={40} />
-        </div>
+        {postContent.postOwner ? (
+          <>
+            <div className="w-[60px] flex justify-center">
+              <MdDeleteForever size={40} />
+            </div>
+
+            <Link
+              href={`/postingexchange/edit?post=${params.id}&selectedItem=${postContent.item.id}`}
+            >
+              <MdEditNote size={40} />
+            </Link>
+          </>
+        ) : (
+          <div>
+            <MdReport size={40} />
+          </div>
+        )}
       </Header>
       {postContent.postOwner ? (
         <div className="">
