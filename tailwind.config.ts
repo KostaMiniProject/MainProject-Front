@@ -10,7 +10,7 @@ const config: Config = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      base: '#FFD5EB',
+      base: '#5562F6',
       softbase: '#F9E3F0',
       gray: '#BBBBBB',
       white: '#FFFFFF',

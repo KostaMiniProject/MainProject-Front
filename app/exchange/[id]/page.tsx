@@ -21,7 +21,7 @@ interface bidContent {
 interface PostContent {
   title: string;
   item: {
-    id: number;
+    itemId: number;
     description: string;
     title: string;
     imageUrls: string[];
@@ -87,9 +87,10 @@ function Page({ params }: { params: any }) {
               <MdDeleteForever size={40} />
             </div>
 
-            <Link
-              href={`/postingexchange/edit?post=${params.id}&selectedItem=${postContent.item.id}`}
-            >
+            {/* <Link
+              href={`/postingexchange/edit?post=${params.id}&selectedItem=${postContent.item.itemId}`}
+            > */}
+            <Link href={`/exchange/${params.id}/edit`}>
               <MdEditNote size={40} />
             </Link>
           </>
