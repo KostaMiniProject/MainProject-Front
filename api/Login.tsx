@@ -1,3 +1,5 @@
+import { getCookie } from './Cookie';
+
 export async function Login(email: string, password: string) {
   try {
     const res = await fetch('https://itsop.shop/api/login', {
@@ -17,10 +19,13 @@ export async function Login(email: string, password: string) {
     }
 
     // 응답 헤더에서 토큰 추출
-    const token = res.headers.get('Authorization');
+    // const token = res.headers.get('Authorization');
+    const token = getCookie('Authorization');
+    console.log('토큰값');
+    console.log(token);
     const data = await res.json();
     // 토큰을 반환하거나 저장, 사용 등을 수행
-    document.cookie = `token=${token}; path=/;`;
+    // document.cookie = `token=${token}; path=/;`;
     document.cookie = `userId=${data.userId}; path=/;`;
 
     return [token, data.userId];

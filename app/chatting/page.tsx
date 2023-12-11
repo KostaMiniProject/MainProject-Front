@@ -9,26 +9,34 @@ import { withAuthorization } from '@/HOC/withAuthorization';
 import { getCookie } from '@/api/Cookie';
 
 // 보내는 메시지 인터페이스
-interface IMessage {
+interface IReceivedMessage {
+  senderId: number;
+  content?: string;
+  imageUrl?: string;
+  createAt: string;
+  isRead: boolean;
+}
+
+interface ISendMessage {
+  roomId: number;
   senderId: number;
   content?: string;
   imageUrl?: string;
 }
 
 // 받는 메시지 인터페이스
-interface IReceivedMessage {
+interface IRoomMessages {
   userId: number;
   userName: string;
   userProfileImage: string;
-  text?: string;
-  imageUrl?: string;
-  isRead: boolean;
-  createAt: string;
-  messageType: string;
+  messages: [];
 }
 
 const ChatPage: React.FC = () => {
+  const testUrl = 'https://itsop.shop';
+
   const [stompClient, setStompClient] = useState<Client | null>(null);
+  // const [messages, setMessages] = useState<IReceivedMessage[]>([]);
   const [messages, setMessages] = useState<IReceivedMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
   const [userIdValue, setUserIdValue] = useState<string>('');
@@ -38,7 +46,7 @@ const ChatPage: React.FC = () => {
 
   useEffect(() => {
     const userId = getCookie('userId');
-    const token = getCookie('token');
+    const token = getCookie('Authorization');
     if (userId) {
       setUserIdValue(userId);
     }
@@ -46,7 +54,7 @@ const ChatPage: React.FC = () => {
       setToken(token);
     }
 
-    const socket = new SockJS('https://itsop.shop/ws');
+    const socket = new SockJS(`${testUrl}/ws`);
     const client = new Client({
       webSocketFactory: () => socket,
     });
@@ -55,12 +63,13 @@ const ChatPage: React.FC = () => {
       console.log('Connected!');
 
       // 채팅방의 기존 채팅 내역을 불러옵니다.
-      // fetchChatHistory();
 
       // 새로운 채팅 메시지 구독
       client.subscribe(`/sub/chatroom/${chatRoomId}`, (message) => {
         //메세지 받을 때 로직
         if (message.body) {
+          //콘솔로그
+
           const receivedMessage: IReceivedMessage = JSON.parse(message.body);
           setMessages((prevMessages) => [...prevMessages, receivedMessage]);
         }
@@ -75,11 +84,15 @@ const ChatPage: React.FC = () => {
     };
   }, [chatRoomId]);
 
+  useEffect(() => {
+    fetchChatHistory();
+  }, [token]);
+
   const fetchChatHistory = async () => {
     try {
       console.log(token); // 토큰 잘넘어오는지 확인
       const response = await axios.get(
-        `https://itsop.shop/api/chatRooms/${chatRoomId}`,
+        `${testUrl}/api/chatRooms/${chatRoomId}`,
         {
           headers: {
             Authorization: `${token}`,
@@ -89,17 +102,17 @@ const ChatPage: React.FC = () => {
 
       if (response.status === 200) {
         console.log(response.data); // 데이터 잘 넘어오는지 확인
-        const chatHistory = response.data.map((msg: any) => ({
-          userId: msg.userId,
-          userName: msg.userName,
-          userProfileImage: msg.userProfileImage,
-          text: msg.text,
-          imageUrl: msg.imageUrl,
-          isRead: msg.isRead,
-          createAt: msg.createAt,
-          messageType: msg.messageType,
-        }));
-        setMessages(chatHistory);
+        // const chatHistory = response.data.map((msg: any) => ({
+        //   userId: msg.userId,
+        //   userName: msg.userName,
+        //   userProfileImage: msg.userProfileImage,
+        //   text: msg.text,
+        //   imageUrl: msg.imageUrl,
+        //   isRead: msg.isRead,
+        //   createAt: msg.createAt,
+        //   messageType: msg.messageType,
+        // }));
+        // setMessages(chatHistory);
       }
     } catch (error) {
       console.error('Error fetching chat history', error);
@@ -107,11 +120,10 @@ const ChatPage: React.FC = () => {
   };
 
   const sendMessage = () => {
-    console.log(token);
-    console.log(userIdValue);
     if (stompClient && newMessage !== '') {
       const userId = userIdValue ? parseInt(userIdValue, 10) : 1; // 'userId' 값이 있으면 숫자로 변환, 없으면 1(임시 값)
-      const message: IMessage = {
+      const message: ISendMessage = {
+        roomId: chatRoomId,
         senderId: userId,
         content: newMessage,
       };
@@ -120,6 +132,7 @@ const ChatPage: React.FC = () => {
         body: JSON.stringify(message),
       });
       console.log('sendMessage end');
+      console.log(message);
       setNewMessage('');
     }
   };
@@ -138,7 +151,7 @@ const ChatPage: React.FC = () => {
   // 메시지 렌더링을 위한 컴포넌트
   const MessageItem = ({ message }: { message: IReceivedMessage }) => (
     <div style={styles.messageItem}>
-      <div style={styles.userInfo}>
+      {/* <div style={styles.userInfo}>
         <img
           src={message.userProfileImage}
           alt="User Profile"
@@ -158,7 +171,7 @@ const ChatPage: React.FC = () => {
         )}
         <small>{formatDate(message.createAt)}</small>
         <small>{message.isRead ? 'Read' : 'Unread'}</small>
-      </div>
+      </div> */}
     </div>
   );
 
@@ -168,6 +181,11 @@ const ChatPage: React.FC = () => {
         <ul>
           {messages.map((message, index) => (
             <li key={index}>
+              {message.senderId === parseInt(userIdValue) ? (
+                <div>나:{message.content}</div>
+              ) : (
+                <div> 상대:{message.content}</div>
+              )}
               <MessageItem message={message} />
             </li>
           ))}
