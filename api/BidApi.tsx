@@ -1,5 +1,5 @@
 //입찰 리스트 관련 API
-// import { getCookie } from './Cookie';
+import { getCookie } from './Cookie';
 
 export async function getBidItemList(id: number) {
   try {

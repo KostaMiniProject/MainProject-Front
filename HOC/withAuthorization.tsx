@@ -20,7 +20,7 @@ export function withAuthorization(WrappedComponent: any, requiredRoles: any) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-      const storedToken: string | undefined = getCookie('Authorization');
+      const storedToken: string | undefined = getCookie('token');
 
       if (storedToken) {
         setAccessToken(storedToken);

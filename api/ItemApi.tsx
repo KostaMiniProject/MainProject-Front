@@ -8,7 +8,7 @@ export async function postItem(formData: FormData) {
     body: formData,
     headers: {
       // 토큰이 있다면 추가하세요
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
       // 'Content-Type': 'multipart/form-data',
     },
   })
@@ -28,9 +28,9 @@ export async function getItemList() {
 
     const res = await fetch('https://itsop.shop/api/items', {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
         // 기타 필요한 헤더도 추가할 수 있습니다.
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
       },
     });
 
@@ -52,7 +52,7 @@ export async function getItemById(id: number | string) {
 
     const res = await fetch(`https://itsop.shop/api/items/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
         // 기타 필요한 헤더도 추가할 수 있습니다.
         'Content-Type': 'application/json',
       },
