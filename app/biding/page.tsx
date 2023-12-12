@@ -6,14 +6,21 @@ import { getItemList } from '@/api/ItemApi';
 import React, { useEffect, useState } from 'react';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { postBid } from '@/api/BidApi';
 
 function Page() {
+  const searchParams = useSearchParams();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [itemList, setItemList] = useState([]); // 아이템 목록을 상태로 관리
+  const [postId, setPostId] = useState<number>();
   const router = useRouter();
 
   useEffect(() => {
+    const postid = searchParams.get('postId');
+    if (postid) {
+      setPostId(parseInt(postid));
+    }
     async function fetchData() {
       try {
         const data = await getItemList();
@@ -36,11 +43,19 @@ function Page() {
   };
 
   const handleSendData = () => {
-    // 선택된 아이템들을 JSON 데이터로 전송
-    const selectedItemsData = itemList.filter((item: any) =>
-      selectedItems.includes(item.id)
-    );
-    console.log(JSON.stringify(selectedItemsData));
+    const body = {
+      // itemIds: JSON.stringify(selectedItems),
+      itemIds: selectedItems,
+    };
+    if (postId) {
+      try {
+        postBid(postId, body);
+        router.push(`/exchange/${postId}`);
+        // console.log(body);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -75,7 +90,7 @@ function Page() {
             rounded="rounded"
             text="+ 물건 추가"
             onClick={() => {
-              router.push('/additem');
+              router.push(`/additem?postId=${postId}`);
             }}
             height={8}
             fontSize={16}

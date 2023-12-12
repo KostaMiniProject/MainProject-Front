@@ -7,6 +7,12 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    fontSize: {
+      header: '16px',
+      subtitle: '14px',
+      title: '12px',
+      content: '10px',
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',

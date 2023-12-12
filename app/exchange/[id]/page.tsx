@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { getCookie } from '@/api/Cookie';
 import Image from 'next/image';
 import Link from 'next/link';
+import { postCreateRoom } from '@/api/ChattingApi';
 
 interface bidContent {
   id: number;
@@ -49,6 +50,7 @@ interface PostContent {
 
 function Page({ params }: { params: any }) {
   const [postContent, setPostContent] = useState<PostContent | null>(null);
+  const [returnData, setReturnData] = useState();
   const router = useRouter();
   const userId: string | undefined = getCookie('userId');
 
@@ -70,6 +72,22 @@ function Page({ params }: { params: any }) {
     // 데이터 로딩 중에 표시할 내용
     return <div>Loading...</div>;
   }
+  async function handleChatting() {
+    // {
+    //   "receiverId" : 1, // 메세지를 받을 사람의 ID = 입찰자의 ID
+    //   "exchangePostId" : 2, // 교환 게시글의 ID
+    //   "bidId" : 2 // 입찰의 ID
+    // }
+    const body = {
+      receiverId: 4,
+      exchangePostId: 6,
+      bidId: 4,
+    };
+    const returnData = await postCreateRoom(body);
+    console.log(returnData);
+    router.push(`/chatting/${returnData.chatRoomId}`);
+  }
+
   //   <>
   //   <div className="w-[60px] flex justify-center">
   //     <MdDeleteForever size={40} />
@@ -142,7 +160,10 @@ function Page({ params }: { params: any }) {
                       <div className="text-gray text-[12px]">{e.name}</div>
                     </div>
                     <div className="w-[80px] h-[80px] relative flex">
-                      <div className="flex-1 flex justify-center flex-col bg-base rounded-[5px] justify-center">
+                      <div
+                        onClick={handleChatting}
+                        className="flex-1 flex justify-center flex-col bg-base rounded-[5px] justify-center"
+                      >
                         <div className="text-center">채 팅</div>
                       </div>
                       <div className="mx-[5px]">X</div>
@@ -185,11 +206,9 @@ function Page({ params }: { params: any }) {
                   rounded="soft"
                 ></Button>
               </div>
-              <div
+              <Link
+                href={`/biding?postId=${params.id}`}
                 className={` flex-1 text-center `}
-                onClick={() => {
-                  router.push('/biding');
-                }}
               >
                 <Button
                   text="입찰 하기"
@@ -197,7 +216,7 @@ function Page({ params }: { params: any }) {
                   height={5}
                   rounded="soft"
                 ></Button>
-              </div>
+              </Link>
             </div>
           </div>
           <div className="grid grid-cols-2 m-[15px]">
