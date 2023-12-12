@@ -32,20 +32,19 @@ interface IRoomMessages {
   messages: [];
 }
 
-const ChatPage: React.FC = () => {
-  const testUrl = 'https://itsop.shop';
-
+function Page({ params }: { params: any }) {
+  const testUrl = 'https://itsop.shop'; //http://localhost:8080
   const [stompClient, setStompClient] = useState<Client | null>(null);
-  // const [messages, setMessages] = useState<IReceivedMessage[]>([]);
   const [messages, setMessages] = useState<IReceivedMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
   const [userIdValue, setUserIdValue] = useState<string>('');
   const [token, setToken] = useState<string>('');
 
-  const chatRoomId = 1; // 예시 채팅방 ID
+  const chatRoomId = params.id;
 
   useEffect(() => {
     const userId = getCookie('userId');
+    // const token = getCookie('Authorization');
     const token = getCookie('token');
     if (userId) {
       setUserIdValue(userId);
@@ -63,6 +62,7 @@ const ChatPage: React.FC = () => {
       console.log('Connected!');
 
       // 채팅방의 기존 채팅 내역을 불러옵니다.
+      fetchChatHistory();
 
       // 새로운 채팅 메시지 구독
       client.subscribe(`/sub/chatroom/${chatRoomId}`, (message) => {
@@ -84,35 +84,28 @@ const ChatPage: React.FC = () => {
     };
   }, [chatRoomId]);
 
-  useEffect(() => {
-    fetchChatHistory();
-  }, [token]);
-
   const fetchChatHistory = async () => {
     try {
-      console.log(token); // 토큰 잘넘어오는지 확인
+      console.log('fetchChatHistory : ' + token); // 토큰 잘넘어오는지 확인
       const response = await axios.get(
         `${testUrl}/api/chatRooms/${chatRoomId}`,
         {
           headers: {
-            Authorization: `${token}`,
+            Authorization: `${getCookie('token')}`,
           },
         }
       );
 
       if (response.status === 200) {
         console.log(response.data); // 데이터 잘 넘어오는지 확인
-        // const chatHistory = response.data.map((msg: any) => ({
-        //   userId: msg.userId,
-        //   userName: msg.userName,
-        //   userProfileImage: msg.userProfileImage,
-        //   text: msg.text,
-        //   imageUrl: msg.imageUrl,
-        //   isRead: msg.isRead,
-        //   createAt: msg.createAt,
-        //   messageType: msg.messageType,
-        // }));
-        // setMessages(chatHistory);
+        const chatHistory = response.data.messages.map((msg: any) => ({
+          senderId: msg.senderId,
+          content: msg.content,
+          imageUrl: msg.imageUrl,
+          createAt: formatDate(msg.createAt),
+          isRead: msg.isRead,
+        }));
+        setMessages(chatHistory);
       }
     } catch (error) {
       console.error('Error fetching chat history', error);
@@ -150,28 +143,8 @@ const ChatPage: React.FC = () => {
 
   // 메시지 렌더링을 위한 컴포넌트
   const MessageItem = ({ message }: { message: IReceivedMessage }) => (
-    <div style={styles.messageItem}>
-      {/* <div style={styles.userInfo}>
-        <img
-          src={message.userProfileImage}
-          alt="User Profile"
-          style={styles.profileImage}
-        />
-        <strong>{message.userName}</strong>
-      </div>
-      <div style={styles.messageContent}>
-        {message.messageType === 'TEXT' ? (
-          <p>{message.text}</p>
-        ) : (
-          <img
-            src={message.imageUrl}
-            alt="Chat Attachment"
-            style={styles.chatImage}
-          />
-        )}
-        <small>{formatDate(message.createAt)}</small>
-        <small>{message.isRead ? 'Read' : 'Unread'}</small>
-      </div> */}
+    <div>
+      <div>Time: {message.createAt}</div>
     </div>
   );
 
@@ -186,7 +159,6 @@ const ChatPage: React.FC = () => {
               ) : (
                 <div> 상대:{message.content}</div>
               )}
-              <MessageItem message={message} />
             </li>
           ))}
         </ul>
@@ -202,33 +174,6 @@ const ChatPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
-export default withAuthorization(ChatPage, ['user']);
-
-// 추가된 CSS 스타일을 객체 형태로 정의
-const styles = {
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: '50%',
-    objectFit: 'cover',
-    marginRight: 10,
-  },
-  messageItem: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  userInfo: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  messageContent: {
-    maxWidth: '70%',
-  },
-  chatImage: {
-    maxWidth: '100%',
-    height: 'auto',
-  },
-};
+export default withAuthorization(Page, ['user']);

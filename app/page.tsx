@@ -8,6 +8,7 @@ import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { MdOutlineSearch } from 'react-icons/md';
 import { testLogin } from '@/api/Login';
+import Link from 'next/link';
 
 function Page() {
   const [postData, setPostData] = useState([]);
@@ -28,21 +29,13 @@ function Page() {
     fetchPostData();
   }, []);
 
-  async function tests() {
-    testLogin('1', '1');
-  }
-
   return (
     <div className="relative">
-      <button
-        onClick={() => {
-          tests();
-        }}
-      >
-        테스트버튼
-      </button>
       <div>
-        <div className="h-[60px] flex items-center border-b-[1px] border-gray">
+        <Link
+          href={'/search'}
+          className="h-[60px] flex cursor-default items-center border-b-[1px] border-gray"
+        >
           <InputBox
             onChange={setKeyWord}
             onFocusChange={(bool) => {
@@ -56,7 +49,7 @@ function Page() {
           >
             <MdOutlineSearch size={40} />
           </div>
-        </div>
+        </Link>
 
         {/* 컨텐츠 */}
 

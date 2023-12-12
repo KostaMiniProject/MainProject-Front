@@ -14,15 +14,6 @@ interface profileType {
 
 // async function Profile({ profile }: { profile?: profileType }) {
 function Profile({ profile }: { profile: profileType }) {
-  // const data = await getData();
-  // profile = {
-  //   id: 0,
-  //   name: 'unknown',
-  //   address: 'unknown',
-  //   image_url: '',
-  //   rating: 0,
-  // };
-
   return (
     <div className="flex w-[100%] border-solid border-y-[0.5px] h-[80px]">
       <Image

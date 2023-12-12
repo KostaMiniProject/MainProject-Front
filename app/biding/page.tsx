@@ -14,10 +14,16 @@ function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    // 비동기로 아이템 목록을 불러오고 상태에 설정
-    getItemList().then((data) => {
-      setItemList(data);
-    });
+    async function fetchData() {
+      try {
+        const data = await getItemList();
+        console.log(data);
+        setItemList(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
   }, []);
 
   const handleItemClick = (itemId: number) => {
@@ -46,18 +52,18 @@ function Page() {
       <div className="m-[15px]">
         {itemList.map((item: any) => (
           <div
-            key={item.id}
+            key={item.itemId}
             style={
-              selectedItems.includes(item.id)
+              selectedItems.includes(item.itemId)
                 ? {
                     backgroundColor: '#ffe8f9',
                   }
                 : {}
             }
             className={`item-wrapper ${
-              selectedItems.includes(item.id) ? 'selected' : ''
+              selectedItems.includes(item.itemId) ? 'selected' : ''
             }`}
-            onClick={() => handleItemClick(item.id)}
+            onClick={() => handleItemClick(item.itemId)}
           >
             <Item item={item} />
           </div>

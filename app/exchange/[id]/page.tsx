@@ -203,7 +203,7 @@ function Page({ params }: { params: any }) {
           <div className="grid grid-cols-2 m-[15px]">
             {/* 입찰 리스트 출력 */}
             {postContent.bidList.map((e: any, i: any) => (
-              <Link href={`/bid/${e.id}`}>
+              <Link href={`/bid/${e.bidId}`}>
                 <BidItem bid={e} key={i} />
               </Link>
             ))}

@@ -9,6 +9,7 @@ export async function getChatRoomList() {
     });
 
     console.log('Fetched data:', result);
+    return result;
   } catch (error) {
     console.error('Error fetching data:', error);
   }
