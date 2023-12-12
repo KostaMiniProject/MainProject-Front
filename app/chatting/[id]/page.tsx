@@ -43,10 +43,12 @@ interface IRoomMessages {
 
 function Page({ params }: { params: any }) {
   const testUrl = 'https://itsop.shop'; //http://localhost:8080
+  // const testUrl = 'http://localhost:8080'; //http://localhost:8080
+
   const [stompClient, setStompClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<IReceivedMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
-  const [userIdValue, setUserIdValue] = useState<string>('');
+  const [userIdValue, setUserIdValue] = useState('');
   const [token, setToken] = useState<string>('');
   const [initRoom, setInitRoom] = useState<IRoomMessages>();
   const chatHistoryRef = useRef<HTMLDivElement>(null);
@@ -82,23 +84,42 @@ function Page({ params }: { params: any }) {
       client.subscribe(`/sub/chatroom/${chatRoomId}`, (message) => {
         //메세지 받을 때 로직
         if (message.body) {
-          if (JSON.parse(message.body).senderId) {
-            const receivedMessage: IReceivedMessage = JSON.parse(message.body);
+          const parsedMessage = JSON.parse(message.body);
+
+          if (parsedMessage.senderId) {
+            console.log('메세지수신');
+            // 새로운 메시지를 받았을 때
+            const receivedMessage: IReceivedMessage = parsedMessage;
             setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-          } else {
-            const readMessage = JSON.parse(message.body);
-            if (!(readMessage.senderId === parseInt(userIdValue))) {
-              if (stompClient) {
-                const body = {
-                  chatId: readMessage.chatId,
-                };
-                stompClient.publish({
-                  destination: `/pub/read`,
-                  body: JSON.stringify(body),
-                });
+            const myId = getCookie('userId');
+            if (myId)
+              if (!(receivedMessage.senderId === parseInt(myId))) {
+                console.log('상대방 메세지를 읽음');
+                if (client) {
+                  const body = {
+                    chatId: receivedMessage.chatId,
+                  };
+                  console.log('상대방 메세지읽음을 보냄');
+
+                  // 서버에 메시지 읽음 상태 변경을 알림
+                  client.publish({
+                    destination: `/pub/read`,
+                    body: JSON.stringify(body),
+                  });
+                }
               }
-            }
+          } else {
+            // 메시지 읽음 상태 변경을 클라이언트에서도 반영
+            const readMessage = JSON.parse(message.body);
+            setMessages((prevMessages) =>
+              prevMessages.map((msg) =>
+                msg.chatId === readMessage.chatId
+                  ? { ...msg, isRead: true }
+                  : msg
+              )
+            );
           }
+
           //콘솔로그
         }
       });
