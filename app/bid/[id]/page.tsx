@@ -25,30 +25,36 @@ import { useRouter } from 'next/navigation';
     title: ,
     description: ,
     imageUrls: ,
+    createdAt: ,
   }
 }
 
  */
 interface ItemList {
   isOwner: boolean;
-  bidderNickname: string;
-  bidderProfileImageUrl: string | null;
-  bidderAddress: string;
+  profile: {
+    id: number;
+    name: string;
+    address: string;
+    imageUrl: string;
+    rating: number;
+  };
   items: {
+    id: number;
     title: string;
     description: string;
-    imageUrls: string[];
+    imageUrls: string;
+    createdAt: string;
   }[];
 }
 
 function page({ params }: { params: any }) {
-  const [itemList, setItemList] = useState<ItemList | null>(null);
+  const [itemList, setItemList] = useState<ItemList>();
   useEffect(() => {
     async function fetchData() {
       try {
         const fetchedItemList = await getBidItemList(params.id);
         setItemList(fetchedItemList);
-        console.log(fetchedItemList);
       } catch (error) {
         console.error('Error fetching item list:', error);
       }
@@ -56,13 +62,6 @@ function page({ params }: { params: any }) {
     fetchData();
   }, [params.id]);
   const route = useRouter();
-  const {
-    isOwner,
-    bidderNickname: nickname,
-    bidderProfileImageUrl: profileImage,
-    bidderAddress: address,
-    items,
-  } = itemList || {};
 
   return (
     <div className="relative">
@@ -72,7 +71,7 @@ function page({ params }: { params: any }) {
         </div>
       </Header>
       {/* 프로필 */}
-      <Profile profile={getProfile(1)} />
+      {itemList && <Profile profile={itemList.profile} />}
       {/* 물건 리스트 */}
       <div className="mx-[15px]">
         {itemList &&
@@ -81,7 +80,7 @@ function page({ params }: { params: any }) {
               <div
                 key={i}
                 onClick={() => {
-                  route.push(`/itemdetail/${e.id}`);
+                  route.push(`/itemdetail/${e.itemId}`);
                 }}
               >
                 <Item item={e} key={i} />

@@ -33,6 +33,7 @@ function page() {
       // 로그인 실패 시의 처리
       console.error('로그인 실패:', error.message);
     }
+    console.log(document.cookie);
   }
   return (
     <div>

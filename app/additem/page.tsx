@@ -16,6 +16,7 @@ function Page() {
   const [isMoreView, setIsMoreView] = useState<Boolean>(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const postid = searchParams.get('postId');
 
   function handleMoreView() {
     setIsMoreView(!isMoreView);
@@ -76,9 +77,9 @@ function Page() {
     }
   }
   function handlePostingAfter() {
-    const param = searchParams.get('action');
-    if (param === 'posting') {
-      router.push('/postingexchange/selectitem');
+    const postid = searchParams.get('postId');
+    if (postid) {
+      router.push(`/biding?postId=${postid}`);
     }
   }
   function openFileInput() {

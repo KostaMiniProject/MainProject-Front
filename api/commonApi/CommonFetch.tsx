@@ -22,7 +22,7 @@ export async function commonFetch(
         // 토큰이 있는 경우에만 헤더에 추가
         options.headers = {
           ...options.headers,
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         };
       }
     }

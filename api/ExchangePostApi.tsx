@@ -23,7 +23,7 @@ export async function getPostList(page: number) {
       `https://itsop.shop/api/exchange-posts?page=${page}`,
       {
         method: 'GET',
-        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
         // 기타 다른 옵션들...
       }
     );

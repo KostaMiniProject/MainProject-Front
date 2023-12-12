@@ -34,7 +34,9 @@ function ExchangePost({ bid }: { bid: BidType }) {
       {/* 우측 데이터부분 */}
       <div className=" flex-1 px-[5px] flex-col whitespace-nowrap text-ellipsis overflow-hidden">
         {/* 타이틀 */}
-        <div className="font-[800] text-[16px] leading-none ">{bid.title}</div>
+        <div className="font-[800] text-[16px] leading-none text-ellipsis overflow-hidden">
+          {bid.title}
+        </div>
         {/* 주소 */}
         <div className="text-gray text-[12px] leading-none">{bid.address}</div>
         {/* 원하는물건 */}

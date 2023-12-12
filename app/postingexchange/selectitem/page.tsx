@@ -9,9 +9,17 @@ import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { withAuthorization } from '@/HOC/withAuthorization';
 
+interface ItemType {
+  itemId: number;
+  title: string;
+  description: string;
+  images: string;
+  itemStatus: string;
+}
+
 function page() {
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
-  const [itemList, setItemList] = useState([]);
+  const [itemList, setItemList] = useState<ItemType[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -19,8 +27,7 @@ function page() {
     const fetchData = async () => {
       try {
         const items = await getItemList();
-        console.log(items.content);
-        setItemList(items);
+        setItemList(items.data);
       } catch (error) {
         console.error('아이템 목록을 불러오는 중 에러 발생:', error);
       }
@@ -28,6 +35,12 @@ function page() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 데이터를 가져옴
+    console.log(itemList);
+  }, [itemList]);
+
   function handleAddItem() {
     router.push(`/additem?action=posting`);
   }

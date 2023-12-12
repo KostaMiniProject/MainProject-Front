@@ -1,13 +1,11 @@
 'use client';
 import { withAuthorization } from '@/HOC/withAuthorization';
-import { postExchangePost } from '@/api/ExchangePostApi';
-import { getItemById } from '@/api/ItemApi';
+import { getExchangePost, postExchangePost } from '@/api/ExchangePostApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
 import TextAreaBox from '@/components/TextAreaBox';
 import Item, { itemType } from '@/components/item/Item';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 interface postContent {
@@ -15,7 +13,7 @@ interface postContent {
   address: string;
   preferItems: string;
   content: string;
-  selectedItem: {
+  item: {
     itemId: number;
     title: string;
     description: string;
@@ -23,42 +21,39 @@ interface postContent {
     createdAt: string;
   };
 }
-const dumy: postContent = {
-  title: '타이틀',
-  address: '주소',
-  preferItems: '원하는 아이템',
-  content: '내용내용',
-  selectedItem: {
-    itemId: 3,
-    title: '아이템 이름',
-    description: '아이템 내용',
-    images: '',
-    createdAt: '생성날짜',
-  },
-};
 
-function page() {
+function page({ params }: { params: any }) {
   const [title, setTitle] = useState<string>('');
   const [preferItems, setPreferItems] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [selectedItem, setSelectedItem] = useState<itemType>();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const urlPath = usePathname();
+  const [postContent, setPostContent] = useState<postContent>();
 
-  function postComplete() {}
-
-  function selectItem() {}
+  function updatePost() {}
 
   useEffect(() => {
-    const data = dumy;
-    setTitle(data.title);
-    setPreferItems(data.preferItems);
-    setAddress(data.address);
-    setContent(data.content);
-    setSelectedItem(data.selectedItem);
-  }, []);
+    const fetchPostContent = async () => {
+      try {
+        const data = await getExchangePost(params.id);
+        console.log(data);
+        setPostContent(data);
+      } catch (error) {
+        console.error('Error fetching exchange post data:', error);
+      }
+    };
+    fetchPostContent();
+  }, [params.id]);
+
+  useEffect(() => {
+    if (postContent) {
+      setTitle(postContent.title);
+      setPreferItems(postContent.preferItems);
+      setAddress(postContent.address);
+      setContent(postContent.content);
+      setSelectedItem(postContent.item);
+    }
+  }, [postContent]);
 
   return (
     <div>
@@ -94,7 +89,7 @@ function page() {
             fontSize={20}
             height={8}
             rounded="soft"
-            onClick={postComplete}
+            onClick={updatePost}
           />
         </div>
       </div>
