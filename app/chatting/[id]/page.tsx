@@ -1,6 +1,6 @@
 'use client';
 // ChatPage.tsx
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
@@ -53,12 +53,39 @@ function Page({ params }: { params: any }) {
   const [initRoom, setInitRoom] = useState<IRoomMessages>();
   const chatHistoryRef = useRef<HTMLDivElement>(null);
 
-  let socket: any = null;
+  const [callData, setCallData] = useState(false);
+  let waitData = false;
+  let pagenation = 0;
+  // const [pagenation, setPagenation] = useState(0);
+  const [scroll, setScroll] = useState('');
 
+  let socket: any = null;
   const chatRoomId = params.id;
 
   useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
+  const onScroll = () => {
+    const { scrollY } = window;
+    console.log(scrollY);
+    console.log(waitData);
+    if (scrollY <= 20 && !waitData) {
+      // alert('불러오는중');
+      window.scrollTo(0, 1000);
+      pagenation++;
+      waitData = true;
+      fetchChatHistory(pagenation); // 업데이트된 pagenation을 사용
+    } else {
+      setScroll('');
+    }
+  };
+
+  useEffect(() => {
     chatHistoryRef.current?.scrollIntoView({ behavior: 'smooth' });
+    waitData = false;
   }, [messages]);
   useEffect(() => {
     const userId = getCookie('userId');
@@ -144,22 +171,32 @@ function Page({ params }: { params: any }) {
     };
   }, [chatRoomId]);
 
-  async function fetchChatHistory() {
+  async function fetchChatHistory(page: number = 0) {
     console.log('데이터 호출');
+    // setCallData(true);
+    waitData = true;
+
     try {
-      console.log('fetchChatHistory : ' + token); // 토큰 잘넘어오는지 확인
-      const response = await axios.get(
-        `${testUrl}/api/chatRooms/${chatRoomId}?page=0`,
-        {
+      console.log('fetchChatHistory : ' + token);
+
+      const response = await axios
+        .get(`${testUrl}/api/chatRooms/${chatRoomId}?page=${page}`, {
           headers: {
             Authorization: `${getCookie('token')}`,
           },
-        }
-      );
+        })
+        .finally(() => {
+          console.log('호출완료');
+          // setCallData(false);
+        });
 
       if (response.status === 200) {
         setInitRoom(response.data);
-        console.log(response.data); // 데이터 잘 넘어오는지 확인
+        console.log(response.data);
+
+        setTimeout(() => {
+          waitData = false;
+        }, 1000);
         const chatHistory = response.data.messages
           .reverse()
           .map((msg: any) => ({
@@ -169,7 +206,12 @@ function Page({ params }: { params: any }) {
             createAt: formatDate(msg.createAt),
             isRead: msg.isRead,
           }));
-        setMessages(chatHistory);
+
+        if (chatHistory.length === 0) {
+          setMessages(chatHistory);
+        } else {
+          setMessages((prevMessages) => [...chatHistory, ...prevMessages]);
+        }
       }
     } catch (error) {
       console.error('Error fetching chat history', error);
@@ -244,7 +286,7 @@ function Page({ params }: { params: any }) {
         </div>
         <div className="flex justify-between">
           <div className="w-[80px] h-[80px]">
-            <img src={initRoom?.exchangePostImage} />
+            {/* <img src={initRoom?.exchangePostImage} /> */}
           </div>
           <div className="whitespace-nowrap text-ellipsis overflow-hidden">
             <div>

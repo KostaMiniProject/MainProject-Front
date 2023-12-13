@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { MdInsertEmoticon } from 'react-icons/md';
 import TempImg from '@/image/Logo.png';
 import { getData } from '@/api/ProfileApi';
+import Link from 'next/link';
 
 interface profileType {
   id: number;
@@ -24,13 +25,17 @@ function Profile({ profile }: { profile: profileType }) {
         height={60}
         className="w-[30px] h-[30px] rounded-[50%] my-auto"
       />
-      <div className="flex flex-col mx-[5px] items-center whitespace-nowrap text-ellipsis overflow-hidden">
-        <div className="text-title font-[600]">{profile.name}</div>
+      <div className="flex flex-col mx-[5px] my-auto whitespace-nowrap text-ellipsis overflow-hidden">
+        <Link href={''}>
+          <div className="text-title font-[600]">{profile.name}</div>
+        </Link>
         {/* <div className="text-[16px] text-gray">{profile.address}</div> */}
       </div>
-      <div className=" ml-auto flex-col items-center mr-[15px]">
+      <div className=" ml-auto flex-col items-center mr-[15px] my-auto">
         {/* <MdInsertEmoticon size={50} /> */}
-        <div className="text-center">점수 : {profile.rating}</div>
+        <div className="text-center text-title text-gray">
+          점수 : {profile.rating}
+        </div>
       </div>
     </div>
   );

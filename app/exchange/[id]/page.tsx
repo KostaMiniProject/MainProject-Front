@@ -184,42 +184,25 @@ function Page({ params }: { params: any }) {
           {/* 프로필 섹션 */}
           <Profile profile={postContent.profile} />
           {/* 교환 게시글 본문 */}
-          <div className="flex flex-col m-[15px] bg-softbase p-[5px] rounded-[5px]">
+          <div className="flex flex-col">
             {/* 글 상세내용 */}
-            <div className={` p-[10px] rounded-[5px] bg-white border-gray`}>
-              <div className="text-[18px] font-[600] border-gray border-solid border-b-[0.5px]">
-                물건 이름 : {postContent.item.title}
+            <div className={` bg-white border-gray`}>
+              <div>
+                <div className="text-header font-[600]">
+                  물건 이름 : {postContent.item.title}
+                </div>
+                <div className="text-subtitle">
+                  거래 장소 : {postContent.address}
+                </div>
               </div>
-              <div className="text-[18px] font-[600] ">
-                원하는 물건 : {postContent.preferItems}
+              <div className="text-subtitle my-[5px]">
+                <div>원하는 물건 : {postContent.preferItems}</div>
+                <div>물건 상세 : {postContent.content}</div>
               </div>
-              <div>거래 장소 : {postContent.address}</div>
-              <div>물건 상세 : {postContent.content}</div>
             </div>
             {/* 버튼 */}
-            <div className="flex">
-              <div className={` flex-1 text-center `}>
-                <Button
-                  text="입찰 목록"
-                  fontSize={20}
-                  height={5}
-                  rounded="soft"
-                ></Button>
-              </div>
-              <Link
-                href={`/biding?postId=${params.id}`}
-                className={` flex-1 text-center `}
-              >
-                <Button
-                  text="입찰 하기"
-                  fontSize={20}
-                  height={5}
-                  rounded="soft"
-                ></Button>
-              </Link>
-            </div>
           </div>
-          <div className="grid grid-cols-2 m-[15px]">
+          <div className="">
             {/* 입찰 리스트 출력 */}
             {postContent.bidList.map((e: any, i: any) => (
               <Link href={`/bid/${e.bidId}`}>
