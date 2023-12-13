@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import InputBox from '@/components/InputBox';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
+import PostCode from '@/components/signup/PostCode';
 import { postSignUp } from '@/api/SignUpApi';
 import { useRouter } from 'next/navigation';
 
@@ -10,10 +11,23 @@ function page() {
   const [name, setName] = useState<String>('');
   const [email, setEmail] = useState<String>('');
   const [phone, setPhone] = useState<String>('');
-  const [address, setAddress] = useState<String>('');
+  const [address, setAddress] = useState({
+    zcode: '',
+    roadAddr: '',
+    jibunAddr: '',
+    detailAddr: ''
+  });
   const [password, setPassword] = useState<String>('');
   const [checkPassword, setCheckPassword] = useState<String>('');
   const router = useRouter();
+
+  const onClickAddrBtn = () => {
+    PostCode({info: address, setInfo: setAddress});
+  };
+
+  const onChangeDetailAddr = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setAddress({ ...address, detailAddr: e.target.value });
+  };
 
   function signUp() {
     // 간단한 유효성 검사
@@ -86,20 +100,40 @@ function page() {
       <Header backNav title="회원가입"></Header>
       <div className="mx-[15px]">
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600]">이름</div>
+          <div className="text-[20px] my-[10px] font-[600px]">이름</div>
           <InputBox onChange={setName}></InputBox>
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600]">이메일</div>
+          <div className="text-[20px] my-[10px] font-[600px]">이메일</div>
           <InputBox onChange={setEmail}></InputBox>
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600]">전화번호</div>
+          <div className="text-[20px] my-[10px] font-[600px]">전화번호</div>
           <InputBox onChange={setPhone}></InputBox>
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600]">주소</div>
-          <InputBox onChange={setAddress}></InputBox>
+	        <div className="text-[20px] my-[10px] font-[600px]">주소</div>
+	          <div className="flex mb-[6px] justify-between">
+		          <input type="text" placeholder="우편 번호" className="p-2 border-[2px] rounded-[20px] h-[40px] w-[48%]" value={address.zcode} readOnly />
+			        <Button
+                text="우편번호 찾기"
+                fontSize={18}
+                height={5}
+                rounded="soft"
+                onClick={onClickAddrBtn}
+              >
+			        </Button>
+	          </div>
+	          <div className="w-full">
+          		<input type="text" placeholder="도로명 주소" className="p-2 border-[2px] rounded-[20px] h-[40px] w-[48%] mr-[5px]" value={address.roadAddr} readOnly />
+          		<input type="text" placeholder="지번 주소" className="p-2 border-[2px] rounded-[20px] h-[40px] w-[50%]" value={address.jibunAddr} readOnly />
+        	  </div>
+        	  <div className="w-full mt-[10px]">
+          		<input type="text" placeholder="상세 주소" className="p-2 w-full border-[2px] rounded-[20px] h-[40px]"
+            		value={address.detailAddr}
+           			onChange={onChangeDetailAddr}
+          		/>
+        	  </div>
         </div>
         <div className="my-[20px]">
           <div className="text-[20px] my-[10px] font-[600]">비밀번호</div>
