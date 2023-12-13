@@ -1,4 +1,5 @@
 'use client';
+import { withAuthorization } from '@/HOC/withAuthorization';
 import { postItem } from '@/api/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
@@ -55,6 +56,7 @@ function Page() {
       const postItemData = {
         title: title,
         description: content,
+        category: '식품',
       };
       formData.append(
         'itemSaveDTO',
@@ -168,4 +170,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default withAuthorization(Page, ['user']);

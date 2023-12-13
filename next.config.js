@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'kosta-main-bucket.s3.ap-northeast-2.amazonaws.com',
       },
+      {
+        protocol: 'https',
+        hostname: '*',
+      },
     ],
   },
 };
