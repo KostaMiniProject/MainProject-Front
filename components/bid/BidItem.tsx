@@ -19,11 +19,11 @@ function BidItem({
 }) {
   return (
     <div>
-      <div className="relative bg-white p-[2.5px] rounded-[5px] border-solid border-gray border-[1px]">
+      <div className="relative bg-white rounded-[5px] border-solid border-gray ">
         {/* 거절 버튼 */}
         {postOwner ? (
           <div
-            className="absolute right-0 m-[5px] z-10"
+            className="absolute right-0 z-10"
             onClick={(e) => {
               e.stopPropagation();
               alert('asdf');

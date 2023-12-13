@@ -18,15 +18,13 @@ function Header({
   return (
     <div className="sticky top-0 w-full z-500 max-w-[480px] z-[9999]">
       <div className="flex h-[60px] bg-white">
-        <div className="w-[60px]  flex items-center justify-center relative">
-          {backNav ? (
+        {backNav && (
+          <div className="w-[40px]  flex items-center justify-center relative">
             <div onClick={route.back}>
-              <MdArrowBack size={60} />
+              <MdArrowBack size={40} />
             </div>
-          ) : (
-            <Image src={Logo} alt="logo" width={500} height={100} />
-          )}
-        </div>
+          </div>
+        )}
         <div className="flex-1 flex items-center m-[10px] text-[24px] font-[800] whitespace-nowrap text-ellipsis overflow-hidden">
           {title}
         </div>
