@@ -53,6 +53,8 @@ function Page({ params }: { params: any }) {
   const [initRoom, setInitRoom] = useState<IRoomMessages>();
   const chatHistoryRef = useRef<HTMLDivElement>(null);
 
+  let socket: any = null;
+
   const chatRoomId = params.id;
 
   useEffect(() => {
@@ -69,7 +71,9 @@ function Page({ params }: { params: any }) {
       setToken(token);
     }
 
-    const socket = new SockJS(`${testUrl}/ws`);
+    if (!socket) {
+      socket = new SockJS(`${testUrl}/ws`);
+    }
     const client = new Client({
       webSocketFactory: () => socket,
     });
@@ -84,6 +88,7 @@ function Page({ params }: { params: any }) {
       client.subscribe(`/sub/chatroom/${chatRoomId}`, (message) => {
         //메세지 받을 때 로직
         if (message.body) {
+          const myId = getCookie('userId');
           const parsedMessage = JSON.parse(message.body);
 
           if (parsedMessage.senderId) {
@@ -91,7 +96,6 @@ function Page({ params }: { params: any }) {
             // 새로운 메시지를 받았을 때
             const receivedMessage: IReceivedMessage = parsedMessage;
             setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-            const myId = getCookie('userId');
             if (myId)
               if (!(receivedMessage.senderId === parseInt(myId))) {
                 console.log('상대방 메세지를 읽음');
@@ -118,13 +122,20 @@ function Page({ params }: { params: any }) {
                   : msg
               )
             );
+            if (myId)
+              setMessages((prevMessages) =>
+                prevMessages.map((msg) =>
+                  msg.senderId === parseInt(myId)
+                    ? { ...msg, isRead: true }
+                    : msg
+                )
+              );
           }
 
           //콘솔로그
         }
       });
     };
-
     client.activate();
     setStompClient(client);
 
@@ -134,10 +145,11 @@ function Page({ params }: { params: any }) {
   }, [chatRoomId]);
 
   async function fetchChatHistory() {
+    console.log('데이터 호출');
     try {
       console.log('fetchChatHistory : ' + token); // 토큰 잘넘어오는지 확인
       const response = await axios.get(
-        `${testUrl}/api/chatRooms/${chatRoomId}`,
+        `${testUrl}/api/chatRooms/${chatRoomId}?page=0`,
         {
           headers: {
             Authorization: `${getCookie('token')}`,
@@ -148,13 +160,15 @@ function Page({ params }: { params: any }) {
       if (response.status === 200) {
         setInitRoom(response.data);
         console.log(response.data); // 데이터 잘 넘어오는지 확인
-        const chatHistory = response.data.messages.map((msg: any) => ({
-          senderId: msg.senderId,
-          content: msg.content,
-          imageUrl: msg.imageUrl,
-          createAt: formatDate(msg.createAt),
-          isRead: msg.isRead,
-        }));
+        const chatHistory = response.data.messages
+          .reverse()
+          .map((msg: any) => ({
+            senderId: msg.senderId,
+            content: msg.content,
+            imageUrl: msg.imageUrl,
+            createAt: formatDate(msg.createAt),
+            isRead: msg.isRead,
+          }));
         setMessages(chatHistory);
       }
     } catch (error) {

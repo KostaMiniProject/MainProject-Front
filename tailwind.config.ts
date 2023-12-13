@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     fontSize: {
       header: '16px',
-      subtitle: '14px',
-      title: '12px',
+      subtitle: '12px',
+      title: '14px',
       content: '10px',
     },
     colors: {
