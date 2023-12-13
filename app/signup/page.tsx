@@ -15,17 +15,17 @@ function page() {
     zcode: '',
     roadAddr: '',
     jibunAddr: '',
-    detailAddr: ''
+    detailAddr: '',
   });
   const [password, setPassword] = useState<String>('');
   const [checkPassword, setCheckPassword] = useState<String>('');
   const router = useRouter();
 
   const onClickAddrBtn = () => {
-    PostCode({info: address, setInfo: setAddress});
+    PostCode({ info: address, setInfo: setAddress });
   };
 
-  const onChangeDetailAddr = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeDetailAddr = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress({ ...address, detailAddr: e.target.value });
   };
 
@@ -112,28 +112,48 @@ function page() {
           <InputBox onChange={setPhone}></InputBox>
         </div>
         <div className="">
-	        <div className="text-[20px] my-[10px] font-[600px]">주소</div>
-	          <div className="flex mb-[6px] justify-between">
-		          <input type="text" placeholder="우편 번호" className="p-2 border-[2px] rounded-[20px] h-[40px] w-[48%]" value={address.zcode} readOnly />
-			        <Button
-                text="우편번호 찾기"
-                fontSize={18}
-                height={5}
-                rounded="soft"
-                onClick={onClickAddrBtn}
-              >
-			        </Button>
-	          </div>
-	          <div className="w-full">
-          		<input type="text" placeholder="도로명 주소" className="p-2 border-[2px] rounded-[20px] h-[40px] w-[48%] mr-[5px]" value={address.roadAddr} readOnly />
-          		<input type="text" placeholder="지번 주소" className="p-2 border-[2px] rounded-[20px] h-[40px] w-[50%]" value={address.jibunAddr} readOnly />
-        	  </div>
-        	  <div className="w-full mt-[10px]">
-          		<input type="text" placeholder="상세 주소" className="p-2 w-full border-[2px] rounded-[20px] h-[40px]"
-            		value={address.detailAddr}
-           			onChange={onChangeDetailAddr}
-          		/>
-        	  </div>
+          <div className="text-[20px] my-[10px] font-[600px]">주소</div>
+          <div className="flex mb-[6px] justify-between">
+            <input
+              type="text"
+              placeholder="우편 번호"
+              className="p-2 border-[2px] rounded-[20px] h-[40px] w-[48%]"
+              value={address.zcode}
+              readOnly
+            />
+            <Button
+              text="우편번호 찾기"
+              fontSize={18}
+              height={5}
+              rounded="soft"
+              onClick={onClickAddrBtn}
+            />
+          </div>
+          <div className="w-full">
+            <input
+              type="text"
+              placeholder="도로명 주소"
+              className="p-2 border-[2px] rounded-[20px] h-[40px] w-[48%] mr-[5px]"
+              value={address.roadAddr}
+              readOnly
+            />
+            <input
+              type="text"
+              placeholder="지번 주소"
+              className="p-2 border-[2px] rounded-[20px] h-[40px] w-[50%]"
+              value={address.jibunAddr}
+              readOnly
+            />
+          </div>
+          <div className="w-full mt-[10px]">
+            <input
+              type="text"
+              placeholder="상세 주소"
+              className="p-2 w-full border-[2px] rounded-[20px] h-[40px]"
+              value={address.detailAddr}
+              onChange={onChangeDetailAddr}
+            />
+          </div>
         </div>
         <div className="my-[20px]">
           <div className="text-[20px] my-[10px] font-[600]">비밀번호</div>
