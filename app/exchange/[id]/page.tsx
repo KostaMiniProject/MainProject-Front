@@ -12,6 +12,7 @@ import { getCookie } from '@/api/Cookie';
 import Image from 'next/image';
 import Link from 'next/link';
 import { postCreateRoom } from '@/api/ChattingApi';
+import BottomFixed from '@/components/BottomFixed';
 
 interface bidContent {
   id: number;
@@ -144,32 +145,9 @@ function Page({ params }: { params: any }) {
           <div>
             <div>
               {postContent.bidList.map((e: any, i: any) => (
-                <div key={i} className="relative border-gray border-b-[0.5px]">
-                  <div className="flex m-[5px]">
-                    <div className="relative w-[80px] h-[80px] overflow-hidden">
-                      <Image
-                        src={e.imageUrl}
-                        alt="Item image"
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        style={{ objectFit: 'cover' }}
-                      />
-                    </div>
-                    <div className="flex-1 mx-[5px]">
-                      <div className="font-[600]">{e.items}</div>
-                      <div className="text-gray text-[12px]">{e.name}</div>
-                    </div>
-                    <div className="w-[80px] h-[80px] relative flex">
-                      <div
-                        onClick={handleChatting}
-                        className="flex-1 flex justify-center flex-col bg-base rounded-[5px] justify-center"
-                      >
-                        <div className="text-center">채 팅</div>
-                      </div>
-                      <div className="mx-[5px]">X</div>
-                    </div>
-                  </div>
-                </div>
+                <Link href={`/bid/${e.bidId}`} key={i}>
+                  <BidItem bid={e} />
+                </Link>
               ))}
             </div>
           </div>
@@ -186,7 +164,7 @@ function Page({ params }: { params: any }) {
           {/* 교환 게시글 본문 */}
           <div className="flex flex-col">
             {/* 글 상세내용 */}
-            <div className={` bg-white border-gray`}>
+            <div className={` bg-white border-gray border-b-[0.5px]`}>
               <div>
                 <div className="text-header font-[600]">
                   물건 이름 : {postContent.item.title}
@@ -205,11 +183,23 @@ function Page({ params }: { params: any }) {
           <div className="">
             {/* 입찰 리스트 출력 */}
             {postContent.bidList.map((e: any, i: any) => (
-              <Link href={`/bid/${e.bidId}`}>
-                <BidItem bid={e} key={i} />
+              <Link href={`/bid/${e.bidId}`} key={i}>
+                <BidItem bid={e} />
               </Link>
             ))}
           </div>
+          <BottomFixed>
+            <div className="flex justify-end m-[10px]">
+              <Link href={`/biding?postId=${params.id}`}>
+                <Button
+                  text="입찰 하기"
+                  height={10}
+                  fontSize={14}
+                  rounded="soft"
+                />
+              </Link>
+            </div>
+          </BottomFixed>
         </>
       )}
     </div>

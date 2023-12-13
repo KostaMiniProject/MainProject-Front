@@ -197,15 +197,32 @@ function Page({ params }: { params: any }) {
         setTimeout(() => {
           waitData = false;
         }, 1000);
-        const chatHistory = response.data.messages
-          .reverse()
-          .map((msg: any) => ({
+        const chatHistory = response.data.messages.reverse().map((msg: any) => {
+          const myId = getCookie('userId');
+          if (msg.senderId !== myId) {
+            return {
+              senderId: msg.senderId,
+              content: msg.content,
+              imageUrl: msg.imageUrl,
+              createAt: formatDate(msg.createAt),
+              isRead: true,
+            };
+          }
+          return {
             senderId: msg.senderId,
             content: msg.content,
             imageUrl: msg.imageUrl,
             createAt: formatDate(msg.createAt),
             isRead: msg.isRead,
-          }));
+          };
+        });
+        // .map((msg: any) => ({
+        //   senderId: msg.senderId,
+        //   content: msg.content,
+        //   imageUrl: msg.imageUrl,
+        //   createAt: formatDate(msg.createAt),
+        //   isRead: msg.isRead,
+        // }));
 
         if (chatHistory.length === 0) {
           setMessages(chatHistory);
