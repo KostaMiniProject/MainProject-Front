@@ -40,13 +40,6 @@ interface PostContent {
   address: string;
   content: string;
   bidList: bidContent[];
-  // bidlist
-  // {
-  //   id: number;
-  //   name: string;
-  //   imageUrl: string;
-  //   items: string;
-  // }
 }
 
 function Page({ params }: { params: any }) {
@@ -55,12 +48,6 @@ function Page({ params }: { params: any }) {
   const router = useRouter();
   const userId: string | undefined = getCookie('userId');
 
-  // async function postCreateChat(bidId:number) {
-  //   const body = {
-  //     bidId: bidId
-  //   }
-  //   postCreateRoom(body);
-  // }
   useEffect(() => {
     const fetchPostContent = async () => {
       try {
@@ -75,16 +62,18 @@ function Page({ params }: { params: any }) {
     fetchPostContent();
   }, [params.id, userId]);
 
+  function handleDeletePost() {}
   if (!postContent) {
     // 데이터 로딩 중에 표시할 내용
     return <div>Loading...</div>;
   }
-  async function handleChatting() {
+  async function handleChatting(bidId: number) {
     const body = {
-      bidId: params.id,
+      bidId: bidId,
     };
     try {
       const returnData = await postCreateRoom(body);
+      console.log('채팅방 입장');
       console.log(returnData);
       router.push(`/chatting/${returnData.chatRoomId}`);
     } catch (error) {
@@ -96,7 +85,10 @@ function Page({ params }: { params: any }) {
       <Header title={postContent.title} backNav>
         {postContent.postOwner ? (
           <>
-            <div className="w-[60px] flex justify-center">
+            <div
+              className="w-[60px] flex justify-center cursor-pointer "
+              onClick={handleDeletePost}
+            >
               <MdDeleteForever size={40} />
             </div>
 
@@ -150,7 +142,9 @@ function Page({ params }: { params: any }) {
                       fontSize={16}
                       height={5}
                       rounded="soft"
-                      onClick={handleChatting}
+                      onClick={() => {
+                        handleChatting(e.bidId);
+                      }}
                     />
                     {/* </Link> */}
                   </div>
