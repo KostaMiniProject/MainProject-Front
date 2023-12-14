@@ -82,6 +82,8 @@ function Page() {
     const postid = searchParams.get('postId');
     if (postid) {
       router.push(`/biding?postId=${postid}`);
+    } else {
+      router.back();
     }
   }
   function openFileInput() {
