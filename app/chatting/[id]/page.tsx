@@ -70,8 +70,8 @@ function Page({ params }: { params: any }) {
   }, []);
   const onScroll = () => {
     const { scrollY } = window;
-    console.log(scrollY);
-    console.log(waitData);
+    // console.log(scrollY);
+    // console.log(waitData);
     if (scrollY <= 20 && !waitData) {
       // alert('불러오는중');
       window.scrollTo(0, 1000);
@@ -284,10 +284,10 @@ function Page({ params }: { params: any }) {
             <div className="bg-gray rounded-lg max-w-[260px]">
               {message.content}
             </div>
-            <div className="text-xs text-gray ml-2 mb-1">
-              Time: {message.createAt}
+            <div className="text-title text-gray">{message.createAt}</div>
+            <div className="text-title text-gray">
+              {message.isRead && '읽음'}
             </div>
-            <div>{message.isRead && '읽음'}</div>
           </div>
         </div>
       </div>

@@ -37,7 +37,7 @@ function ExchangePost({ bid }: { bid: BidType }) {
     return;
   }
   return (
-    <div className=" flex my-[5px] ">
+    <div className=" flex py-[5px] border-b-[0.5px] border-gray">
       <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[5px] rounded-[8px]">
         <Image
           src={bid.imgUrl}

@@ -37,8 +37,8 @@ function page() {
   }
   return (
     <div>
-      <div className="w-full flex-col flex items-center text-center justify-center my-[60px]">
-        <div className="text-5xl mb-[20px]">가치잇솝</div>
+      <div className="w-full flex-col flex items-center text-center justify-center">
+        <div className="text-[40px] mb-[20px] py-[60px]">가치잇솝</div>
         <Image src={Logo} width={120} height={120} alt="로고" priority></Image>
       </div>
       <div className="mx-[15px]">

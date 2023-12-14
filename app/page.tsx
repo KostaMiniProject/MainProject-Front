@@ -58,42 +58,26 @@ function Page() {
         {/* 컨텐츠 */}
 
         <div>
-          <div className="">
-            <div className="text-header font-[600] border-b-[0.5px] border-gray py-[10px]">
-              현재 진행중인 교환
-            </div>
-            {/* ExchangePost 리스트 */}
-            <div>
-              {postData.map((e: any, i: any) => {
-                return (
-                  e.status !== 'deleted' && (
-                    <div
-                      key={i}
-                      className="cursor-pointer border-b-[0.5px] box-border border-gray"
-                      onClick={() => {
-                        // 연결 페이지
-                        router.push(`/exchange/${e.exchangePostId}`);
-                      }}
-                    >
-                      {/* 포스트 아이템 생성 */}
-                      <ExchangePost key={i} bid={e} />
-                    </div>
-                  )
-                );
-              })}
-            </div>
+          <div className="text-header font-[600] border-b-[0.5px] border-gray py-[10px]">
+            현재 진행중인 교환
+          </div>
+          {/* ExchangePost 리스트 */}
+          <div>
+            {postData.map((e: any, i: any) => {
+              return (
+                <Link href={`/exchange/${e.exchangePostId}`} key={i}>
+                  {/* 포스트 아이템 생성 */}
+                  <ExchangePost key={i} bid={e} />
+                </Link>
+              );
+            })}
           </div>
           {/* 글쓰기 버튼 */}
           <BottomFixed>
             <div className="flex justify-end">
-              <Button
-                text="+ 글 쓰기"
-                height={10}
-                fontSize={16}
-                onClick={() => {
-                  router.push('/postingexchange/selectitem');
-                }}
-              />
+              <Link href={'/postingexchange/selectitem'}>
+                <Button text="+ 글 쓰기" height={10} fontSize={16} />
+              </Link>
             </div>
           </BottomFixed>
         </div>

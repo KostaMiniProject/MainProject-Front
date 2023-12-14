@@ -55,6 +55,12 @@ function Page({ params }: { params: any }) {
   const router = useRouter();
   const userId: string | undefined = getCookie('userId');
 
+  // async function postCreateChat(bidId:number) {
+  //   const body = {
+  //     bidId: bidId
+  //   }
+  //   postCreateRoom(body);
+  // }
   useEffect(() => {
     const fetchPostContent = async () => {
       try {
@@ -74,11 +80,6 @@ function Page({ params }: { params: any }) {
     return <div>Loading...</div>;
   }
   async function handleChatting() {
-    // {
-    //   "receiverId" : 1, // 메세지를 받을 사람의 ID = 입찰자의 ID
-    //   "exchangePostId" : 2, // 교환 게시글의 ID
-    //   "bidId" : 2 // 입찰의 ID
-    // }
     const body = {
       receiverId: 4,
       exchangePostId: 6,
@@ -88,15 +89,6 @@ function Page({ params }: { params: any }) {
     console.log(returnData);
     router.push(`/chatting/${returnData.chatRoomId}`);
   }
-
-  //   <>
-  //   <div className="w-[60px] flex justify-center">
-  //     <MdDeleteForever size={40} />
-  //   </div>
-  //   <div className="w-[60px] flex justify-center">
-  //     <MdEditNote size={40} />
-  //   </div>
-  // </>
   return (
     <div>
       <Header title={postContent.title} backNav>
@@ -106,9 +98,6 @@ function Page({ params }: { params: any }) {
               <MdDeleteForever size={40} />
             </div>
 
-            {/* <Link
-              href={`/postingexchange/edit?post=${params.id}&selectedItem=${postContent.item.itemId}`}
-            > */}
             <Link href={`/exchange/${params.id}/edit`}>
               <MdEditNote size={40} />
             </Link>
@@ -137,17 +126,32 @@ function Page({ params }: { params: any }) {
             </div>
           </div>
           <div className="border-gray border-b-[0.5px] border-solid">
-            <div className="m-[10px] flex justify-between font-[600]">
+            <div className="my-[10px] flex justify-between font-[600]">
               <div>입찰목록</div>
-              <div>거절목록</div>
+              {/* <div>거절목록</div> */}
             </div>
           </div>
           <div>
             <div>
               {postContent.bidList.map((e: any, i: any) => (
-                <Link href={`/bid/${e.bidId}`} key={i}>
-                  <BidItem bid={e} />
-                </Link>
+                <div
+                  key={i}
+                  className="relative justify-between flex items-center  border-solid border-b-[0.5px] border-gray"
+                >
+                  <Link href={`/bid/${e.bidId}`}>
+                    <BidItem bid={e} />
+                  </Link>
+                  <div className="absolute right-0" onClick={() => {}}>
+                    <Link href={`/chatting/${e.bidId}`}>
+                      <Button
+                        text="대화하기"
+                        fontSize={16}
+                        height={5}
+                        rounded="soft"
+                      />
+                    </Link>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -183,9 +187,14 @@ function Page({ params }: { params: any }) {
           <div className="">
             {/* 입찰 리스트 출력 */}
             {postContent.bidList.map((e: any, i: any) => (
-              <Link href={`/bid/${e.bidId}`} key={i}>
-                <BidItem bid={e} />
-              </Link>
+              <div
+                key={i}
+                className=" border-solid border-b-[0.5px] border-gray"
+              >
+                <Link href={`/bid/${e.bidId}`}>
+                  <BidItem bid={e} />
+                </Link>
+              </div>
             ))}
           </div>
           <BottomFixed>
