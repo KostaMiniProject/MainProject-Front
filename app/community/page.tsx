@@ -4,6 +4,7 @@ import InputBox from '@/components/InputBox';
 import React from 'react';
 import { MdSearch } from 'react-icons/md';
 import CommunityPost from '@/components/community/CommunityPost';
+import CommunityPostUnImage from '@/components/community/CommunityPostUnImage';
 
 function Page() {
   return (
@@ -19,6 +20,9 @@ function Page() {
       </div>
       <div className="mx-[15px]">
         <CommunityPost></CommunityPost>
+      </div>
+      <div className="mx-[15px]">
+      <CommunityPostUnImage></CommunityPostUnImage>
       </div>
     </div>
   );

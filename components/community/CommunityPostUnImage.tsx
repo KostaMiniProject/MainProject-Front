@@ -1,5 +1,4 @@
 import React from 'react';
-import Carousel from '../carousel/Carousel';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { MdBookmarkBorder, MdBookmark } from 'react-icons/md';
 import { MdChatBubbleOutline } from 'react-icons/md';
@@ -17,18 +16,14 @@ function CommunityPost() {
     <div className="w-full p-[10px] flex border-solid border-[0.5px] border-gray rounded-[5px] my-[5px]">
       <div></div>
       <div className="w-full ">
-        <div className="flex mb-[10px]">
+        <div className="flex mb-[20px]">
           <div className="w-[40px] h-[40px] bg-black rounded-[50%]"></div>
           <div className='flex justify-center items-center text-gray ml-[10px]'>
             닉네임
             <FaAngleRight size={15} />
           </div>
         </div>
-        <div className="w-[100%] h-[auto]">
-          {/* 캐러셀에 대한 설정 */}
-          <Carousel images={[{}, {}]}></Carousel>
-        </div>
-        <div className='flex justify-between my-[5px]'>
+        <div className='flex justify-between'>
           <div className="flex">
             <FaRegHeart size={25} />
             <FaHeart size={25} />

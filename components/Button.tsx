@@ -45,7 +45,7 @@ function Button({
     <div
       className={ButtonClass(height, fontSize, btnStyle, rounded)}
       onClick={onClick}
-      style={{ padding: `${height}px`, fontSize: `${fontSize}px` }}
+      style={{ padding: `${height}px`, fontSize: `${fontSize}px`, textAlign: 'center' }}
     >
       {text}
     </div>
