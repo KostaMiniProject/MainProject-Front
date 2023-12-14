@@ -81,13 +81,15 @@ function Page({ params }: { params: any }) {
   }
   async function handleChatting() {
     const body = {
-      receiverId: 4,
-      exchangePostId: 6,
-      bidId: 4,
+      bidId: params.id,
     };
-    const returnData = await postCreateRoom(body);
-    console.log(returnData);
-    router.push(`/chatting/${returnData.chatRoomId}`);
+    try {
+      const returnData = await postCreateRoom(body);
+      console.log(returnData);
+      router.push(`/chatting/${returnData.chatRoomId}`);
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <div>
@@ -142,14 +144,15 @@ function Page({ params }: { params: any }) {
                     <BidItem bid={e} />
                   </Link>
                   <div className="absolute right-0" onClick={() => {}}>
-                    <Link href={`/chatting/${e.bidId}`}>
-                      <Button
-                        text="대화하기"
-                        fontSize={16}
-                        height={5}
-                        rounded="soft"
-                      />
-                    </Link>
+                    {/* <Link href={`/chatting/${e.bidId}`}> */}
+                    <Button
+                      text="대화하기"
+                      fontSize={16}
+                      height={5}
+                      rounded="soft"
+                      onClick={handleChatting}
+                    />
+                    {/* </Link> */}
                   </div>
                 </div>
               ))}
