@@ -1,80 +1,53 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import SockJS from 'sockjs-client';
-import { Client } from '@stomp/stompjs';
+// page.tsx
 import { withAuthorization } from '@/HOC/withAuthorization';
+import { getChatRoomList } from '@/api/ChattingApi';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 
-interface IMessage {
-  senderId: number;
-  content: string;
-  chatRoomId: number;
-}
-
-const Page: React.FC = () => {
-  const [stompClient, setStompClient] = useState<Client | null>(null);
-  const [messages, setMessages] = useState<IMessage[]>([]);
-  const [newMessage, setNewMessage] = useState<string>('');
+function Page() {
+  const [roomList, setRoomList] = useState<any[] | undefined>();
 
   useEffect(() => {
-    const socket = new SockJS('https://itsop.shop/ws');
-    const client = new Client({
-      webSocketFactory: () => socket,
-    });
-
-    client.onConnect = () => {
-      console.log('Connected!');
-      client.subscribe('/sub/messages', (message) => {
-        if (message.body) {
-          const receivedMessage: IMessage = JSON.parse(message.body);
-          setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-        }
-      });
+    const fetchRoomList = async () => {
+      try {
+        const data: any[] = await getChatRoomList();
+        setRoomList(data);
+      } catch (error) {
+        console.error('Error fetching exchange post data:', error);
+      }
     };
-
-    client.activate();
-    setStompClient(client);
-
-    return () => {
-      client.deactivate();
-    };
+    fetchRoomList();
   }, []);
-
-  const sendMessage = () => {
-    if (stompClient && newMessage.trim() !== '') {
-      const message: IMessage = {
-        senderId: 3,
-        content: newMessage,
-        chatRoomId: 1,
-      };
-      stompClient.publish({
-        destination: '/pub/send',
-        body: JSON.stringify(message),
-      });
-      setNewMessage('');
-    }
-  };
 
   return (
     <div>
-      <div>
-        <ul>
-          {messages.map((message, index) => (
-            <li key={index}>
-              <strong>{message.senderId}:</strong> {message.content}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        />
-        <button onClick={sendMessage}>Send</button>
-      </div>
+      <h1>Your Chat Rooms</h1>
+      <ul>
+        {roomList?.map((room, index) => (
+          <Link
+            href={`/chatting/${room.chatRoomId}`}
+            key={index}
+            className="flex items-center bg-gray-200 p-4 mb-4 rounded"
+          >
+            <img
+              src={room.participantProfileImg}
+              alt="Profile"
+              className="w-12 h-12 rounded-full mr-4"
+            />
+            <div>
+              <p>Exchange Post Address: {room.exchangePostAddress}</p>
+              <p>Last Message: {room.lastMessageContent}</p>
+              <p>
+                Last Message Time Difference: {room.lastMessageTimeDifference}
+              </p>
+              <p>Participant Name: {room.participantName}</p>
+            </div>
+          </Link>
+        ))}
+      </ul>
     </div>
   );
-};
+}
 
 export default withAuthorization(Page, ['user']);

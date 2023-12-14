@@ -6,18 +6,32 @@ import { getItemList } from '@/api/ItemApi';
 import React, { useEffect, useState } from 'react';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { postBid } from '@/api/BidApi';
+import { withAuthorization } from '@/HOC/withAuthorization';
 
 function Page() {
+  const searchParams = useSearchParams();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [itemList, setItemList] = useState([]); // 아이템 목록을 상태로 관리
+  const [postId, setPostId] = useState<number>();
   const router = useRouter();
 
   useEffect(() => {
-    // 비동기로 아이템 목록을 불러오고 상태에 설정
-    getItemList().then((data) => {
-      setItemList(data);
-    });
+    const postid = searchParams.get('postId');
+    if (postid) {
+      setPostId(parseInt(postid));
+    }
+    async function fetchData() {
+      try {
+        const data = await getItemList();
+        console.log(data);
+        setItemList(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
   }, []);
 
   const handleItemClick = (itemId: number) => {
@@ -30,11 +44,19 @@ function Page() {
   };
 
   const handleSendData = () => {
-    // 선택된 아이템들을 JSON 데이터로 전송
-    const selectedItemsData = itemList.filter((item: any) =>
-      selectedItems.includes(item.id)
-    );
-    console.log(JSON.stringify(selectedItemsData));
+    const body = {
+      // itemIds: JSON.stringify(selectedItems),
+      itemIds: selectedItems,
+    };
+    if (postId) {
+      try {
+        postBid(postId, body);
+        router.push(`/exchange/${postId}`);
+        // console.log(body);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -46,18 +68,18 @@ function Page() {
       <div className="m-[15px]">
         {itemList.map((item: any) => (
           <div
-            key={item.id}
+            key={item.itemId}
             style={
-              selectedItems.includes(item.id)
+              selectedItems.includes(item.itemId)
                 ? {
                     backgroundColor: '#ffe8f9',
                   }
                 : {}
             }
             className={`item-wrapper ${
-              selectedItems.includes(item.id) ? 'selected' : ''
+              selectedItems.includes(item.itemId) ? 'selected' : ''
             }`}
-            onClick={() => handleItemClick(item.id)}
+            onClick={() => handleItemClick(item.itemId)}
           >
             <Item item={item} />
           </div>
@@ -69,7 +91,7 @@ function Page() {
             rounded="rounded"
             text="+ 물건 추가"
             onClick={() => {
-              router.push('/additem');
+              router.push(`/additem?postId=${postId}`);
             }}
             height={8}
             fontSize={16}
@@ -89,4 +111,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default withAuthorization(Page, ['user']);

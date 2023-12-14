@@ -1,6 +1,7 @@
 //입찰 아이템 상세 리스트 관련 API
 
 import { getCookie } from './Cookie';
+import { commonFetch } from './commonApi/CommonFetch';
 export async function postItem(formData: FormData) {
   const token = getCookie('token');
   const res = await fetch('https://itsop.shop/api/items', {
@@ -8,7 +9,7 @@ export async function postItem(formData: FormData) {
     body: formData,
     headers: {
       // 토큰이 있다면 추가하세요
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
       // 'Content-Type': 'multipart/form-data',
     },
   })
@@ -23,25 +24,16 @@ export async function postItem(formData: FormData) {
 }
 export async function getItemList() {
   try {
-    // 토큰을 쿠키에서 가져오기
-    const token = getCookie('token');
-
-    const res = await fetch('https://itsop.shop/api/items', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // 기타 필요한 헤더도 추가할 수 있습니다.
-        'Content-Type': 'application/json',
-      },
+    const result = await commonFetch('https://itsop.shop/api/items/bid', {
+      method: 'GET',
+      checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+      // 기타 다른 옵션들...
     });
 
-    const data = await res.json();
-    console.log(data);
-    // Response 객체가 아니라 data를 반환하도록 수정
-    return data;
+    console.log('Fetched data:', result);
+    return result;
   } catch (error) {
-    console.error('Error in getPostList:', error);
-    // 오류 발생 시 에러 객체 반환
-    return error;
+    console.error('Error fetching data:', error);
   }
 }
 
@@ -52,7 +44,7 @@ export async function getItemById(id: number | string) {
 
     const res = await fetch(`https://itsop.shop/api/items/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
         // 기타 필요한 헤더도 추가할 수 있습니다.
         'Content-Type': 'application/json',
       },
@@ -102,72 +94,21 @@ export async function getItemById(id: number | string) {
 //   return dumyData;
 // }
 
-export function getItemDetailById(id: number) {
-  const dumyData: any = [
-    {
-      id: 0,
-      title: '클립',
-      category: '사무용품',
-      description: `물건 상태가 좋을 뿐더러 깨끗하게 닦에서 빛이납니다`,
-      image_url: [
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-      ],
+export async function getItemDetailById(id: number) {
+  try {
+    const result = await commonFetch(`https://itsop.shop/api/items/${id}`, {
+      method: 'GET',
+      // checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+      // 기타 다른 옵션들...
+    });
 
-      profile: {
-        id: 0,
-        name: '오리동햄버거마스터',
-        address: '오리동 맥도날드 1번자리',
-        image_url:
-          'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20231127_174618039.png',
-        rating: 5,
-      },
-      created_at: '2023-11-24',
-    },
-    {
-      id: 1,
-      title: '모니터',
-      category: '전자제품',
-      description: `조금 기스가 있지만 작동은 합니다`,
-      image_url: [
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-      ],
-
-      profile: {
-        id: 0,
-        name: '오리동',
-        address: '오리동 자리',
-        image_url:
-          'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20231127_174618039.png',
-        rating: 5,
-      },
-      created_at: '2023-11-24',
-    },
-    {
-      id: 2,
-      title: '안경',
-      category: '생활용품',
-      description: `렌즈가 다 뽀사져서 테만 남았어요`,
-      image_url: [
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-      ],
-
-      profile: {
-        id: 0,
-        name: '햄버거마스터',
-        address: '맥도날드 1번자리',
-        image_url:
-          'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20231127_174618039.png',
-        rating: 5,
-      },
-      created_at: '2023-11-24',
-    },
-  ];
-
-  return dumyData[id];
+    // const data = await res.json();
+    console.log(result);
+    // Response 객체가 아니라 data를 반환하도록 수정
+    return result;
+  } catch (error) {
+    console.error('Error in getPostList:', error);
+    // 오류 발생 시 에러 객체 반환
+    return error;
+  }
 }

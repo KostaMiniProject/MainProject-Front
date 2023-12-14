@@ -4,17 +4,26 @@ import Profile from '@/components/Profile';
 import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
 import Header from '@/components/Header';
-import { MdReport } from 'react-icons/md';
+import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
 import { getExchangePost } from '@/api/ExchangePostApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '@/api/Cookie';
 import Image from 'next/image';
+import Link from 'next/link';
+import { postCreateRoom } from '@/api/ChattingApi';
+import BottomFixed from '@/components/BottomFixed';
 
+interface bidContent {
+  id: number;
+  name: string;
+  imageUrl: string;
+  items: string;
+}
 interface PostContent {
   title: string;
-  post_owner: string;
   item: {
+    itemId: number;
     description: string;
     title: string;
     imageUrls: string[];
@@ -30,7 +39,7 @@ interface PostContent {
   preferItems: string;
   address: string;
   content: string;
-  bidList: any[];
+  bidList: bidContent[];
   // bidlist
   // {
   //   id: number;
@@ -42,10 +51,16 @@ interface PostContent {
 
 function Page({ params }: { params: any }) {
   const [postContent, setPostContent] = useState<PostContent | null>(null);
-  // const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [returnData, setReturnData] = useState();
   const router = useRouter();
   const userId: string | undefined = getCookie('userId');
 
+  // async function postCreateChat(bidId:number) {
+  //   const body = {
+  //     bidId: bidId
+  //   }
+  //   postCreateRoom(body);
+  // }
   useEffect(() => {
     const fetchPostContent = async () => {
       try {
@@ -64,20 +79,36 @@ function Page({ params }: { params: any }) {
     // 데이터 로딩 중에 표시할 내용
     return <div>Loading...</div>;
   }
-  //   <>
-  //   <div className="w-[60px] flex justify-center">
-  //     <MdDeleteForever size={40} />
-  //   </div>
-  //   <div className="w-[60px] flex justify-center">
-  //     <MdEditNote size={40} />
-  //   </div>
-  // </>
+  async function handleChatting() {
+    const body = {
+      bidId: params.id,
+    };
+    try {
+      const returnData = await postCreateRoom(body);
+      console.log(returnData);
+      router.push(`/chatting/${returnData.chatRoomId}`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div>
       <Header title={postContent.title} backNav>
-        <div>
-          <MdReport size={40} />
-        </div>
+        {postContent.postOwner ? (
+          <>
+            <div className="w-[60px] flex justify-center">
+              <MdDeleteForever size={40} />
+            </div>
+
+            <Link href={`/exchange/${params.id}/edit`}>
+              <MdEditNote size={40} />
+            </Link>
+          </>
+        ) : (
+          <div>
+            <MdReport size={40} />
+          </div>
+        )}
       </Header>
       {postContent.postOwner ? (
         <div className="">
@@ -97,35 +128,31 @@ function Page({ params }: { params: any }) {
             </div>
           </div>
           <div className="border-gray border-b-[0.5px] border-solid">
-            <div className="m-[10px] flex justify-between font-[600]">
+            <div className="my-[10px] flex justify-between font-[600]">
               <div>입찰목록</div>
-              <div>거절목록</div>
+              {/* <div>거절목록</div> */}
             </div>
           </div>
           <div>
             <div>
               {postContent.bidList.map((e: any, i: any) => (
-                <div key={i} className="relative border-gray border-b-[0.5px]">
-                  <div className="flex m-[5px]">
-                    <div className="relative w-[80px] h-[80px] overflow-hidden">
-                      <Image
-                        src={e.imageUrl}
-                        alt="Item image"
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        style={{ objectFit: 'cover' }}
-                      />
-                    </div>
-                    <div className="flex-1 mx-[5px]">
-                      <div className="font-[600]">{e.items}</div>
-                      <div className="text-gray text-[12px]">{e.name}</div>
-                    </div>
-                    <div className="w-[80px] h-[80px] relative flex">
-                      <div className="flex-1 flex justify-center flex-col bg-base rounded-[5px] justify-center">
-                        <div className="text-center">채 팅</div>
-                      </div>
-                      <div className="mx-[5px]">X</div>
-                    </div>
+                <div
+                  key={i}
+                  className="relative justify-between flex items-center  border-solid border-b-[0.5px] border-gray"
+                >
+                  <Link href={`/bid/${e.bidId}`}>
+                    <BidItem bid={e} />
+                  </Link>
+                  <div className="absolute right-0" onClick={() => {}}>
+                    {/* <Link href={`/chatting/${e.bidId}`}> */}
+                    <Button
+                      text="대화하기"
+                      fontSize={16}
+                      height={5}
+                      rounded="soft"
+                      onClick={handleChatting}
+                    />
+                    {/* </Link> */}
                   </div>
                 </div>
               ))}
@@ -142,49 +169,49 @@ function Page({ params }: { params: any }) {
           {/* 프로필 섹션 */}
           <Profile profile={postContent.profile} />
           {/* 교환 게시글 본문 */}
-          <div className="flex flex-col m-[15px] bg-softbase p-[5px] rounded-[5px]">
+          <div className="flex flex-col">
             {/* 글 상세내용 */}
-            <div className={` p-[10px] rounded-[5px] bg-white border-gray`}>
-              <div className="text-[18px] font-[600] border-gray border-solid border-b-[0.5px]">
-                물건 이름 : {postContent.item.title}
+            <div className={` bg-white border-gray border-b-[0.5px]`}>
+              <div>
+                <div className="text-header font-[600]">
+                  물건 이름 : {postContent.item.title}
+                </div>
+                <div className="text-subtitle">
+                  거래 장소 : {postContent.address}
+                </div>
               </div>
-              <div className="text-[18px] font-[600] ">
-                원하는 물건 : {postContent.preferItems}
+              <div className="text-subtitle my-[5px]">
+                <div>원하는 물건 : {postContent.preferItems}</div>
+                <div>물건 상세 : {postContent.content}</div>
               </div>
-              <div>거래 장소 : {postContent.address}</div>
-              <div>물건 상세 : {postContent.content}</div>
             </div>
             {/* 버튼 */}
-            <div className="flex">
-              <div className={` flex-1 text-center `}>
-                <Button
-                  text="입찰 목록"
-                  fontSize={20}
-                  height={5}
-                  rounded="soft"
-                ></Button>
-              </div>
-              <div
-                className={` flex-1 text-center `}
-                onClick={() => {
-                  router.push('/biding');
-                }}
-              >
-                <Button
-                  text="입찰 하기"
-                  fontSize={20}
-                  height={5}
-                  rounded="soft"
-                ></Button>
-              </div>
-            </div>
           </div>
-          <div className="grid grid-cols-2 m-[15px]">
+          <div className="">
             {/* 입찰 리스트 출력 */}
             {postContent.bidList.map((e: any, i: any) => (
-              <BidItem bid={e} key={i} />
+              <div
+                key={i}
+                className=" border-solid border-b-[0.5px] border-gray"
+              >
+                <Link href={`/bid/${e.bidId}`}>
+                  <BidItem bid={e} />
+                </Link>
+              </div>
             ))}
           </div>
+          <BottomFixed>
+            <div className="flex justify-end m-[10px]">
+              <Link href={`/biding?postId=${params.id}`}>
+                <Button
+                  text="입찰 하기"
+                  height={10}
+                  fontSize={14}
+                  rounded="soft"
+                />
+              </Link>
+            </div>
+          </BottomFixed>
         </>
       )}
     </div>

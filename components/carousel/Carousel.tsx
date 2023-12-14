@@ -18,7 +18,7 @@ function Carousel({ images }: { images: any }) {
   };
 
   return (
-    <div className="relative w-full h-0 pb-[80%] overflow-hidden bg-black">
+    <div className="relative w-full h-0 pb-[70%] overflow-hidden bg-black">
       <div className="flex absolute top-0 left-0 w-full h-full transition-transform">
         {images.map((src: any, index: any) => (
           <Image

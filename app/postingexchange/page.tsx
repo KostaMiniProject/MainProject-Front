@@ -1,4 +1,5 @@
 'use client';
+import { withAuthorization } from '@/HOC/withAuthorization';
 import { postExchangePost } from '@/api/ExchangePostApi';
 import { getItemById } from '@/api/ItemApi';
 import Button from '@/components/Button';
@@ -15,6 +16,8 @@ function page() {
   const [address, setAddress] = useState<String>('');
   const [content, setContent] = useState<String>('');
   const [selectedItem, setSelectedItem] = useState<itemType>();
+  const [edit, setEdit] = useState<number>(0);
+  const [postNumber, setPostNumber] = useState<number>();
   const searchParams = useSearchParams();
   const router = useRouter();
   const urlPath = usePathname();
@@ -45,6 +48,8 @@ function page() {
 
   useEffect(() => {
     const selectedItemId = searchParams.get('selectedItems');
+    const edit = searchParams.get('edit');
+    const post = searchParams.get('post');
     if (selectedItemId) {
       try {
         // 2. getItemById 함수를 비동기로 호출하도록 수정
@@ -108,4 +113,4 @@ function page() {
   );
 }
 
-export default page;
+export default withAuthorization(page, ['user']);

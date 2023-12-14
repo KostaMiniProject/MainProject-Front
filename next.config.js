@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   // async rewrites() {
   //   return [
   //     {
@@ -13,7 +14,13 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'kosta-main-bucket.s3.ap-northeast-2.amazonaws.com',
-      },
+      },{
+        protocol: 'https',
+        hostname: '*',
+      },{
+        protocol: 'https',
+        hostname: 'd30zoz4y43tmi6.cloudfront.net',
+      }
     ],
   },
 };
