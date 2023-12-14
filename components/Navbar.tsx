@@ -58,7 +58,10 @@ function Navbar() {
         </div>
         <div
           className={flexClasses(activeButton === '지도')}
-          onClick={() => handleButtonClick('지도')}
+          onClick={() => {
+            handleButtonClick('지도');
+            router.push('/map');
+          }}
         >
           <MdMap
             size={iconSize}
