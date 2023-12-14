@@ -19,7 +19,7 @@ function BidItem({
 }) {
   return (
     <div>
-      <div className="relative py-[5px] bg-white  border-solid border-b-[0.5px] border-gray flex">
+      <div className="relative py-[5px] bg-white border-gray flex">
         {/* 이미지표시 */}
         <div className="relative overflow-hidden z-0">
           <div className="relative w-[80px] h-[80px] overflow-hidden">
@@ -32,7 +32,7 @@ function BidItem({
             />
           </div>
         </div>
-        <div>
+        <div className="mx-[5px]">
           <div className="font-[600] text-header whitespace-nowrap text-ellipsis overflow-hidden">
             {bid.items}
           </div>

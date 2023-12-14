@@ -70,8 +70,8 @@ function Page({ params }: { params: any }) {
   }, []);
   const onScroll = () => {
     const { scrollY } = window;
-    console.log(scrollY);
-    console.log(waitData);
+    // console.log(scrollY);
+    // console.log(waitData);
     if (scrollY <= 20 && !waitData) {
       // alert('불러오는중');
       window.scrollTo(0, 1000);
@@ -266,28 +266,40 @@ function Page({ params }: { params: any }) {
 
   // 메시지 렌더링을 위한 컴포넌트
   function MessageItem({ message }: { message: IReceivedMessage }) {
-    const meessageOwner = message.senderId === parseInt(userIdValue);
+    const messageOwner = message.senderId === parseInt(userIdValue);
     return (
       <div
         className={
-          meessageOwner ? 'flex items-end justify-end' : 'flex items-end'
+          messageOwner
+            ? 'flex items-end justify-end my-[5px]'
+            : 'flex items-end my-[5px]'
         }
       >
         <div className="flex">
-          <div>
-            {!meessageOwner && (
+          <div
+            className={
+              messageOwner ? 'flex-col flex items-end' : 'flex-col flex '
+            }
+          >
+            {!messageOwner && (
               <div className="flex">
-                <div className="w-[20px] h-[20px] bg-black"></div>
-                <div className="leading-none">{initRoom?.userName}</div>
+                <div className="w-[20px] h-[20px] bg-black rounded-[50%]"></div>
+                <div className="leading-none text-subtitle flex flex-col justify-center mx-[5px]">
+                  {initRoom?.userName}
+                </div>
               </div>
             )}
-            <div className="bg-gray rounded-lg max-w-[260px]">
-              {message.content}
+            <div className=" max-w-[260px] flex items-end">
+              <span className="bg-base text-header rounded-[8px] p-[3px] text-white my-[5px]">
+                {message.content}
+              </span>
             </div>
-            <div className="text-xs text-gray ml-2 mb-1">
-              Time: {message.createAt}
+
+            <div className="text-subtitle text-gray">
+              {!messageOwner
+                ? `${message.createAt} ${message.isRead && '-읽음'}`
+                : `${message.isRead && '읽음-'} ${message.createAt}`}
             </div>
-            <div>{message.isRead && '읽음'}</div>
           </div>
         </div>
       </div>

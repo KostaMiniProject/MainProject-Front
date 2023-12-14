@@ -96,14 +96,14 @@ function Page() {
     <div>
       <Header backNav title="아이템 추가"></Header>
       <div
-        className="bg-softbase flex"
+        className="bg-softbase flex px-[10px] py-[5px]"
         style={isMoreView ? {} : { height: '140px', overflow: 'hidden' }}
       >
-        <div className="flex flex-wrap flex-1 p-[5px]">
+        <div className="flex flex-wrap flex-1">
           {selectedImages.map((image, index) => (
             <div
               key={index}
-              className="relative w-[120px] h-[120px] overflow-hidden m-[5px] border-base border-solid border-[1px] rounded-[10px]"
+              className="relative w-[120px] h-[120px] overflow-hidden  m-[5px] border-base border-solid border-[1px] rounded-[10px]"
             >
               <Image
                 src={URL.createObjectURL(image)}
@@ -121,7 +121,7 @@ function Page() {
           ))}
           {selectedImages.length < 5 ? (
             <div
-              className="relative w-[120px] h-[120px] overflow-hidden m-[5px] flex items-center justify-center border-base border-solid border-[1px] rounded-[10px]"
+              className="relative w-[120px] h-[120px] overflow-hidden flex items-center justify-center border-base border-solid border-[1px] rounded-[10px]"
               onClick={openFileInput}
             >
               <MdAddCircleOutline size={30} color={'#e00685'} />
@@ -132,7 +132,7 @@ function Page() {
         </div>
         <div
           onClick={handleMoreView}
-          className="bg-base rounded-[5px] m-[10px] h-[120px] w-[60px] flex items-center justify-center cursor-pointer"
+          className="bg-base rounded-[5px] h-[120px] w-[60px] flex items-center justify-center cursor-pointer"
         >
           <div className="text-white">{isMoreView ? '▲' : '▼'}</div>
         </div>
@@ -146,13 +146,13 @@ function Page() {
         style={{ display: 'none' }} // 화면에 표시되지 않도록 함
       />
       <div>
-        <div className="mx-[15px]">
+        <div className="">
           <div className="my-[5px]">
-            <div className="text-[20px] font-[600] flex">▶제목</div>
+            <div className="text-header font-[600] flex">제목</div>
             <InputBox onChange={setTitle} />
           </div>
           <div className="my-[5px]">
-            <div className="text-[20px] font-[600] flex">▶상세 설명</div>
+            <div className="text-header font-[600] flex">상세 설명</div>
             <TextAreaBox onChange={setContent}></TextAreaBox>
           </div>
           <div className="text-center my-[15px]">

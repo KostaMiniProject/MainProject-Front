@@ -11,8 +11,8 @@ export interface itemType {
 }
 function Item({ item }: { item: itemType }) {
   return (
-    <div className="flex border-solid border-gray border-[0.5px] mt-[10px] rounded-[5px]">
-      <div className="relative w-[80px] h-[80px] overflow-hidden my-[10px] mx-[10px]">
+    <div className="flex border-solid border-gray border-b-[0.5px] p-[5px]">
+      <div className="relative w-[60px] h-[60px] overflow-hidden rounded-[5px]">
         {item.images ? (
           <Image
             src={item.images[0]}
@@ -32,8 +32,8 @@ function Item({ item }: { item: itemType }) {
         )}
       </div>
       <div className="my-[5px]">
-        <div className="font-[600] text-[24px] leading-none">{item.title}</div>
-        <div className="text-gray text-[12px]">
+        <div className="font-[600] text-header leading-none">{item.title}</div>
+        <div className="text-gray text-title">
           <div>{item.description}</div>
         </div>
       </div>

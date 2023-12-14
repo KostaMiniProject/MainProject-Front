@@ -8,6 +8,7 @@ import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { postBid } from '@/api/BidApi';
+import { withAuthorization } from '@/HOC/withAuthorization';
 
 function Page() {
   const searchParams = useSearchParams();
@@ -110,4 +111,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default withAuthorization(Page, ['user']);

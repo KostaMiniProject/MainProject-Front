@@ -28,7 +28,10 @@ export async function commonFetch(
     }
 
     // POST 메서드일 때 body가 있는 경우에만 body 추가
-    if (options.method === 'POST' && options.body) {
+    if (
+      (options.method === 'POST' && options.body) ||
+      (options.method === 'PUT' && options.body)
+    ) {
       options.body = JSON.stringify(options.body);
       options.headers = {
         ...options.headers,
