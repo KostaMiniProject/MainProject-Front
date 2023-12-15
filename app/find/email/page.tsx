@@ -17,16 +17,12 @@ function Page() {
         name: name,
         phone: phone
       };
-      try {
         const findEmail = await findId(userData);
         // console.log('Email:', findEmail.email);
         // Do something with the email data
-      } catch (error) {
-        // Handle errors
-      }
       
       // findId 함수에서 서버에서 에러가 발생하지 않는다면, '/success'로 이동
-      router.push(`/find/success?email=${findEmail.email}`);
+      router.push(`/find/email/success?email=${findEmail.email}`);
     } catch (error: any) {
         // 'error' 변수를 'any' 타입으로 선언하여 사용
         alert((error as Error).message || '입력한 정보가 일치하지 않습니다.');

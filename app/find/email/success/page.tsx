@@ -10,8 +10,8 @@ function Success() {
 
   return (
     <div className="container mx-auto mt-10">
-      <h1 className="text-3xl font-bold mb-4">Success Page</h1>
-      <p className="text-lg">고객님의 이메일은 <span className="font-bold">{searchParams.get('email')}</span>과 같습니다.</p>
+      <h1 className="text-[40px] mt-[20px] mb-[150px]">이메일 확인</h1>
+      <p className="text-lg">고객님의 이메일은 다음과 같습니다 <span className="font-bold">{searchParams.get('email')}</span></p>
     </div>
   );
 }
