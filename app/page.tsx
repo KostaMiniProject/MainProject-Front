@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import InputBox from '@/components/InputBox';
 import ExchangePost from '@/components/exchange/ExchangePost';
 import { getPostList } from '@/api/ExchangePostApi';
@@ -12,23 +12,57 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 
 function Page() {
-  const [postData, setPostData] = useState([]);
-  const router = useRouter();
-  const [keyWord, setKeyWord] = useState('');
+  const [postData, setPostData] = useState<any[]>([]);
   const [pageNation, setPageNation] = useState(0);
+  const [hasMoreData, setHasMoreData] = useState(true);
+  const listEnd = useRef<HTMLDivElement>(null);
+  let hasFetchData = true;
 
-  useEffect(() => {
-    const fetchPostData = async () => {
+  const fetchPostData = async () => {
+    if (hasMoreData)
       try {
         const data = await getPostList(pageNation);
-        setPostData(data.data);
+        setPostData((oldData) => [...data.data, ...oldData]);
+
+        // 데이터가 10개 미만이면 더 이상 데이터를 불러오지 않음
+        if (data.data.length < 10) {
+          setHasMoreData(false);
+          // hasFetchData = false;
+        }
       } catch (error) {
         console.error('Error fetching post data:', error);
+        // hasFetchData = false; // 오류 발생 시 데이터 로딩 중단
+        setHasMoreData(false);
+      }
+  };
+  useEffect(() => {
+    console.log('이팩트 실행');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMoreData) {
+          setPageNation((prev) => prev + 1);
+        }
+      },
+      { rootMargin: '0px', threshold: 1 }
+    );
+
+    if (listEnd.current) {
+      observer.observe(listEnd.current);
+    }
+
+    // 페이지네이션 증가 시 데이터 가져오기
+
+    return () => {
+      if (listEnd.current) {
+        observer.unobserve(listEnd.current);
       }
     };
+  }, [listEnd]);
 
+  useEffect(() => {
+    console.log('이러면 한번실행?');
     fetchPostData();
-  }, []);
+  }, [pageNation]);
 
   return (
     <div className="relative">
@@ -71,6 +105,7 @@ function Page() {
                 </Link>
               );
             })}
+            <div ref={listEnd}>endcontent</div>
           </div>
           {/* 글쓰기 버튼 */}
           <BottomFixed>
