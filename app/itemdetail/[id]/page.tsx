@@ -21,6 +21,7 @@ interface itemType {
     name: string;
     phone: string;
     profileImage: string;
+    rating: number;
     userId: number;
   };
 }
@@ -57,18 +58,22 @@ function Page({ params }: { params: any }) {
               name: item.user.name,
               address: item.user.address,
               imageUrl: item.user.profileImage,
-              rating: 33,
+              rating: item.user.rating,
             }}
           />
-          <div className="mx-[15px]">
-            <div className="py-[5px] border-solid border-b-[0.5px] ">
-              <div className="text-[25px] font-[600]">{item.title}</div>
+          <div className="">
+            <div className="py-[5px] border-solid border-b-[0.5px] border-gray">
+              <div className="text-header font-[600]">{item.title}</div>
               <div className="flex">
                 {/* <Button text={detail.category} btnStyle="tag" height={5} /> */}
               </div>
             </div>
-            <div className="min-h-[300px] my-[5px] bg-softbase rounded-[5px] ">
-              <div className="py-[5px] font-[600]">{item.description}</div>
+            <div className="min-h-[200px] my-[5px]  rounded-[5px] ">
+              <div className="py-[5px] text-title text-gray">
+                <div>{item.description}</div>
+                <div>{item.createAt}</div>
+                <div>{item.itemStatus}</div>
+              </div>
             </div>
           </div>
         </div>

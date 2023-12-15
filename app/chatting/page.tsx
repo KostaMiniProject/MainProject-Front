@@ -2,6 +2,7 @@
 // page.tsx
 import { withAuthorization } from '@/HOC/withAuthorization';
 import { getChatRoomList } from '@/api/ChattingApi';
+import Header from '@/components/Header';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -22,26 +23,26 @@ function Page() {
 
   return (
     <div>
-      <h1>Your Chat Rooms</h1>
+      <Header title="채팅목록"></Header>
       <ul>
         {roomList?.map((room, index) => (
           <Link
             href={`/chatting/${room.chatRoomId}`}
             key={index}
-            className="flex items-center bg-gray-200 p-4 mb-4 rounded"
+            className="flex items-center rounded py-[5px] border-b-[0.5px] border-gray"
           >
             <img
               src={room.participantProfileImg}
               alt="Profile"
-              className="w-12 h-12 rounded-full mr-4"
+              className="w-[80px] h-[80px]"
             />
             <div>
-              <p>Exchange Post Address: {room.exchangePostAddress}</p>
-              <p>Last Message: {room.lastMessageContent}</p>
-              <p>
-                Last Message Time Difference: {room.lastMessageTimeDifference}
-              </p>
-              <p>Participant Name: {room.participantName}</p>
+              <div className="text-title">{room.participantName}</div>
+              <div className="text-subtitle">{room.exchangePostAddress}</div>
+              <div className="text-subtitle">{room.lastMessageContent}</div>
+              <div className="text-subtitle text-gray">
+                {room.lastMessageTimeDifference}
+              </div>
             </div>
           </Link>
         ))}

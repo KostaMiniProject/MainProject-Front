@@ -9,7 +9,7 @@ import {
   MdPerson,
 } from 'react-icons/md';
 
-const iconSize: number = 30;
+const iconSize: number = 25;
 const baseColor: string = '#FFD5EB';
 
 function flexClasses(active: boolean) {
@@ -28,8 +28,8 @@ function Navbar() {
   }
 
   return (
-    <div className="fixed bottom-0 w-full z-[9999] max-w-[480px] bg-white ">
-      <div className="flex items-center h-[60px] text-sm cursor-pointer">
+    <div className="fixed bottom-0 w-full z-[9999] max-w-[478px] bg-white">
+      <div className="flex items-center h-[60px] text-subtitle cursor-pointer">
         <div
           className={flexClasses(activeButton === '물물교환')}
           onClick={() => {
