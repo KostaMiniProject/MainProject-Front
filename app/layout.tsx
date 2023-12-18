@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className="bg-softbase relative">
         <Recoil>
           <div className="bg-white max-w-[480px] min-h-[100vh] mx-auto relative ">
-            <div className="mx-[16px]">{children}</div>
+            <div className="">{children}</div>
             <Navbar />
             <div className="h-[160px]"></div>
           </div>
