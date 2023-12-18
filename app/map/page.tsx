@@ -5,12 +5,17 @@ import Header from '@/components/Header';
 import { getExchangePostsForMap } from '@/api/MapApi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 declare global {
   interface Window {
     kakao: any;
   }
 }
+const styleObj = {
+  color: 'yellow',
+  backgroundColor: 'black',
+};
 
 function Page() {
   const [exchangePosts, setExchangePosts] = useState<any[]>([]); // 교환 게시글 목록 상태
@@ -84,6 +89,18 @@ function Page() {
   // 지도에 마커 추가하는 함수
   const addMarkers = (map: any) => {
     exchangePosts.forEach((post) => {
+      // function makeOverListener(map: any, marker: any, infowindow: any) {
+      //   return function () {
+      //     infowindow.open(map, marker);
+      //   };
+      // }
+
+      // // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+      // function makeOutListener(infowindow: any) {
+      //   return function () {
+      //     infowindow.close();
+      //   };
+      // }
       console.log('addMarker 진입');
       if (post.longitude && post.latitude) {
         const position = new window.kakao.maps.LatLng(
@@ -92,17 +109,53 @@ function Page() {
         );
         console.log(position);
         // 마커 생성
+        // 인포윈도우
+        // const message = `<img width="150" height="150" src="${post.imgUrl}"/>`;
+        // const infowindow = new window.kakao.maps.InfoWindow({
+        //   content: message,
+        //   removable: true,
+        // });
+
+        //커스텀 오버레이
+        // const imgContent = `<img class="customOverlay" src="${post.imgUrl}" style="width: 50px; height: 50px;"/>`;
+        // const imgContent = `<Image src=${post.imgUrl} width={50} height={50}/>`;
+        const imgContent = `<img src="${post.imgUrl}" style="width: 50px; height: 50px;"/>`;
+
+        // const imgContent = `<div>asdfasdf</div>`;
+        let customOverlay = new window.kakao.maps.CustomOverlay({
+          map: map,
+          clickable: true,
+          content: imgContent,
+          position: position,
+          xAnchor: 0.5,
+          yAnchor: 1,
+          zIndex: 3,
+        });
+        // console.log(customOverlay);
+
         const marker = new window.kakao.maps.Marker({
           map: map,
           position: position,
           // 이미지 사용을 원한다면 아래 주석을 해제하세요
-          image: new window.kakao.maps.MarkerImage(
-            post.imgUrl,
-            new window.kakao.maps.Size(50, 50)
-          ),
+          // image: new window.kakao.maps.MarkerImage(
+          //   post.imgUrl,
+          //   new window.kakao.maps.Size(50, 50)
+          // ),
         });
-
+        // infowindow.open(map, marker);
+        customOverlay.setMap(map);
         // 마커 클릭 이벤트: 필요한 경우에만 추가하세요
+
+        // window.kakao.maps.event.addListener(
+        //   marker,
+        //   'mouseover',
+        //   makeOverListener(map, marker, infowindow)
+        // );
+        // window.kakao.maps.event.addListener(
+        //   marker,
+        //   'mouseout',
+        //   makeOutListener(infowindow)
+        // );
         window.kakao.maps.event.addListener(marker, 'click', () => {
           router.push(`/exchange/${post.exchangePostId}`);
         });
