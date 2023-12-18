@@ -4,6 +4,7 @@ import { postItem } from '@/api/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
+import Modal from '@/components/Modal';
 import TextAreaBox from '@/components/TextAreaBox';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -15,9 +16,25 @@ function Page() {
   const [content, setContent] = useState<String>('');
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isMoreView, setIsMoreView] = useState<Boolean>(false);
+
+  const [showModal, setShowModal] = useState(false);
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const postid = searchParams.get('postId');
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handlePostComplete = async () => {
+    setShowModal(false);
+    postComplete();
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   function handleMoreView() {
     setIsMoreView(!isMoreView);
@@ -95,17 +112,17 @@ function Page() {
   }
 
   return (
-    <div>
+    <div className="mx-default">
       <Header backNav title="아이템 추가"></Header>
       <div
-        className="bg-softbase flex px-[10px] py-[5px]"
+        className="bg-softbase flex px-[7px] py-[5px]"
         style={isMoreView ? {} : { height: '140px', overflow: 'hidden' }}
       >
         <div className="flex flex-wrap flex-1">
           {selectedImages.map((image, index) => (
             <div
               key={index}
-              className="relative w-[120px] h-[120px] overflow-hidden  m-[5px] border-base border-solid border-[1px] rounded-[10px]"
+              className="relative w-[120px] mx-[2px] my-[5px] h-[120px] overflow-hidden flex items-center justify-center border-base border-solid border-[1px] rounded-[10px]"
             >
               <Image
                 src={URL.createObjectURL(image)}
@@ -123,7 +140,7 @@ function Page() {
           ))}
           {selectedImages.length < 5 ? (
             <div
-              className="relative w-[120px] h-[120px] overflow-hidden flex items-center justify-center border-base border-solid border-[1px] rounded-[10px]"
+              className="relative w-[120px] m-[2px] my-[5px] h-[120px] overflow-hidden flex items-center justify-center border-base border-solid border-[1px] rounded-[10px] cursor-pointer"
               onClick={openFileInput}
             >
               <MdAddCircleOutline size={30} color={'#e00685'} />
@@ -157,15 +174,34 @@ function Page() {
             <div className="text-header font-[600] flex">상세 설명</div>
             <TextAreaBox onChange={setContent}></TextAreaBox>
           </div>
-          <div className="text-center my-[15px]">
+          <div className="text-center my-[15px] cursor-pointer">
             <Button
               text="작성 완료"
               fontSize={20}
               height={8}
               rounded="soft"
-              onClick={postComplete}
+              onClick={handleShowModal}
             />
           </div>
+          {showModal && (
+            <Modal setState={handleCloseModal}>
+              <div className="my-[5px]">작성을 완료하시겠습니까?</div>
+              <div className="flex place-content-between">
+                <Button
+                  text="작성완료"
+                  onClick={handlePostComplete}
+                  height={5}
+                  rounded="soft"
+                />
+                <Button
+                  text="취소"
+                  onClick={handleCloseModal}
+                  height={5}
+                  rounded="soft"
+                />
+              </div>
+            </Modal>
+          )}
         </div>
       </div>
     </div>

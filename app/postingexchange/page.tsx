@@ -29,7 +29,7 @@ function page() {
   const [selectedItem, setSelectedItem] = useState<itemType>();
   const [edit, setEdit] = useState<number>(0);
   const [postNumber, setPostNumber] = useState<number>();
-  const [openMap, setOpenMap] = useState<boolean>(false);
+  const [openMap, setOpenMap] = useState<boolean>(true);
   const [qa, setQa] = useState<qaType>();
   const [mapAddress, setMapAddress] = useState();
   const searchParams = useSearchParams();

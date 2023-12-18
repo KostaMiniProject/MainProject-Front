@@ -7,6 +7,10 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    margin: {
+      default: '16px',
+      auto: 'auto',
+    },
     fontSize: {
       header: '16px',
       title: '14px',

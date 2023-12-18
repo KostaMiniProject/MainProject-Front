@@ -13,34 +13,33 @@ import Header from '@/components/Header';
 
 function Page() {
   const [postData, setPostData] = useState<any[]>([]);
-  const [pageNation, setPageNation] = useState(0);
   const [hasMoreData, setHasMoreData] = useState(true);
   const listEnd = useRef<HTMLDivElement>(null);
-  let hasFetchData = true;
-
+  let pageNum = 0;
   const fetchPostData = async () => {
-    if (hasMoreData)
-      try {
-        const data = await getPostList(pageNation);
-        setPostData((oldData) => [...data.data, ...oldData]);
+    if (!hasMoreData) return;
 
-        // 데이터가 10개 미만이면 더 이상 데이터를 불러오지 않음
-        if (data.data.length < 10) {
-          setHasMoreData(false);
-          // hasFetchData = false;
-        }
-      } catch (error) {
-        console.error('Error fetching post data:', error);
-        // hasFetchData = false; // 오류 발생 시 데이터 로딩 중단
+    try {
+      const data = await getPostList(pageNum);
+      setPostData((oldData) => [...oldData, ...data.data]);
+      pageNum++;
+      console.log(pageNum);
+
+      if (data.data.length < 10) {
         setHasMoreData(false);
+      } else {
       }
+    } catch (error) {
+      console.error('Error fetching post data:', error);
+      setHasMoreData(false);
+    }
   };
   useEffect(() => {
     console.log('이팩트 실행');
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMoreData) {
-          setPageNation((prev) => prev + 1);
+          fetchPostData();
         }
       },
       { rootMargin: '0px', threshold: 1 }
@@ -50,23 +49,16 @@ function Page() {
       observer.observe(listEnd.current);
     }
 
-    // 페이지네이션 증가 시 데이터 가져오기
-
     return () => {
       if (listEnd.current) {
         observer.unobserve(listEnd.current);
       }
     };
-  }, [listEnd]);
-
-  useEffect(() => {
-    console.log('이러면 한번실행?');
-    fetchPostData();
-  }, [pageNation]);
+  }, [listEnd, hasMoreData]); // hasMoreData를 의존성 배열에 추가
 
   return (
     <div className="relative">
-      <div>
+      <div className="mx-default">
         {/* <Link
           href={'/search'}
           className="h-[60px] flex cursor-default items-center border-b-[1px] border-gray"
@@ -108,15 +100,15 @@ function Page() {
             <div ref={listEnd}>endcontent</div>
           </div>
           {/* 글쓰기 버튼 */}
-          <BottomFixed>
-            <div className="flex justify-end">
-              <Link href={'/postingexchange/selectitem'}>
-                <Button text="+ 글 쓰기" height={10} fontSize={16} />
-              </Link>
-            </div>
-          </BottomFixed>
         </div>
       </div>
+      <BottomFixed>
+        <div className="flex justify-end">
+          <Link href={'/postingexchange/selectitem'}>
+            <Button text="+ 글 쓰기" height={10} fontSize={16} />
+          </Link>
+        </div>
+      </BottomFixed>
     </div>
   );
 }
