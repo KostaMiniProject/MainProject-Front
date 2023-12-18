@@ -17,3 +17,41 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+
+.slide-up-panel {
+  position: fixed;
+  max-width: 480px;
+  margin: 0 auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  height: 400px; /* 패널 높이 */
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(calc(100% - 60px)); /* 40px만큼 패널이 보이도록 설정 */
+  transition: transform 0.3s ease-out;
+  z-index: 10; /* 지도보다 위에 표시되도록 z-index 설정 */
+  /* overflow-y: auto; 내용이 넘칠 때 스크롤바가 나타나도록 설정 */
+}
+.contents {
+  overflow-y:scroll;
+}
+
+.slide-up-panel.open {
+  transform: translateY(0);
+}
+
+.toggle-button {
+  position: absolute;
+  top: -48px; /* 패널 위로 버튼 이동 */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11; /* 패널보다 위에 표시되도록 z-index 설정 */
+  padding: 10px 20px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: pointer;
+}
