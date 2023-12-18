@@ -1,75 +1,55 @@
 //사용자 프로필 관련 API
 
-export async function sendPost() {
+import { commonFetch } from './commonApi/CommonFetch';
+
+export async function getMyItemList(page: number = 0) {
   try {
-    const res = await fetch('https://itsop.shop/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: 'abcd@gmail.com',
-        name: 'abcd',
-        address: '경기도 성남시 분당구 성남대로 지하55',
-        phone: '010-1234-5678',
-      }),
-    });
+    const result = await commonFetch(
+      `https://itsop.shop/api/items?page=${page}`,
+      {
+        method: 'GET',
+        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // 기타 다른 옵션들...
+      }
+    );
 
-    const data = await res.json();
-    console.log(data);
-    // Response 객체가 아니라 data를 반환하도록 수정
-    return data;
+    console.log('Fetched data:', result);
+    return result;
   } catch (error) {
-    console.error('Error in sendPost:', error);
-    // 오류 발생 시 에러 객체 반환
-    return error;
+    console.error('Error fetching data:', error);
   }
 }
-
-export async function getProfileById(id: number) {
+export async function getMyDibs(userId: number = 0) {
   try {
-    const res = await fetch(`https://itsop.shop/users/${id}`);
-    const data = await res.json();
-    console.log(data);
-    // Response 객체가 아니라 data를 반환하도록 수정
-    return data;
+    const result = await commonFetch(
+      `https://itsop.shop/api/exchange-posts/dibs/${userId}`,
+      {
+        method: 'GET',
+        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // 기타 다른 옵션들...
+      }
+    );
+
+    console.log('Fetched data:', result);
+    return result;
   } catch (error) {
-    console.error('Error in sendPost:', error);
-    // 오류 발생 시 에러 객체 반환
-    return error;
+    console.error('Error fetching data:', error);
   }
 }
-export function getProfile(id: number) {
-  const dumyData: any = [
-    {
-      id: 0,
-      name: '오리동햄버거마스터',
-      address: '오리동 맥도날드 1번자리',
-      image_url:
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
+export async function getMyHistory(page: number = 0) {
+  try {
+    const result = await commonFetch(
+      `https://itsop.shop/api/users/histories?page=${page}`,
+      {
+        method: 'GET',
+        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // 기타 다른 옵션들...
+      }
+    );
 
-      rating: 5,
-    },
-    {
-      id: 1,
-      name: '백엔드개발자',
-      address: '판교 개발 본사',
-      image_url:
-        'https://kosta-main-bucket.s3.ap-northeast-2.amazonaws.com/dc96affa876561ed5074203f5ee982e4.jpg',
-
-      rating: -200,
-    },
-  ];
-
-  return dumyData[id];
-}
-
-export async function getData() {
-  const res = await fetch('http://localhost:8080/users/1');
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
+    console.log('Fetched data:', result);
+    return result;
+  } catch (error) {
+    console.error('Error fetching data:', error);
   }
-
-  return res.json();
 }

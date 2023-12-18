@@ -1,8 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import { MdInsertEmoticon } from 'react-icons/md';
-import TempImg from '@/image/Logo.png';
-import { getData } from '@/api/ProfileApi';
 import Link from 'next/link';
 
 interface profileType {

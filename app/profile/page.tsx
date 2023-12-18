@@ -2,11 +2,12 @@
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import ProfileContainer from '@/components/profile/ProfileContainer';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdTagFaces, MdThumbDown, MdThumbUp } from 'react-icons/md';
-import { removeCookie } from '@/api/Cookie';
+import { getCookie, removeCookie } from '@/api/Cookie';
 import { useRouter } from 'next/navigation';
 import { withAuthorization } from '@/HOC/withAuthorization';
+import { getMyDibs, getMyHistory, getMyItemList } from '@/api/ProfileApi';
 
 // ReviewContainer 컴포넌트
 function ReviewContainer({ children }: { children: React.ReactNode }) {
@@ -18,6 +19,7 @@ function ReviewContainer({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
 function handleLogout() {
   // 쿠키에서 토큰 및 사용자 ID 삭제
   removeCookie('token');
@@ -25,7 +27,46 @@ function handleLogout() {
 }
 
 function page() {
+  const [items, setItems] = useState<[]>([]);
+  const [dibs, setDibs] = useState<[]>([]);
+  const [history, setHistory] = useState<[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    const myId = getCookie('userId');
+
+    async function fetchItem(page: number) {
+      try {
+        const data: any = await getMyItemList(page);
+        setItems(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    async function fetchDibs(userId: number) {
+      try {
+        const data: any = await getMyDibs(userId);
+        setDibs(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    async function fetchHistory(page: number) {
+      try {
+        const data: any = await getMyHistory(page);
+        setHistory(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchHistory(0);
+    fetchItem(0);
+    if (myId) {
+      fetchDibs(parseInt(myId));
+    }
+  }, []);
 
   return (
     <div>
@@ -81,13 +122,31 @@ function page() {
         </div>
 
         <ProfileContainer text="내 물건">
-          <div>ㅁㄴㅇㄹ</div>
+          {items.length > 0 ? (
+            items.map((e: any, i: any) => {
+              return <div key={i}>{e.title}</div>;
+            })
+          ) : (
+            <>아이템이 없습니다</>
+          )}
         </ProfileContainer>
         <ProfileContainer text="거래 내역">
-          <div>ㅁㄴㅇㄹ</div>
+          {history.length > 0 ? (
+            history.map((e: any) => {
+              return <div></div>;
+            })
+          ) : (
+            <>최근 거래내역이 없습니다</>
+          )}
         </ProfileContainer>
         <ProfileContainer text="찜 목록">
-          <div>ㅁㄴㅇㄹ</div>
+          {dibs.length > 0 ? (
+            dibs.map((e: any) => {
+              return <div></div>;
+            })
+          ) : (
+            <>찜한 상품이 없습니다</>
+          )}
         </ProfileContainer>
       </div>
     </div>
