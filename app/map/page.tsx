@@ -19,8 +19,12 @@ const styleObj = {
 
 function Page() {
   const [exchangePosts, setExchangePosts] = useState<any[]>([]); // 교환 게시글 목록 상태
-  const markerImageSrc =
-    '"https://d30zoz4y43tmi6.cloudfront.net/500/20231214150853292330f44-458c-aec6-6f4492d65371.png"'; // 마커 이미지 URL
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+
+  const togglePanel = () => {
+    setIsPanelOpen(!isPanelOpen);
+  };
+
   const router = useRouter();
   useEffect(() => {
     async function fetchData() {
@@ -119,8 +123,7 @@ function Page() {
         //커스텀 오버레이
         // const imgContent = `<img class="customOverlay" src="${post.imgUrl}" style="width: 50px; height: 50px;"/>`;
         // const imgContent = `<Image src=${post.imgUrl} width={50} height={50}/>`;
-        const imgContent = `<img src="${post.imgUrl}" style="width: 50px; height: 50px;"/>`;
-
+        const imgContent = `<div style="width: 50px; height: 50px;"><img src="${post.imgUrl}" style="width: 50px; height: 50px;"/></div>`;
         // const imgContent = `<div>asdfasdf</div>`;
         let customOverlay = new window.kakao.maps.CustomOverlay({
           map: map,
@@ -128,7 +131,7 @@ function Page() {
           content: imgContent,
           position: position,
           xAnchor: 0.5,
-          yAnchor: 1,
+          yAnchor: 1.8,
           zIndex: 3,
         });
         // console.log(customOverlay);
@@ -162,21 +165,49 @@ function Page() {
       }
     });
   };
+  // 교환 게시글 목록을 표시하는 함수
+  const renderExchangePostList = () => {
+    return exchangePosts.map((post) => (
+      <div key={post.exchangePostId} className="post-item" onClick={() => router.push(`/exchange/${post.exchangePostId}`)}>
+        <div className="post-image">
+          {post.imgUrl && (
+            <img src={post.imgUrl} alt={post.title} style={{ width: '100px', height: '100px', borderRadius: '10px' }} />
+          )}
+        </div>
+        <div className="post-info">
+          <h3>{post.title}</h3>
+          <p>{post.description}</p>
+          <p>{post.price}</p>
+        </div>
+      </div>
+    ));
+  };
+
+
+
 
   return (
     <div>
       <Header backNav title="지도 페이지"></Header>
-      <div>
+      <div className="mx-[15px]">
         <div className="my-[5px]">
           <div className="flex justify-between">
-            <div
-              className="map-container"
-              style={{ width: '100vw', height: '100vh' }}
-            >
+            <div className="map-container" style={{ width: '100vw', height: '100vh' }}>
               <div id="map" style={{ width: '100%', height: '100%' }}></div>
             </div>
+            <div className={`slide-up-panel ${isPanelOpen ? 'open' : ''}`}>
+              <button className="toggle-button" onClick={togglePanel}>
+                {isPanelOpen ? 'Close' : 'Open'}
+              </button>
+              <div className='contents'>
+
+                {renderExchangePostList()}
+              </div>
+            </div>
           </div>
+
         </div>
+
       </div>
     </div>
   );
