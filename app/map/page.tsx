@@ -26,17 +26,43 @@ function Page() {
   };
 
   const router = useRouter();
+
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getExchangePostsForMap();
-        setExchangePosts(data);
-      } catch (error) {
-        console.log(error);
+    async function fetchLocationAndData() {
+      const fetchWithLocation = async (latitude:any, longitude:any) => {
+        try {
+          const data = await getExchangePostsForMap(longitude.toString(), latitude.toString());
+          setExchangePosts(data); // 서버로부터 받은 데이터를 상태에 저장
+        } catch (error) {
+          console.error('Error fetching exchange posts:', error);
+        }
+      };
+  
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          await fetchWithLocation(lat, lon);
+        }, async (error) => {
+          console.error('Error getting location:', error);
+          // Geolocation을 사용할 수 없는 경우 하드코딩된 위치(오리역) 사용
+          const defaultLat = 37.338860;
+          const defaultLon = 127.109316;
+          await fetchWithLocation(defaultLat, defaultLon);
+        });
+      } else {
+        console.log('Geolocation is not supported by this browser.');
+        // 브라우저가 Geolocation을 지원하지 않는 경우 하드코딩된 위치(오리역) 사용
+        const defaultLat = 37.338860;
+        const defaultLon = 127.109316;
+        await fetchWithLocation(defaultLat, defaultLon);
       }
     }
-    fetchData();
+  
+    fetchLocationAndData();
   }, []);
+  
+
   useEffect(() => {
     console.log('Posts', exchangePosts);
     // 카카오 지도 API 스크립트 로드
