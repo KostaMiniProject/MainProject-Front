@@ -1,7 +1,7 @@
 'use client';
 // page.tsx
 import { withAuthorization } from '@/HOC/withAuthorization';
-import { getChatRoomList } from '@/api/ChattingApi';
+import { getChatRoomList } from '@/apis/ChattingApi';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';

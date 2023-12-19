@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { withAuthorization } from '@/HOC/withAuthorization';
 import Header from '@/components/Header';
-import { getExchangePostsForMap } from '@/api/MapApi';
+import { getExchangePostsForMap } from '@/apis/MapApi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';

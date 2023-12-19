@@ -6,7 +6,7 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 // import Cookies from 'js-cookie';
 import { withAuthorization } from '@/HOC/withAuthorization';
-import { getCookie } from '@/api/Cookie';
+import { getCookie } from '@/apis/Cookie';
 import Header from '@/components/Header';
 import Button from '@/components/Button';
 import BottomFixed from '@/components/BottomFixed';
