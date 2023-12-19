@@ -1,6 +1,7 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { navState } from '@/store/atoms';
+import { useRouter, usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import {
   MdViewInAr,
   MdOutlineArticle,
@@ -8,6 +9,7 @@ import {
   MdChat,
   MdPerson,
 } from 'react-icons/md';
+import { useRecoilState } from 'recoil';
 
 const iconSize: number = 25;
 const baseColor: string = '#FFD1D1';
@@ -20,12 +22,29 @@ function flexClasses(active: boolean) {
 }
 
 function Navbar() {
-  const [activeButton, setActiveButton] = useState('물물교환');
+  const [activeButton, setActiveButton] = useRecoilState(navState);
+
   const router = useRouter();
+  const pathName = usePathname();
 
   function handleButtonClick(buttonName: string) {
     setActiveButton(buttonName);
   }
+
+  useEffect(() => {
+    const nowPath = pathName.split('/');
+    if (nowPath[1] === '') {
+      handleButtonClick('물물교환');
+    } else if (nowPath[1] === 'community') {
+      handleButtonClick('커뮤니티');
+    } else if (nowPath[1] === 'map') {
+      handleButtonClick('지도');
+    } else if (nowPath[1] === 'chatting') {
+      handleButtonClick('채팅');
+    } else if (nowPath[1] === 'profile') {
+      handleButtonClick('마이페이지');
+    }
+  }, []);
 
   return (
     <div className="fixed bottom-0 w-full z-[9999] max-w-[480px] bg-white">
