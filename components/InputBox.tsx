@@ -1,29 +1,31 @@
-'use client';
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 // ...
 
 function InputBox({
   onChange,
   onFocusChange,
-  type = 'text',
+  type = "text",
   content,
+  message,
 }: {
   onChange: (value: string) => void;
   onFocusChange?: (isFocused: boolean) => void;
   type?: string;
   content?: string;
+  message?: string;
 }) {
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState("");
 
   function handleFocus() {
-    setColor('border-base');
+    setColor("border-base");
     if (onFocusChange) {
       onFocusChange(true); // 포커스되었을 때 이벤트 실행
     }
   }
 
   function handleBlur() {
-    setColor('border-gray');
+    setColor("border-gray");
     if (onFocusChange) {
       onFocusChange(false); // 포커스가 해제되었을 때 이벤트 실행
     }
@@ -43,6 +45,7 @@ function InputBox({
         onBlur={handleBlur}
         onChange={handleChange}
         value={content}
+        placeholder={message}
       />
     </div>
   );
