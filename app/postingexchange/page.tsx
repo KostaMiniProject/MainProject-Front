@@ -255,7 +255,7 @@ function page() {
             <div id="map" style={{ width: '100%', height: '100%' }}></div>
           </div>
         </div>
-        <div className="text-center my-[15px]">
+        <div className="text-center my-[15px] z-20">
           <Button
             text="작성 완료"
             fontSize={20}
