@@ -193,21 +193,28 @@ function Page() {
   };
   // 교환 게시글 목록을 표시하는 함수
   const renderExchangePostList = () => {
-    return exchangePosts.map((post) => (
-      <div key={post.exchangePostId} className="post-item" onClick={() => router.push(`/exchange/${post.exchangePostId}`)}>
-        <div className="post-image">
-          {post.imgUrl && (
-            <img src={post.imgUrl} alt={post.title} style={{ width: '100px', height: '100px', borderRadius: '10px' }} />
-          )}
+    // exchangePosts가 정의되었고, 배열 내에 항목이 있는 경우에만 map 함수 실행
+    if (exchangePosts && exchangePosts.length > 0) {
+      return exchangePosts.map((post) => (
+        <div key={post.exchangePostId} className="post-item" onClick={() => router.push(`/exchange/${post.exchangePostId}`)}>
+          <div className="post-image">
+            {post.imgUrl && (
+              <img src={post.imgUrl} alt={post.title} style={{ width: '100px', height: '100px', borderRadius: '10px' }} />
+            )}
+          </div>
+          <div className="post-info">
+            <h3>{post.title}</h3>
+            <p>{post.description}</p>
+            <p>{post.price}</p>
+          </div>
         </div>
-        <div className="post-info">
-          <h3>{post.title}</h3>
-          <p>{post.description}</p>
-          <p>{post.price}</p>
-        </div>
-      </div>
-    ));
+      ));
+    } else {
+      // exchangePosts 배열이 비어있거나 정의되지 않은 경우
+      return <p>게시물이 없습니다.</p>;
+    }
   };
+  
 
 
 
@@ -226,7 +233,6 @@ function Page() {
                 {isPanelOpen ? 'Close' : 'Open'}
               </button>
               <div className='contents'>
-
                 {renderExchangePostList()}
               </div>
             </div>

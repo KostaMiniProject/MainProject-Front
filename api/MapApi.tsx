@@ -3,14 +3,11 @@ import { commonFetch } from './commonApi/CommonFetch';
 
 export async function getExchangePostsForMap(longitude: string, latitude: string) {
   try {
+    const url = `http://localhost:8080/api/exchange-posts/exchangePostMap?longitude=${encodeURIComponent(longitude)}&latitude=${encodeURIComponent(latitude)}`;
     const result = await commonFetch(
-      `http://localhost:8080/api/exchange-posts/exchangePostMap`,
+      url,
       {
         method: 'GET',
-        body: JSON.stringify({
-          longitude: longitude,
-          latitude: latitude,
-        }),
       }
     );
 
