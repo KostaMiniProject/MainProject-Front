@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import InputBox from "@/components/InputBox";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
-import { findPassword } from "@/api/FindPasswordApi";
+import { findPassword } from "@/apis/FindPasswordApi";
 import Header from "@/components/Header";
 
 function Page() {
