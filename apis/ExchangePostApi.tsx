@@ -1,5 +1,5 @@
 //교환 게시글 관련 API
-
+'use client';
 import { commonFetch } from './commonApi/CommonFetch';
 
 export async function postExchangePost(jsonData: any) {

@@ -1,13 +1,10 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import InputBox from '@/components/InputBox';
 import ExchangePost from '@/components/exchange/ExchangePost';
-import { getPostList } from '@/api/ExchangePostApi';
-import { useRouter } from 'next/navigation';
+import { getPostList } from '@/apis/ExchangePostApi';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { MdOutlineSearch } from 'react-icons/md';
-import { testLogin } from '@/api/Login';
 import Link from 'next/link';
 import Header from '@/components/Header';
 

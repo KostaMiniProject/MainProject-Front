@@ -5,13 +5,13 @@ import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
 import Header from '@/components/Header';
 import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
-import { getExchangePost } from '@/api/ExchangePostApi';
+import { getExchangePost } from '@/apis/ExchangePostApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
-import { getCookie } from '@/api/Cookie';
+import { getCookie } from '@/apis/Cookie';
 import Image from 'next/image';
 import Link from 'next/link';
-import { postCreateRoom } from '@/api/ChattingApi';
+import { postCreateRoom } from '@/apis/ChattingApi';
 import BottomFixed from '@/components/BottomFixed';
 
 interface bidContent {

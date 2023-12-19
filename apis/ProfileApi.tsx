@@ -1,5 +1,5 @@
 //사용자 프로필 관련 API
-
+'use client';
 import { commonFetch } from './commonApi/CommonFetch';
 
 export async function getMyItemList(page: number = 0) {

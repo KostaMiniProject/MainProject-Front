@@ -1,7 +1,7 @@
 'use client';
 import { withAuthorization } from '@/HOC/withAuthorization';
-import { postExchangePost } from '@/api/ExchangePostApi';
-import { getItemById } from '@/api/ItemApi';
+import { postExchangePost } from '@/apis/ExchangePostApi';
+import { getItemById } from '@/apis/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';

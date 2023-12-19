@@ -1,5 +1,5 @@
 //입찰 아이템 상세 리스트 관련 API
-
+'use client';
 import { getCookie } from './Cookie';
 import { commonFetch } from './commonApi/CommonFetch';
 export async function postItem(formData: FormData) {

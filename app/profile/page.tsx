@@ -4,10 +4,10 @@ import Header from '@/components/Header';
 import ProfileContainer from '@/components/profile/ProfileContainer';
 import React, { useState, useEffect } from 'react';
 import { MdTagFaces, MdThumbDown, MdThumbUp } from 'react-icons/md';
-import { getCookie, removeCookie } from '@/api/Cookie';
+import { getCookie, removeCookie } from '@/apis/Cookie';
 import { useRouter } from 'next/navigation';
 import { withAuthorization } from '@/HOC/withAuthorization';
-import { getMyDibs, getMyHistory, getMyItemList } from '@/api/ProfileApi';
+import { getMyDibs, getMyHistory, getMyItemList } from '@/apis/ProfileApi';
 
 // ReviewContainer 컴포넌트
 function ReviewContainer({ children }: { children: React.ReactNode }) {
