@@ -6,7 +6,7 @@ import Item from '@/components/item/Item';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
-import { getItemList } from '@/api/ItemApi';
+import { getItemList } from '@/apis/ItemApi';
 import InputBox from '@/components/InputBox';
 import { MdOutlineSearch } from 'react-icons/md';
 

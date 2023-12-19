@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { withAuthorization } from '@/HOC/withAuthorization';
 import Header from '@/components/Header';
-import { getExchangePostsForMap } from '@/api/MapApi';
+import { getExchangePostsForMap } from '@/apis/MapApi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -168,13 +168,21 @@ function Page() {
   // 교환 게시글 목록을 표시하는 함수
   const renderExchangePostList = () => {
     return exchangePosts.map((post) => (
-      <div key={post.exchangePostId} className="post-item" onClick={() => router.push(`/exchange/${post.exchangePostId}`)}>
+      <div
+        key={post.exchangePostId}
+        className="flex"
+        onClick={() => router.push(`/exchange/${post.exchangePostId}`)}
+      >
         <div className="post-image">
           {post.imgUrl && (
-            <img src={post.imgUrl} alt={post.title} style={{ width: '100px', height: '100px', borderRadius: '10px' }} />
+            <img
+              src={post.imgUrl}
+              alt={post.title}
+              style={{ width: '50px', height: '50px', borderRadius: '10px' }}
+            />
           )}
         </div>
-        <div className="post-info">
+        <div className="flex flex-col">
           <h3>{post.title}</h3>
           <p>{post.description}</p>
           <p>{post.price}</p>
@@ -183,31 +191,34 @@ function Page() {
     ));
   };
 
-
-
-
   return (
     <div>
       <Header backNav title="지도 페이지"></Header>
-      <div className="mx-[15px]">
-        <div className="my-[5px]">
-          <div className="flex justify-between">
-            <div className="map-container" style={{ width: '100vw', height: '100vh' }}>
-              <div id="map" style={{ width: '100%', height: '100%' }}></div>
-            </div>
-            <div className={`slide-up-panel ${isPanelOpen ? 'open' : ''}`}>
-              <button className="toggle-button" onClick={togglePanel}>
-                {isPanelOpen ? 'Close' : 'Open'}
-              </button>
-              <div className='contents'>
-
-                {renderExchangePostList()}
-              </div>
-            </div>
+      <div className=" relative">
+        <div className="flex justify-between">
+          <div
+            className="map-container"
+            style={{ width: '100vw', height: '75vh' }}
+          >
+            <div id="map" style={{ width: '100%', height: '100%' }}></div>
           </div>
-
         </div>
-
+      </div>
+      <div
+        style={{
+          transform: ` translateY(${isPanelOpen ? '0px' : '250px'})`,
+        }}
+        className={`fixed duration-100  bottom-0 max-w-[480px] w-full mx-auto z-20 bg-white`}
+      >
+        <button
+          className="text-center w-full text-header"
+          onClick={togglePanel}
+        >
+          {isPanelOpen ? 'Close' : 'Open'}
+        </button>
+        <div className="overflow-scroll h-[400px] hide-scrollbar">
+          <div>{renderExchangePostList()}</div>
+        </div>
       </div>
     </div>
   );

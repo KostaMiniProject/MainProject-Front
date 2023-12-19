@@ -1,4 +1,5 @@
 //입찰 리스트 관련 API
+'use client';
 import { commonFetch } from './commonApi/CommonFetch';
 
 export async function getBidItemList(id: number) {

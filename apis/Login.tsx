@@ -1,3 +1,4 @@
+'use client';
 export async function Login(email: string, password: string) {
   try {
     const res = await fetch('https://itsop.shop/api/login', {

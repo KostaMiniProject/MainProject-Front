@@ -1,5 +1,5 @@
 'use client';
-import { getCookie } from '@/api/Cookie';
+import { getCookie } from '@/apis/Cookie';
 import { isToken, token } from '@/store/atoms';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
