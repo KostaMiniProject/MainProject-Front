@@ -1,3 +1,4 @@
+'use client';
 import { commonFetch } from './commonApi/CommonFetch';
 
 export async function getChatRoomList() {

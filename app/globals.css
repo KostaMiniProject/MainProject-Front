@@ -17,3 +17,13 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+
+/* 모든 브라우저에서 수직 스크롤 바를 숨깁니다 */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE와 Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

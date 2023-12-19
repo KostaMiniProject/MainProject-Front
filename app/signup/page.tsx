@@ -4,7 +4,7 @@ import InputBox from '@/components/InputBox';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import PostCode from '@/components/signup/PostCode';
-import { postSignUp } from '@/api/SignUpApi';
+import { postSignUp } from '@/apis/SignUpApi';
 import { useRouter } from 'next/navigation';
 import { relative } from 'path';
 

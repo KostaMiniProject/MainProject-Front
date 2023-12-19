@@ -1,38 +1,61 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import InputBox from '@/components/InputBox';
+import React, { useState, useEffect, useRef } from 'react';
 import ExchangePost from '@/components/exchange/ExchangePost';
-import { getPostList } from '@/api/ExchangePostApi';
-import { useRouter } from 'next/navigation';
+import { getPostList } from '@/apis/ExchangePostApi';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { MdOutlineSearch } from 'react-icons/md';
-import { testLogin } from '@/api/Login';
 import Link from 'next/link';
 import Header from '@/components/Header';
 
 function Page() {
-  const [postData, setPostData] = useState([]);
-  const router = useRouter();
-  const [keyWord, setKeyWord] = useState('');
-  const [pageNation, setPageNation] = useState(0);
+  const [postData, setPostData] = useState<any[]>([]);
+  const [hasMoreData, setHasMoreData] = useState(true);
+  const listEnd = useRef<HTMLDivElement>(null);
+  let pageNum = 0;
+  const fetchPostData = async () => {
+    if (!hasMoreData) return;
 
+    try {
+      const data = await getPostList(pageNum);
+      setPostData((oldData) => [...oldData, ...data.data]);
+      pageNum++;
+      console.log(pageNum);
+
+      if (data.data.length < 10) {
+        setHasMoreData(false);
+      } else {
+      }
+    } catch (error) {
+      console.error('Error fetching post data:', error);
+      setHasMoreData(false);
+    }
+  };
   useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        const data = await getPostList(pageNation);
-        setPostData(data.data);
-      } catch (error) {
-        console.error('Error fetching post data:', error);
+    console.log('이팩트 실행');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMoreData) {
+          fetchPostData();
+        }
+      },
+      { rootMargin: '0px', threshold: 1 }
+    );
+
+    if (listEnd.current) {
+      observer.observe(listEnd.current);
+    }
+
+    return () => {
+      if (listEnd.current) {
+        observer.unobserve(listEnd.current);
       }
     };
-
-    fetchPostData();
-  }, []);
+  }, [listEnd, hasMoreData]); // hasMoreData를 의존성 배열에 추가
 
   return (
     <div className="relative">
-      <div>
+      <div className="mx-default">
         {/* <Link
           href={'/search'}
           className="h-[60px] flex cursor-default items-center border-b-[1px] border-gray"
@@ -71,17 +94,18 @@ function Page() {
                 </Link>
               );
             })}
+            <div ref={listEnd}>endcontent</div>
           </div>
           {/* 글쓰기 버튼 */}
-          <BottomFixed>
-            <div className="flex justify-end">
-              <Link href={'/postingexchange/selectitem'}>
-                <Button text="+ 글 쓰기" height={10} fontSize={16} />
-              </Link>
-            </div>
-          </BottomFixed>
         </div>
       </div>
+      <BottomFixed>
+        <div className="flex justify-end">
+          <Link href={'/postingexchange/selectitem'}>
+            <Button text="+ 글 쓰기" height={10} fontSize={16} />
+          </Link>
+        </div>
+      </BottomFixed>
     </div>
   );
 }

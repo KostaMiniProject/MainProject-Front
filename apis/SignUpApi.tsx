@@ -1,3 +1,4 @@
+'use client';
 export async function postSignUp(userData: any) {
   try {
     const res = await fetch('https://itsop.shop/api/signup', {
