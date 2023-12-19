@@ -23,6 +23,8 @@ function Page() {
 
   return (
     <div>
+      {' '}
+      저 가보겠습니다 오늘 고생 많으셨어요~
       <Header title="채팅목록"></Header>
       <ul>
         {roomList?.map((room, index) => (

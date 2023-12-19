@@ -1,4 +1,3 @@
-import { getProfileById } from '@/api/ProfileApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import ProfileContainer from '@/components/profile/ProfileContainer';
