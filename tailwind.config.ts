@@ -23,7 +23,9 @@ const config: Config = {
       base: '#EB3324',
       softbase: '#FFD1D1',
       gray: '#BBBBBB',
+      lightgray:'#E5E5E5',
       white: '#FFFFFF',
+      skyblue: '#87CEEB',
       black: '#000000',
     },
     extend: {

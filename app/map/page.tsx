@@ -26,17 +26,43 @@ function Page() {
   };
 
   const router = useRouter();
+
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getExchangePostsForMap();
-        setExchangePosts(data);
-      } catch (error) {
-        console.log(error);
+    async function fetchLocationAndData() {
+      const fetchWithLocation = async (latitude: any, longitude: any) => {
+        try {
+          const data = await getExchangePostsForMap(longitude.toString(), latitude.toString());
+          setExchangePosts(data); // 서버로부터 받은 데이터를 상태에 저장
+        } catch (error) {
+          console.error('Error fetching exchange posts:', error);
+        }
+      };
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          await fetchWithLocation(lat, lon);
+        }, async (error) => {
+          console.error('Error getting location:', error);
+          // Geolocation을 사용할 수 없는 경우 하드코딩된 위치(오리역) 사용
+          const defaultLat = 37.338860;
+          const defaultLon = 127.109316;
+          await fetchWithLocation(defaultLat, defaultLon);
+        });
+      } else {
+        console.log('Geolocation is not supported by this browser.');
+        // 브라우저가 Geolocation을 지원하지 않는 경우 하드코딩된 위치(오리역) 사용
+        const defaultLat = 37.338860;
+        const defaultLon = 127.109316;
+        await fetchWithLocation(defaultLat, defaultLon);
       }
     }
-    fetchData();
+
+    fetchLocationAndData();
   }, []);
+
+
   useEffect(() => {
     console.log('Posts', exchangePosts);
     // 카카오 지도 API 스크립트 로드
@@ -74,7 +100,7 @@ function Page() {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOption = {
       center: locPosition,
-      level: 3,
+      level: 2,
     };
     const map = new window.kakao.maps.Map(mapContainer, mapOption);
     const marker = new window.kakao.maps.Marker({
@@ -167,34 +193,40 @@ function Page() {
   };
   // 교환 게시글 목록을 표시하는 함수
   const renderExchangePostList = () => {
-    return exchangePosts.map((post) => (
-      <div
-        key={post.exchangePostId}
-        className="flex"
-        onClick={() => router.push(`/exchange/${post.exchangePostId}`)}
-      >
-        <div className="post-image">
-          {post.imgUrl && (
-            <img
-              src={post.imgUrl}
-              alt={post.title}
-              style={{ width: '50px', height: '50px', borderRadius: '10px' }}
-            />
-          )}
+    if (exchangePosts && exchangePosts.length > 0) {
+      return exchangePosts.map((post) => (
+        <div
+          key={post.exchangePostId}
+          className="flex items-center p-4 mb-[2px] bg-lightgray cursor-pointer hover:bg-gray"
+          onClick={() => router.push(`/exchange/${post.exchangePostId}`)}
+        >
+          <div className=""> {/* 여기에서 마진을 조정했습니다 */}
+            {post.imgUrl && (
+              <img
+                src={post.imgUrl}
+                alt={post.title}
+                className="w-16 h-16 object-cover rounded-lg"
+              />
+            )}
+          </div>
+          <div className="flex flex-col ml-[10px]">
+            <h3 className="text-lg font-semibold">{post.title}</h3>
+            <p className="text-sm text-gray-600">작성일 : {post.createdAt}</p>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <h3>{post.title}</h3>
-          <p>{post.description}</p>
-          <p>{post.price}</p>
-        </div>
-      </div>
-    ));
+      ));
+    } else {
+      return <p className="text-center text-gray-600 py-4">게시물이 없습니다.</p>;
+    }
   };
+
+
+
 
   return (
     <div>
       <Header backNav title="지도 페이지"></Header>
-      <div className=" relative">
+      <div className="relative">
         <div className="flex justify-between">
           <div
             className="map-container"
@@ -206,15 +238,15 @@ function Page() {
       </div>
       <div
         style={{
-          transform: ` translateY(${isPanelOpen ? '0px' : '250px'})`,
+          transform: ` translateY(${isPanelOpen ? '-20px' : '250px'})`,
         }}
-        className={`fixed duration-100  bottom-0 max-w-[480px] w-full mx-auto z-20 bg-white`}
+        className={`fixed duration-300 bottom-0 max-w-[480px] w-full mx-auto z-20 bg-white object-cover rounded-lg`}
       >
         <button
-          className="text-center w-full text-header"
+          className="w-full py-2 text-black  hover:bg-skyblue rounded-lg shadow"
           onClick={togglePanel}
         >
-          {isPanelOpen ? 'Close' : 'Open'}
+          {isPanelOpen ? '▼' : '▲'}
         </button>
         <div className="overflow-scroll h-[400px] hide-scrollbar">
           <div>{renderExchangePostList()}</div>
