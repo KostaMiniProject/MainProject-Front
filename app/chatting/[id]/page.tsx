@@ -11,7 +11,9 @@ import Header from '@/components/Header';
 import Button from '@/components/Button';
 import BottomFixed from '@/components/BottomFixed';
 import Modal from '@/components/Modal';
-import { putExchange } from '@/apis/ChattingApi';
+import { deleteChattingRoom, putExchange } from '@/apis/ChattingApi';
+import { MdExitToApp } from 'react-icons/md';
+import { useRouter } from 'next/navigation';
 
 // 보내는 메시지 인터페이스
 interface IReceivedMessage {
@@ -64,10 +66,14 @@ function Page({ params }: { params: any }) {
   // const [pagenation, setPagenation] = useState(0);
   const [scroll, setScroll] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  const route = useRouter();
 
   let socket: any = null;
   const chatRoomId = params.id;
 
+  //예약하기 모달 핸들
   const handleShowModal = () => {
     setShowModal(true);
   };
@@ -77,6 +83,25 @@ function Page({ params }: { params: any }) {
       try {
         putExchange(initRoom?.exchangePostId, initRoom?.bidId);
         setInitRoom((prev: any) => ({ ...prev, status: 'EXCHANGE' }));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setShowExitModal(false);
+  };
+
+  const handleCloseExitModal = () => {
+    setShowExitModal(false);
+  };
+
+  const handleShowExitModal = () => {
+    setShowExitModal(true);
+  };
+  //나가기 모달 핸들
+  const handleExitComplete = async () => {
+    if (initRoom) {
+      try {
+        handleExitChatting();
       } catch (error) {
         console.log(error);
       }
@@ -324,10 +349,40 @@ function Page({ params }: { params: any }) {
       </div>
     );
   }
-
+  const handleExitChatting = async () => {
+    try {
+      await deleteChattingRoom(params.id);
+      route.back();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="chat-page">
-      <Header title="채팅"></Header>
+      <Header backNav title="채팅">
+        <div onClick={handleShowExitModal}>
+          <MdExitToApp size={40} />
+        </div>
+      </Header>
+      {showExitModal && (
+        <Modal setState={handleCloseExitModal}>
+          <div className="my-[5px]">채팅방을 나가시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="나가기"
+              onClick={handleExitComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleCloseExitModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
       <div className="fixed w-full bg-white max-w-[480px] pr-[16px]">
         <div className="text-header font-bold my-[10px]">
           교환하려고 하는 게시물
