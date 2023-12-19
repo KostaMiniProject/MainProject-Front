@@ -73,7 +73,7 @@ function page() {
               style={
                 selectedItem === item.itemId
                   ? {
-                      backgroundColor: '#ffe8f9',
+                      backgroundColor: '#FFD1D1',
                     }
                   : {}
               }

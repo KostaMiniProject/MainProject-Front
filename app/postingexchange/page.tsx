@@ -5,6 +5,7 @@ import { getItemById } from '@/apis/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
+import Modal from '@/components/Modal';
 import TextAreaBox from '@/components/TextAreaBox';
 import Item, { itemType } from '@/components/item/Item';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -26,6 +27,7 @@ function page() {
   const [preferItems, setPreferItems] = useState<String>('');
   const [address, setAddress] = useState<String>('');
   const [content, setContent] = useState<String>('');
+  const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<itemType>();
   const [edit, setEdit] = useState<number>(0);
   const [postNumber, setPostNumber] = useState<number>();
@@ -35,6 +37,26 @@ function page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const urlPath = usePathname();
+
+  const handleShowModal = () => {
+    if (title.length < 1) {
+      alert('제목을 입력 해 주세요');
+    } else if (content.length < 0) {
+      alert('내용을 입력 해 주세요');
+    } else {
+      setShowModal(true);
+    }
+  };
+
+  const handlePostComplete = async () => {
+    setShowModal(false);
+    postComplete();
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   useEffect(() => {
     const kakaoMapScript = document.createElement('script');
     kakaoMapScript.async = false;
@@ -239,10 +261,29 @@ function page() {
             fontSize={20}
             height={8}
             rounded="soft"
-            onClick={postComplete}
+            onClick={handleShowModal}
           />
         </div>
       </div>
+      {showModal && (
+        <Modal setState={handleCloseModal}>
+          <div className="my-[5px]">글을 등록 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="등록"
+              onClick={handlePostComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleCloseModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

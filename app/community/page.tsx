@@ -1,11 +1,29 @@
 'use client';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdSearch } from 'react-icons/md';
 import CommunityPost from '@/components/community/CommunityPost';
+import { getCommunityPost } from '@/apis/CommunityApi';
 
 function Page() {
+  const [postData, setPostData] = useState<[]>([]);
+
+  useEffect(() => {
+    async function getPosts() {
+      try {
+        const data: any = await getCommunityPost(0);
+        setPostData(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getPosts();
+  }, []);
+
+  useEffect(() => {
+    console.log(postData);
+  }, [postData]);
   return (
     <div>
       <Header title="커뮤니티"></Header>
@@ -18,12 +36,11 @@ function Page() {
         </div>
       </div>
       <div className="">
-        <CommunityPost postItem={['', '']}></CommunityPost>
-        <CommunityPost></CommunityPost>
+        {postData &&
+          postData.map((e: any, i: any) => {
+            return <CommunityPost post={e} key={i}></CommunityPost>;
+          })}
       </div>
-      {/* <div className="">
-        <CommunityPostUnImage></CommunityPostUnImage>
-      </div> */}
     </div>
   );
 }

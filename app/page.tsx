@@ -7,20 +7,20 @@ import Button from '@/components/Button';
 import { MdOutlineSearch } from 'react-icons/md';
 import Link from 'next/link';
 import Header from '@/components/Header';
+import InfiniteScrollObserver from '@/components/InfiniteScrollObserver';
 
 function Page() {
   const [postData, setPostData] = useState<any[]>([]);
   const [hasMoreData, setHasMoreData] = useState(true);
-  const listEnd = useRef<HTMLDivElement>(null);
-  let pageNum = 0;
+  const [pageNation, setPageNation] = useState(0);
   const fetchPostData = async () => {
     if (!hasMoreData) return;
 
     try {
-      const data = await getPostList(pageNum);
+      const data = await getPostList(pageNation);
       setPostData((oldData) => [...oldData, ...data.data]);
-      pageNum++;
-      console.log(pageNum);
+      setPageNation((prev) => prev + 1);
+      console.log(pageNation);
 
       if (data.data.length < 10) {
         setHasMoreData(false);
@@ -31,49 +31,10 @@ function Page() {
       setHasMoreData(false);
     }
   };
-  useEffect(() => {
-    console.log('이팩트 실행');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMoreData) {
-          fetchPostData();
-        }
-      },
-      { rootMargin: '0px', threshold: 1 }
-    );
-
-    if (listEnd.current) {
-      observer.observe(listEnd.current);
-    }
-
-    return () => {
-      if (listEnd.current) {
-        observer.unobserve(listEnd.current);
-      }
-    };
-  }, [listEnd, hasMoreData]); // hasMoreData를 의존성 배열에 추가
 
   return (
     <div className="relative">
       <div className="mx-default">
-        {/* <Link
-          href={'/search'}
-          className="h-[60px] flex cursor-default items-center border-b-[1px] border-gray"
-        >
-          <InputBox
-            onChange={setKeyWord}
-            onFocusChange={(bool) => {
-              // router.push('/search');
-            }}
-          />
-          <div
-            onClick={() => {
-              console.log(keyWord);
-            }}
-          >
-            <MdOutlineSearch size={40} />
-          </div>
-        </Link> */}
         <Header title="물물교환">
           <MdOutlineSearch size={40} />
         </Header>
@@ -94,7 +55,10 @@ function Page() {
                 </Link>
               );
             })}
-            <div ref={listEnd}>endcontent</div>
+            <InfiniteScrollObserver
+              onIntersect={fetchPostData}
+              hasMoreData={hasMoreData}
+            />
           </div>
           {/* 글쓰기 버튼 */}
         </div>

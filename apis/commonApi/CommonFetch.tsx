@@ -14,12 +14,9 @@ export async function commonFetch(
   options: RequestOptions
 ): Promise<any> {
   try {
-    // checkToken 옵션이 true이고, 토큰이 있는 경우에만 토큰을 추가
     if (options.checkToken) {
       const token = getCookie('token');
-
       if (token) {
-        // 토큰이 있는 경우에만 헤더에 추가
         options.headers = {
           ...options.headers,
           Authorization: `${token}`,
@@ -27,16 +24,15 @@ export async function commonFetch(
       }
     }
 
-    // POST 메서드일 때 body가 있는 경우에만 body 추가
-    if (
-      (options.method === 'POST' && options.body) ||
-      (options.method === 'PUT' && options.body)
-    ) {
-      options.body = JSON.stringify(options.body);
-      options.headers = {
-        ...options.headers,
-        'Content-Type': 'application/json',
-      };
+    // FormData의 경우, Content-Type을 설정하지 않습니다
+    if (!(options.body instanceof FormData)) {
+      if (options.method === 'POST' || options.method === 'PUT') {
+        options.body = JSON.stringify(options.body);
+        options.headers = {
+          ...options.headers,
+          'Content-Type': 'application/json',
+        };
+      }
     }
 
     const response = await fetch(url, options);
@@ -46,6 +42,7 @@ export async function commonFetch(
       throw new Error(`Request failed with status ${response.status}`);
     }
 
+    // return await response;
     return await response.json();
   } catch (error) {
     console.error('Error in commonFetch:', error);
