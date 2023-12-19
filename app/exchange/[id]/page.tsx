@@ -5,13 +5,13 @@ import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
 import Header from '@/components/Header';
 import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
-import { getExchangePost } from '@/api/ExchangePostApi';
+import { getExchangePost } from '@/apis/ExchangePostApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
-import { getCookie } from '@/api/Cookie';
+import { getCookie } from '@/apis/Cookie';
 import Image from 'next/image';
 import Link from 'next/link';
-import { postCreateRoom } from '@/api/ChattingApi';
+import { postCreateRoom } from '@/apis/ChattingApi';
 import BottomFixed from '@/components/BottomFixed';
 
 interface bidContent {
@@ -105,7 +105,7 @@ function Page({ params }: { params: any }) {
       {postContent.postOwner ? (
         <div className="">
           <div className="flex border-gray border-y-[0.5px] border-solid">
-            <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[5px]">
+            <div className="relative w-[80px] h-[80px] overflow-hidden my-auto">
               <Image
                 src={postContent.item.imageUrls[0]}
                 alt="Item image"
@@ -160,39 +160,41 @@ function Page({ params }: { params: any }) {
           <div className="w-[100%] h-[auto]">
             <Carousel images={postContent.item.imageUrls} />
           </div>
-          {/* 프로필 섹션 */}
-          <Profile profile={postContent.profile} />
-          {/* 교환 게시글 본문 */}
-          <div className="flex flex-col">
-            {/* 글 상세내용 */}
-            <div className={` bg-white border-gray border-b-[0.5px]`}>
-              <div>
-                <div className="text-header font-[600]">
-                  물건 이름 : {postContent.item.title}
+          <div className="mx-default">
+            {/* 프로필 섹션 */}
+            <Profile profile={postContent.profile} />
+            {/* 교환 게시글 본문 */}
+            <div className="flex flex-col">
+              {/* 글 상세내용 */}
+              <div className={` bg-white border-gray border-b-[0.5px]`}>
+                <div>
+                  <div className="text-header font-[600]">
+                    물건 이름 : {postContent.item.title}
+                  </div>
+                  <div className="text-subtitle">
+                    거래 장소 : {postContent.address}
+                  </div>
                 </div>
-                <div className="text-subtitle">
-                  거래 장소 : {postContent.address}
+                <div className="text-subtitle my-[5px]">
+                  <div>원하는 물건 : {postContent.preferItems}</div>
+                  <div>물건 상세 : {postContent.content}</div>
                 </div>
               </div>
-              <div className="text-subtitle my-[5px]">
-                <div>원하는 물건 : {postContent.preferItems}</div>
-                <div>물건 상세 : {postContent.content}</div>
-              </div>
+              {/* 버튼 */}
             </div>
-            {/* 버튼 */}
-          </div>
-          <div className="">
-            {/* 입찰 리스트 출력 */}
-            {postContent.bidList.map((e: any, i: any) => (
-              <div
-                key={i}
-                className=" border-solid border-b-[0.5px] border-gray"
-              >
-                <Link href={`/bid/${e.bidId}`}>
-                  <BidItem bid={e} />
-                </Link>
-              </div>
-            ))}
+            <div className="">
+              {/* 입찰 리스트 출력 */}
+              {postContent.bidList.map((e: any, i: any) => (
+                <div
+                  key={i}
+                  className=" border-solid border-b-[0.5px] border-gray"
+                >
+                  <Link href={`/bid/${e.bidId}`}>
+                    <BidItem bid={e} />
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
           <BottomFixed>
             <div className="flex justify-end m-[10px]">

@@ -7,6 +7,10 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    margin: {
+      default: '16px',
+      auto: 'auto',
+    },
     fontSize: {
       header: '16px',
       title: '14px',
@@ -19,7 +23,9 @@ const config: Config = {
       base: '#5562F6',
       softbase: '#F9E3F0',
       gray: '#BBBBBB',
+      lightgray:'#E5E5E5',
       white: '#FFFFFF',
+      skyblue: '#87CEEB',
       black: '#000000',
     },
     extend: {

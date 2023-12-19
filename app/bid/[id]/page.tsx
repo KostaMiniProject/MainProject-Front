@@ -4,7 +4,7 @@ import Profile from '@/components/Profile';
 import React, { useEffect, useState } from 'react';
 import Item from '@/components/item/Item';
 import { MdOutlineReportGmailerrorred } from 'react-icons/md';
-import { getBidItemList } from '@/api/BidApi';
+import { getBidItemList } from '@/apis/BidApi';
 import Link from 'next/link';
 interface ItemList {
   isOwner: boolean;

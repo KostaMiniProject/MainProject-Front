@@ -1,7 +1,7 @@
 'use client';
 import { withAuthorization } from '@/HOC/withAuthorization';
-import { postExchangePost } from '@/api/ExchangePostApi';
-import { getItemById } from '@/api/ItemApi';
+import { postExchangePost } from '@/apis/ExchangePostApi';
+import { getItemById } from '@/apis/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
@@ -16,6 +16,11 @@ declare global {
   }
 }
 
+interface qaType {
+  La: string;
+  Ma: string;
+}
+
 function page() {
   const [title, setTitle] = useState<String>('');
   const [preferItems, setPreferItems] = useState<String>('');
@@ -24,13 +29,12 @@ function page() {
   const [selectedItem, setSelectedItem] = useState<itemType>();
   const [edit, setEdit] = useState<number>(0);
   const [postNumber, setPostNumber] = useState<number>();
-  const [openMap, setOpenMap] = useState<boolean>(false);
+  const [openMap, setOpenMap] = useState<boolean>(true);
+  const [qa, setQa] = useState<qaType>();
+  const [mapAddress, setMapAddress] = useState();
   const searchParams = useSearchParams();
   const router = useRouter();
   const urlPath = usePathname();
-  let qa;
-  let mapAddress;
-
   useEffect(() => {
     const kakaoMapScript = document.createElement('script');
     kakaoMapScript.async = false;
@@ -68,10 +72,8 @@ function page() {
                 if (status === window.kakao.maps.services.Status.OK) {
                   // console.log(result);
                   // console.log(mouseEvent.latLng);
-                  qa = mouseEvent.latLng;
-                  mapAddress = result[0].address.address_name;
-                  console.log(qa);
-                  console.log(mapAddress);
+                  setQa(mouseEvent.latLng);
+                  setMapAddress(result[0].address.address_name);
                   // var detailAddr = !!result[0].road_address
                   //   ? '<div>도로명주소 : ' +
                   //     result[0].road_address.address_name +
@@ -145,9 +147,16 @@ function page() {
         itemId: searchParams.get('selectedItems'),
         title: title,
         preferItems: preferItems,
-        address: 'address',
         content: content,
       };
+      if (openMap && qa) {
+        data = {
+          ...data,
+          address: mapAddress,
+          La: qa.La,
+          Ma: qa.Ma,
+        };
+      }
       try {
         postExchangePost(data);
         router.push('/');
@@ -214,7 +223,7 @@ function page() {
             <div className="text-[20px] font-[600] flex">▶거래 장소</div>
             <div className="flex" onClick={handleOpenMap}>
               <div>입력 하기</div>
-              <input type="checkbox" checked={openMap} />
+              <input type="checkbox" checked={openMap} readOnly />
             </div>
           </div>
           <div

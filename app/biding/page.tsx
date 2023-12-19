@@ -2,12 +2,12 @@
 'use client';
 import Header from '@/components/Header';
 import Item from '@/components/item/Item';
-import { getItemList } from '@/api/ItemApi';
+import { getItemList } from '@/apis/ItemApi';
 import React, { useEffect, useState } from 'react';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { postBid } from '@/api/BidApi';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { postBid } from '@/apis/BidApi';
 import { withAuthorization } from '@/HOC/withAuthorization';
 
 function Page() {
@@ -60,12 +60,12 @@ function Page() {
   };
 
   return (
-    <div>
+    <div className="mx-default">
       <Header backNav title="입찰 하기"></Header>
       <div className="text-[18px] font-[600] text-center border-solid border-b-gray border-y-[0.5px] py-[5px] bg-softbase">
         입찰 할 물건을 선택하세요
       </div>
-      <div className="m-[15px]">
+      <div className="">
         {itemList.map((item: any) => (
           <div
             key={item.itemId}
