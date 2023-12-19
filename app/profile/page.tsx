@@ -129,7 +129,7 @@ function page() {
 
         <ProfileContainer text="내 물건">
           <div className="flex">
-            {items.length > 0 ? (
+            {items?.length > 0 ? (
               items.map((e: any, i: any) => {
                 return <Button text={e.title} height={8} key={i}></Button>;
               })
@@ -139,7 +139,7 @@ function page() {
           </div>
         </ProfileContainer>
         <ProfileContainer text="거래 내역">
-          {history.length > 0 ? (
+          {history?.length > 0 ? (
             history.map((e: any) => {
               return <div></div>;
             })
@@ -148,7 +148,7 @@ function page() {
           )}
         </ProfileContainer>
         <ProfileContainer text="찜 목록">
-          {dibs.length > 0 ? (
+          {dibs?.length > 0 ? (
             dibs.map((e: any) => {
               return <div></div>;
             })

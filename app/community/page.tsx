@@ -2,9 +2,10 @@
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
 import React, { useEffect, useState } from 'react';
-import { MdSearch } from 'react-icons/md';
+import { MdOutlinePostAdd, MdSearch } from 'react-icons/md';
 import CommunityPost from '@/components/community/CommunityPost';
-import { getCommunityPost } from '@/apis/CommunityApi';
+import { getCommunityPost, getCommunityPostComment } from '@/apis/CommunityApi';
+import Link from 'next/link';
 
 function Page() {
   const [postData, setPostData] = useState<[]>([]);
@@ -24,22 +25,30 @@ function Page() {
   useEffect(() => {
     console.log(postData);
   }, [postData]);
+
   return (
     <div>
-      <Header title="커뮤니티"></Header>
-      <div className="border-gray border-solid border-y-[0.5px]">
-        <div className="flex my-[5px] ">
-          <InputBox onChange={() => {}}></InputBox>
-          <div className="items-center justify-center flex">
-            <MdSearch size={40} />
+      <Header title="커뮤니티">
+        <Link href={'/community/posting'}>
+          <MdOutlinePostAdd size={40} />
+        </Link>
+      </Header>
+
+      <div>
+        <div className="border-gray border-solid border-y-[0.5px]">
+          <div className="flex my-[5px] ">
+            <InputBox onChange={() => {}}></InputBox>
+            <div className="items-center justify-center flex">
+              <MdSearch size={40} />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="">
-        {postData &&
-          postData.map((e: any, i: any) => {
-            return <CommunityPost post={e} key={i}></CommunityPost>;
-          })}
+        <div>
+          {postData &&
+            postData.map((e: any, i: any) => {
+              return <CommunityPost post={e} key={i}></CommunityPost>;
+            })}
+        </div>
       </div>
     </div>
   );

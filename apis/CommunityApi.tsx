@@ -7,6 +7,7 @@ export async function getCommunityPost(page: number = 0) {
       `https://itsop.shop/api/community-posts?page=${page}`,
       {
         method: 'GET',
+        checkToken: true, // 토큰 체크 활성화
         // 기타 다른 옵션들...
       }
     );
@@ -48,5 +49,21 @@ export async function putCommunityPostLike(postId: number) {
   } catch (error) {
     console.error('Error uploading:', error);
     throw error;
+  }
+}
+export async function getCommunityPostComment(postId: number) {
+  try {
+    const result = await commonFetch(
+      `https://itsop.shop/api/community-posts/${postId}/comments`,
+      {
+        method: 'GET',
+        // 기타 다른 옵션들...
+      }
+    );
+
+    console.log('Fetched data:', result);
+    return result;
+  } catch (error) {
+    console.error('Error fetching data:', error);
   }
 }
