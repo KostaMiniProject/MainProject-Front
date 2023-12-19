@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 interface AddressInfo {
   zcode: string;
   roadAddr: string;
@@ -28,7 +28,12 @@ export const PostCode = ({ info, setInfo }: Props): void => {
           const zcode_: string = data.zonecode;
           const roadAddr_: string = data.roadAddress;
           const jibunAddr_: string = data.jibunAddress;
-          setInfo({ ...info, roadAddr: roadAddr_, zcode: zcode_, jibunAddr: jibunAddr_ });
+          setInfo({
+            ...info,
+            roadAddr: roadAddr_,
+            zcode: zcode_,
+            jibunAddr: jibunAddr_,
+          });
         },
       }).open();
     };
@@ -40,7 +45,12 @@ export const PostCode = ({ info, setInfo }: Props): void => {
         const zcode_: string = data.zonecode;
         const roadAddr_: string = data.roadAddress;
         const jibunAddr_: string = data.jibunAddress;
-        setInfo({ ...info, roadAddr: roadAddr_, zcode: zcode_, jibunAddr: jibunAddr_ });
+        setInfo({
+          ...info,
+          roadAddr: roadAddr_,
+          zcode: zcode_,
+          jibunAddr: jibunAddr_,
+        });
       },
     }).open();
   }
