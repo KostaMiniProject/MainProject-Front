@@ -2,7 +2,7 @@
 'use client';
 import Header from '@/components/Header';
 import Item from '@/components/item/Item';
-import { getItemList } from '@/api/ItemApi';
+import { getItemList } from '@/apis/ItemApi';
 import React, { useEffect, useState } from 'react';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';

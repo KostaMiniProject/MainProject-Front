@@ -1,6 +1,6 @@
 'use client';
 import { withAuthorization } from '@/HOC/withAuthorization';
-import { postItem } from '@/api/ItemApi';
+import { postItem } from '@/apis/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import InputBox from '@/components/InputBox';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
-import { Login } from '@/api/Login';
+import { Login } from '@/apis/Login';
 import { useRecoilState } from 'recoil';
 import { token, userId } from '@/store/atoms';
 
@@ -17,11 +17,11 @@ function page() {
   const [accessUserId, setAccessUserId] = useRecoilState(userId);
   const router = useRouter();
 
-  function handleFindEmail(){
+  function handleFindEmail() {
     router.push('/find/email');
   }
 
-  function handleFindPassword(){
+  function handleFindPassword() {
     router.push('/find/password');
   }
 

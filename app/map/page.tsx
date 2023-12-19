@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { withAuthorization } from '@/HOC/withAuthorization';
 import Header from '@/components/Header';
-import { getExchangePostsForMap } from '@/api/MapApi';
+import { getExchangePostsForMap } from '@/apis/MapApi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -29,7 +29,7 @@ function Page() {
 
   useEffect(() => {
     async function fetchLocationAndData() {
-      const fetchWithLocation = async (latitude:any, longitude:any) => {
+      const fetchWithLocation = async (latitude: any, longitude: any) => {
         try {
           const data = await getExchangePostsForMap(longitude.toString(), latitude.toString());
           setExchangePosts(data); // 서버로부터 받은 데이터를 상태에 저장
@@ -37,7 +37,7 @@ function Page() {
           console.error('Error fetching exchange posts:', error);
         }
       };
-  
+
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (position) => {
           const lat = position.coords.latitude;
@@ -58,10 +58,10 @@ function Page() {
         await fetchWithLocation(defaultLat, defaultLon);
       }
     }
-  
+
     fetchLocationAndData();
   }, []);
-  
+
 
   useEffect(() => {
     console.log('Posts', exchangePosts);
@@ -100,7 +100,7 @@ function Page() {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOption = {
       center: locPosition,
-      level: 3,
+      level: 2,
     };
     const map = new window.kakao.maps.Map(mapContainer, mapOption);
     const marker = new window.kakao.maps.Marker({
@@ -193,28 +193,32 @@ function Page() {
   };
   // 교환 게시글 목록을 표시하는 함수
   const renderExchangePostList = () => {
-    // exchangePosts가 정의되었고, 배열 내에 항목이 있는 경우에만 map 함수 실행
     if (exchangePosts && exchangePosts.length > 0) {
       return exchangePosts.map((post) => (
-        <div key={post.exchangePostId} className="post-item" onClick={() => router.push(`/exchange/${post.exchangePostId}`)}>
-          <div className="post-image">
+        <div
+          key={post.exchangePostId}
+          className="flex items-center p-4 mb-[2px] bg-lightgray cursor-pointer hover:bg-gray"
+          onClick={() => router.push(`/exchange/${post.exchangePostId}`)}
+        >
+          <div className=""> {/* 여기에서 마진을 조정했습니다 */}
             {post.imgUrl && (
-              <img src={post.imgUrl} alt={post.title} style={{ width: '100px', height: '100px', borderRadius: '10px' }} />
+              <img
+                src={post.imgUrl}
+                alt={post.title}
+                className="w-16 h-16 object-cover rounded-lg"
+              />
             )}
           </div>
-          <div className="post-info">
-            <h3>{post.title}</h3>
-            <p>{post.description}</p>
-            <p>{post.price}</p>
+          <div className="flex flex-col ml-[10px]">
+            <h3 className="text-lg font-semibold">{post.title}</h3>
+            <p className="text-sm text-gray-600">작성일 : {post.createdAt}</p>
           </div>
         </div>
       ));
     } else {
-      // exchangePosts 배열이 비어있거나 정의되지 않은 경우
-      return <p>게시물이 없습니다.</p>;
+      return <p className="text-center text-gray-600 py-4">게시물이 없습니다.</p>;
     }
   };
-  
 
 
 
@@ -222,24 +226,31 @@ function Page() {
   return (
     <div>
       <Header backNav title="지도 페이지"></Header>
-      <div className="mx-[15px]">
-        <div className="my-[5px]">
-          <div className="flex justify-between">
-            <div className="map-container" style={{ width: '100vw', height: '100vh' }}>
-              <div id="map" style={{ width: '100%', height: '100%' }}></div>
-            </div>
-            <div className={`slide-up-panel ${isPanelOpen ? 'open' : ''}`}>
-              <button className="toggle-button" onClick={togglePanel}>
-                {isPanelOpen ? 'Close' : 'Open'}
-              </button>
-              <div className='contents'>
-                {renderExchangePostList()}
-              </div>
-            </div>
+      <div className="relative">
+        <div className="flex justify-between">
+          <div
+            className="map-container"
+            style={{ width: '100vw', height: '75vh' }}
+          >
+            <div id="map" style={{ width: '100%', height: '100%' }}></div>
           </div>
-
         </div>
-
+      </div>
+      <div
+        style={{
+          transform: ` translateY(${isPanelOpen ? '-20px' : '250px'})`,
+        }}
+        className={`fixed duration-300 bottom-0 max-w-[480px] w-full mx-auto z-20 bg-white object-cover rounded-lg`}
+      >
+        <button
+          className="w-full py-2 text-black  hover:bg-skyblue rounded-lg shadow"
+          onClick={togglePanel}
+        >
+          {isPanelOpen ? '▼' : '▲'}
+        </button>
+        <div className="overflow-scroll h-[400px] hide-scrollbar">
+          <div>{renderExchangePostList()}</div>
+        </div>
       </div>
     </div>
   );
