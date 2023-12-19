@@ -21,7 +21,7 @@ function ReviewContainer({ children }: { children: React.ReactNode }) {
 }
 
 function handleLogout() {
-  // 쿠키에서 토큰 및 사용자 ID 삭제
+  // 쿠키에서 토큰 및 사용자 ID 삭제  `1    1/.
   removeCookie('token');
   removeCookie('userId');
 }
@@ -90,12 +90,18 @@ function page() {
             <div className="text-white">프로필</div>
             <div className="text-white">프로필</div>
           </div>
-          <div className="flex-1">
-            <div className="mx-[15px] text-[24px] font-[600]">
+          <div className="ml-default flex-1">
+            <div className=" text-header font-[600]">
               {/* {myProfile.name} */}
+              닉네임
+            </div>
+            <div className=" text-title font-[600]">
+              {/* {myProfile.name} */}
+              주소
             </div>
             <div className="flex">
-              <div className="ml-auto">
+              <div className="flex items-center justify-between flex-1">
+                <div className="text-subtitle">점수</div>
                 <Button
                   text="내 정보"
                   fontSize={16}
@@ -106,7 +112,7 @@ function page() {
             </div>
           </div>
         </div>
-        <div className="flex items-center text-center mx-[15px]">
+        {/* <div className="flex items-center text-center mx-[15px]">
           <ReviewContainer>
             <MdThumbDown size={20} color={'#e00685'} />
             <div className="text-[20px]">0</div>
@@ -119,16 +125,18 @@ function page() {
             <MdThumbUp size={20} color={'#e00685'} />
             <div className="text-[20px]">0</div>
           </ReviewContainer>
-        </div>
+        </div> */}
 
         <ProfileContainer text="내 물건">
-          {items.length > 0 ? (
-            items.map((e: any, i: any) => {
-              return <div key={i}>{e.title}</div>;
-            })
-          ) : (
-            <>아이템이 없습니다</>
-          )}
+          <div className="flex">
+            {items.length > 0 ? (
+              items.map((e: any, i: any) => {
+                return <Button text={e.title} height={8} key={i}></Button>;
+              })
+            ) : (
+              <>아이템이 없습니다</>
+            )}
+          </div>
         </ProfileContainer>
         <ProfileContainer text="거래 내역">
           {history.length > 0 ? (
