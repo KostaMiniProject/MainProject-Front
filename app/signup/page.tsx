@@ -13,8 +13,6 @@ function page() {
   const [nickName, setNickName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [emailCheckNum, setEmailCheckNum] = useState<string>("");
-  const [authNum, setAuthNum] = useState<string>("");
-  const [showAuthNum, setShowAuthNum] = useState(false);
   const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState({
     zcode: "",
@@ -77,14 +75,6 @@ function page() {
 
   const onClickAddrBtn = () => {
     PostCode({ info: address, setInfo: setAddress });
-  };
-
-  const authNumSend = () => {
-    setShowAuthNum(true);
-  };
-
-  const authNumConfirm = () => {
-    setShowAuthNum(false);
   };
 
   const onChangeDetailAddr = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -236,7 +226,10 @@ function page() {
       <div className="mx-[15px]">
         <div className="">
           <div className="text-[20px] my-[10px] font-[600px]">닉네임</div>
-          <InputBox onChange={onChangeNickName}></InputBox>
+          <InputBox
+            onChange={onChangeNickName}
+            message="닉네임을 입력해주세요."
+          ></InputBox>
           <span
             className={`style={{
             font-weight: 500;
@@ -265,6 +258,7 @@ function page() {
                 setEmail(e);
                 onChangeEmail(e);
               }}
+              message="이메일을 작성해주세요."
             ></InputBox>
             <div className="m-[5px]"></div>
             <Button
@@ -295,13 +289,13 @@ function page() {
               {emailMessage}
             </p>
           </span>
-          {/* {showAuthNum && ( */}
           <div className="flex mb-[6px] justify-between">
             <InputBox
               onChange={(e) => {
                 setEmailCheckNum(e);
                 // 이메일 인증 확인 검사 로직 필요
               }}
+              message="인증번호를 입력해주세요."
             ></InputBox>
             <div className="m-[5px]"></div>
             <Button
@@ -316,11 +310,13 @@ function page() {
           </div>
           {/* //인증번호 메시지 출력 참조 링크
           //https://velog.io/@tmddud73/%EC%9D%B4%EB%A9%94%EC%9D%BC%EB%A1%9C-%EC%9D%B8%EC%A6%9D%EB%B2%88%ED%98%B8-%EB%B3%B4%EB%82%B4%EA%B8%B0 */}
-          {/* )} */}
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600px]">휴대폰번호</div>
-          <InputBox onChange={onChangePhone}></InputBox>
+          <div className="text-[20px] my-[10px] font-[600px]">전화번호</div>
+          <InputBox
+            onChange={onChangePhone}
+            message="전화번호를 작성해주세요."
+          ></InputBox>
           <span
             className={`style={{
           font-weight: 500;
@@ -398,7 +394,11 @@ function page() {
         </div>
         <div className="my-[20px]">
           <div className="text-[20px] my-[10px] font-[600]">비밀번호</div>
-          <InputBox onChange={onChangePassword} type="password"></InputBox>
+          <InputBox
+            onChange={onChangePassword}
+            type="password"
+            message="비밀번호를 입력해주세요."
+          ></InputBox>
           <span
             className={`style={{
             font-weight: 500;
@@ -421,7 +421,11 @@ function page() {
         </div>
         <div className="my-[20px]">
           <div className="text-[20px] my-[10px] font-[600]">비밀번호 확인</div>
-          <InputBox onChange={onChangeCheckPassword} type="password"></InputBox>
+          <InputBox
+            onChange={onChangeCheckPassword}
+            type="password"
+            message="비밀번호를 재입력해주세요."
+          ></InputBox>
           <span
             className={`style={{
             font-weight: 500;
