@@ -23,13 +23,7 @@ function Success() {
         </div>
       </div>
       <div className="w-full flex-col flex">
-        <Button
-          text="작성 완료"
-          fontSize={10}
-          height={8}
-          width={10}
-          rounded="soft"
-        />
+        <Button text="작성 완료" fontSize={10} height={8} rounded="soft" />
       </div>
     </div>
   );
