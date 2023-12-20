@@ -27,7 +27,7 @@ function Success() {
           <Button text="취소" fontSize={10} height={8} rounded="soft" />
         </div>
         <div className="w-[65%]">
-          <Button text="작성 완료" fontSize={10} height={8} rounded="soft" />
+          <Button text="로그인" fontSize={10} height={8} rounded="soft" />
         </div>
       </div>
     </div>
