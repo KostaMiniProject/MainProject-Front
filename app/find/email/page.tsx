@@ -50,7 +50,6 @@ function Page() {
           <div className="text-[20px] pt-[10px]">전화번호</div>
           <InputBox
             onChange={setPhone}
-            type="password"
             message="전화번호를 입력해주세요. (ex) 010-1234-1234"
           ></InputBox>
         </div>
