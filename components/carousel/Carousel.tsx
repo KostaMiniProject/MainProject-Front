@@ -21,26 +21,33 @@ function Carousel({ images }: { images: any }) {
     <div className="relative w-full h-0 pb-[70%] overflow-hidden bg-black">
       <div className="flex absolute top-0 left-0 w-full h-full transition-transform">
         {images.map((src: any, index: any) => (
-          <Image
-            key={index}
-            src={src}
-            alt={`carouselImage-${index}`}
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="duration-300"
-            style={{
-              objectFit: 'cover',
-              transform: `translateX(${(index - currentIndex) * 100}%)`,
+          <div
+            className="z-20"
+            onClick={() => {
+              console.log('asdfasdfas');
             }}
-          />
+          >
+            <Image
+              key={index}
+              src={src}
+              alt={`carouselImage-${index}`}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="duration-300"
+              style={{
+                objectFit: 'cover',
+                transform: `translateX(${(index - currentIndex) * 100}%)`,
+              }}
+            />
+          </div>
         ))}
       </div>
       <div className="flex justify-between absolute top-0 w-full h-full">
-        <div className="my-auto" onClick={prevImage}>
+        <div className="my-auto z-30" onClick={prevImage}>
           <MdKeyboardArrowLeft size={40} color="gray" />
         </div>
-        <div className="my-auto" onClick={nextImage}>
+        <div className="my-auto z-30" onClick={nextImage}>
           <MdKeyboardArrowRight size={40} color="gray" />
         </div>
       </div>

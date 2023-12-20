@@ -20,8 +20,8 @@ const config: Config = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      base: '#5562F6',
-      softbase: '#F9E3F0',
+      base: '#EB3324',
+      softbase: '#FFD1D1',
       gray: '#BBBBBB',
       lightgray:'#E5E5E5',
       white: '#FFFFFF',

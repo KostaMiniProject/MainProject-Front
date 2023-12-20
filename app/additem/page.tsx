@@ -127,8 +127,10 @@ function Page() {
               <Image
                 src={URL.createObjectURL(image)}
                 alt={`Selected Image ${index + 1}`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{
+                  objectFit: 'cover',
+                }}
               />
               <div
                 className="absolute top-0 right-0 cursor-pointer"

@@ -5,7 +5,7 @@ import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
 import Header from '@/components/Header';
 import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
-import { getExchangePost } from '@/apis/ExchangePostApi';
+import { deleteExchangePost, getExchangePost } from '@/apis/ExchangePostApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '@/apis/Cookie';
@@ -13,6 +13,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { postCreateRoom } from '@/apis/ChattingApi';
 import BottomFixed from '@/components/BottomFixed';
+import Modal from '@/components/Modal';
 
 interface bidContent {
   id: number;
@@ -44,6 +45,7 @@ interface PostContent {
 
 function Page({ params }: { params: any }) {
   const [postContent, setPostContent] = useState<PostContent | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const [returnData, setReturnData] = useState();
   const router = useRouter();
   const userId: string | undefined = getCookie('userId');
@@ -62,7 +64,27 @@ function Page({ params }: { params: any }) {
     fetchPostContent();
   }, [params.id, userId]);
 
-  function handleDeletePost() {}
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handlePostComplete = async () => {
+    setShowModal(false);
+    handleDeletePost();
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  async function handleDeletePost() {
+    try {
+      await deleteExchangePost(params.id);
+      alert('삭제되었습니다.');
+      router.push('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
   if (!postContent) {
     // 데이터 로딩 중에 표시할 내용
     return <div>Loading...</div>;
@@ -87,7 +109,7 @@ function Page({ params }: { params: any }) {
           <>
             <div
               className="w-[60px] flex justify-center cursor-pointer "
-              onClick={handleDeletePost}
+              onClick={handleShowModal}
             >
               <MdDeleteForever size={40} />
             </div>
@@ -209,6 +231,25 @@ function Page({ params }: { params: any }) {
             </div>
           </BottomFixed>
         </>
+      )}
+      {showModal && (
+        <Modal setState={handleCloseModal}>
+          <div className="my-[5px]">글을 삭제 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="삭제하기"
+              onClick={handlePostComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleCloseModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
       )}
     </div>
   );

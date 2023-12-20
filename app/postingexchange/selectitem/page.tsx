@@ -67,13 +67,13 @@ function page() {
           교환 할 물건을 선택하세요
         </div>
         {itemList.length > 0 ? (
-          itemList.map((item: any) => (
+          itemList.map((item: any, index: any) => (
             <div
-              key={item.id}
+              key={index}
               style={
                 selectedItem === item.itemId
                   ? {
-                      backgroundColor: '#ffe8f9',
+                      backgroundColor: '#FFD1D1',
                     }
                   : {}
               }

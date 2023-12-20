@@ -10,7 +10,7 @@ import {
 } from 'react-icons/md';
 
 const iconSize: number = 25;
-const baseColor: string = '#FFD5EB';
+const baseColor: string = '#FFD1D1';
 
 function flexClasses(active: boolean) {
   return (
