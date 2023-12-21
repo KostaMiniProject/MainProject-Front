@@ -1,11 +1,35 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
 
 import Image from 'next/image';
+import Modal from '../Modal';
+import Button from '../Button';
 
 function Carousel({ images }: { images: any }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const img = new window.Image();
+    img.src = images[currentIndex];
+    img.onload = () => {
+      setImageSize({ width: img.naturalWidth, height: img.naturalHeight });
+    };
+  }, [currentIndex, images]);
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handlePostComplete = async () => {
+    setShowModal(false);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -24,7 +48,7 @@ function Carousel({ images }: { images: any }) {
           <div
             className="z-20"
             onClick={() => {
-              console.log('asdfasdfas');
+              handleShowModal();
             }}
           >
             <Image
@@ -33,7 +57,7 @@ function Carousel({ images }: { images: any }) {
               alt={`carouselImage-${index}`}
               fill
               priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes="(max-width: 480px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="duration-300"
               style={{
                 objectFit: 'cover',
@@ -51,6 +75,25 @@ function Carousel({ images }: { images: any }) {
           <MdKeyboardArrowRight size={40} color="gray" />
         </div>
       </div>
+      {showModal && (
+        <Modal setState={handleCloseModal}>
+          <div
+            className="w-full h-full"
+            style={{
+              maxWidth: imageSize.width,
+              maxHeight: imageSize.height,
+            }}
+          >
+            <Image
+              src={images[currentIndex]}
+              alt={`carouselImage-${currentIndex}`}
+              fill
+              style={{ objectFit: 'contain' }}
+              onClick={handleCloseModal}
+            />
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
