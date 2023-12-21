@@ -1,34 +1,34 @@
-'use client';
-import React, { useState, useCallback, useEffect } from 'react';
-import InputBox from '@/components/InputBox';
-import Button from '@/components/Button';
-import Header from '@/components/Header';
-import PostCode from '@/components/signup/PostCode';
-import { postSignUp } from '@/apis/SignUpApi';
-import { useRouter } from 'next/navigation';
-import { relative } from 'path';
+"use client";
+import React, { useState, useCallback, useEffect } from "react";
+import InputBox from "@/components/InputBox";
+import Button from "@/components/Button";
+import Header from "@/components/Header";
+import PostCode from "@/components/signup/PostCode";
+import { postEmailCheck } from "@/apis/EmailCheckApi";
+import { postEmailSend } from "@/apis/EmailSendApi";
+import { useRouter } from "next/navigation";
+import { relative } from "path";
 
 function page() {
-  const [nickName, setNickName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [authNum, setAuthNum] = useState<string>('');
-  const [showAuthNum, setShowAuthNum] = useState(false);
-  const [phone, setPhone] = useState<string>('');
+  const [nickName, setNickName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [emailCheckNum, setEmailCheckNum] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState({
-    zcode: '',
-    roadAddr: '',
-    jibunAddr: '',
-    detailAddr: '',
+    zcode: "",
+    roadAddr: "",
+    jibunAddr: "",
+    detailAddr: "",
   });
-  const [password, setPassword] = useState<string>('');
-  const [checkPassword, setCheckPassword] = useState<string>('');
+  const [password, setPassword] = useState<string>("");
+  const [checkPassword, setCheckPassword] = useState<string>("");
   // 유효성 검사 메세지 출력
-  const [nickNameMessage, setNickNameMessage] = useState<string>('');
-  const [emailMessage, setEmailMessage] = useState<string>('');
-  const [phoneMessage, setPhoneMessage] = useState<string>('');
-  const [passwordMessage, setPasswordMessage] = useState<string>('');
-  const [checkPasswordMessage, setCheckPasswordMessage] = useState<string>('');
-  const [addressMessage, setAddressMessage] = useState<string>('');
+  const [nickNameMessage, setNickNameMessage] = useState<string>("");
+  const [emailMessage, setEmailMessage] = useState<string>("");
+  const [phoneMessage, setPhoneMessage] = useState<string>("");
+  const [passwordMessage, setPasswordMessage] = useState<string>("");
+  const [checkPasswordMessage, setCheckPasswordMessage] = useState<string>("");
+  const [addressMessage, setAddressMessage] = useState<string>("");
   // 유효성 검사 여부 확인
   const [isNickName, setIsNickName] = useState<boolean>(false);
   const [isEmail, setIsEmail] = useState<boolean>(false);
@@ -38,16 +38,43 @@ function page() {
 
   const router = useRouter();
 
+  // # 이메일 발송
+  async function handleEmailSend(email: string) {
+    try {
+      // 유효성 검사를 통과한 경우 회원가입 요청
+      const userData = {
+        email: email,
+      };
+      const emailSend = await postEmailSend(userData);
+
+      // findId 함수에서 서버에서 에러가 발생하지 않는다면, '/success'로 이동
+      // router.push("/find/password/success");
+    } catch (error: any) {
+      // 'error' 변수를 'any' 타입으로 선언하여 사용
+      alert((error as Error).message || "입력한 정보가 일치하지 않습니다.");
+    }
+  }
+
+  // # 이메일 검사
+  async function handleEmailCheck(email: string, emailCheckNum: string) {
+    try {
+      // 유효성 검사를 통과한 경우 회원가입 요청
+      const userData = {
+        email: email,
+        emailCheckNum: emailCheckNum,
+      };
+      const emailCheck = await postEmailCheck(userData);
+
+      // findId 함수에서 서버에서 에러가 발생하지 않는다면, '/success'로 이동
+      // router.push("/find/password/success");
+    } catch (error: any) {
+      // 'error' 변수를 'any' 타입으로 선언하여 사용
+      alert((error as Error).message || "입력한 정보가 일치하지 않습니다.");
+    }
+  }
+
   const onClickAddrBtn = () => {
     PostCode({ info: address, setInfo: setAddress });
-  };
-
-  const authNumSend = () => {
-    setShowAuthNum(true);
-  };
-
-  const authNumConfirm = () => {
-    setShowAuthNum(false);
   };
 
   const onChangeDetailAddr = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,13 +85,13 @@ function page() {
     const nickNameRegex = /^[가-힣a-zA-Z0-9]{2,13}$/;
     setNickName(nickNameCurrent);
     if (nickNameCurrent.length === 0) {
-      setNickNameMessage('닉네임은 필수 항목입니다.');
+      setNickNameMessage("닉네임은 필수 항목입니다.");
       setIsNickName(false);
     } else if (!nickNameRegex.test(nickNameCurrent)) {
-      setNickNameMessage('2글자 이상 14글자 미만으로 입력해주세요.');
+      setNickNameMessage("2글자 이상 14글자 미만으로 입력해주세요.");
       setIsNickName(false);
     } else {
-      setNickNameMessage('올바른 닉네임 형식입니다.');
+      setNickNameMessage("올바른 닉네임 형식입니다.");
       setIsNickName(true);
     }
   }, []);
@@ -75,13 +102,13 @@ function page() {
     setEmail(emailCurrent);
 
     if (emailCurrent.length === 0) {
-      setEmailMessage('이메일은 필수 항목입니다.');
+      setEmailMessage("이메일은 필수 항목입니다.");
       setIsEmail(false);
     } else if (!emailRegex.test(emailCurrent)) {
-      setEmailMessage('이메일 형식이 틀렸습니다.');
+      setEmailMessage("이메일 형식이 틀렸습니다.");
       setIsEmail(false);
     } else {
-      setEmailMessage('올비른 이메일 형식입니다.');
+      setEmailMessage("올비른 이메일 형식입니다.");
       setIsEmail(true);
     }
   }, []);
@@ -91,13 +118,13 @@ function page() {
     setPhone(phoneCurrent);
 
     if (phoneCurrent.length === 0) {
-      setPhoneMessage('휴대폰번호는 필수 항목입니다.');
+      setPhoneMessage("휴대폰번호는 필수 항목입니다.");
       setIsPhone(false);
     } else if (!phoneRegex.test(phoneCurrent)) {
-      setPhoneMessage('휴대폰번호 11자리를 입력해주세요.');
+      setPhoneMessage("휴대폰번호 11자리를 입력해주세요.");
       setIsPhone(false);
     } else {
-      setPhoneMessage('올바른 휴대폰 번호 형식입니다.');
+      setPhoneMessage("올바른 휴대폰 번호 형식입니다.");
       setIsPhone(true);
     }
   }, []);
@@ -108,15 +135,15 @@ function page() {
     setPassword(passwordCurrent);
 
     if (passwordCurrent.length === 0) {
-      setPasswordMessage('비밀번호는 필수 항목입니다.');
+      setPasswordMessage("비밀번호는 필수 항목입니다.");
       setIsPassword(false);
     } else if (!passwordRegex.test(passwordCurrent)) {
       setPasswordMessage(
-        '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요.'
+        "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
       );
       setIsPassword(false);
     } else {
-      setPasswordMessage('올바른 비밀번호 형식입니다.');
+      setPasswordMessage("올바른 비밀번호 형식입니다.");
       setIsPassword(true);
     }
   }, []);
@@ -126,14 +153,14 @@ function page() {
       setCheckPassword(checkPasswordCurrent);
 
       if (checkPasswordCurrent.length === 0) {
-        setCheckPasswordMessage('비밀번호는 필수 항목입니다.');
+        setCheckPasswordMessage("비밀번호는 필수 항목입니다.");
         setIsCheckPassword(false);
       } else if (password === checkPasswordCurrent) {
-        setCheckPasswordMessage('비밀번호와 비밀번호 확인이 동일합니다.');
+        setCheckPasswordMessage("비밀번호와 비밀번호 확인이 동일합니다.");
         setIsCheckPassword(true);
       } else {
         setCheckPasswordMessage(
-          '비밀번호와 비밀번호 확인이 동일하지 않습니다.'
+          "비밀번호와 비밀번호 확인이 동일하지 않습니다."
         );
         setIsCheckPassword(false);
       }
@@ -150,12 +177,16 @@ function page() {
   }, []);
 
   useEffect(() => {
-    if (address.zcode && (address.jibunAddr || address.roadAddr) && address.detailAddr) {
-      setAddressMessage('');
+    if (
+      address.zcode &&
+      (address.jibunAddr || address.roadAddr) &&
+      address.detailAddr
+    ) {
+      setAddressMessage("");
     } else {
-      setAddressMessage('주소는 필수 항목입니다.');
+      setAddressMessage("주소는 필수 항목입니다.");
     }
-  }, [address]);  // 의존성 배열에 address 상태 전체를 넣음
+  }, [address]); // 의존성 배열에 address 상태 전체를 넣음
 
   const signUp = async () => {
     // 비동기 처리
@@ -182,10 +213,10 @@ function page() {
         // postSignUp(userData);
         // router.push('/login');
       } catch (error) {
-        alert('회원가입 실패');
+        alert("회원가입 실패");
       }
     } else {
-      alert('입력한 정보를 다시 확인해주세요.');
+      alert("입력한 정보를 다시 확인해주세요.");
     }
   };
 
@@ -195,7 +226,10 @@ function page() {
       <div className="mx-[15px]">
         <div className="">
           <div className="text-[20px] my-[10px] font-[600px]">닉네임</div>
-          <InputBox onChange={onChangeNickName}></InputBox>
+          <InputBox
+            onChange={onChangeNickName}
+            message="닉네임을 입력해주세요."
+          ></InputBox>
           <span
             className={`style={{
             font-weight: 500;
@@ -206,20 +240,35 @@ function page() {
             bottom: -10px;
             left: 0;}}`}
           >
-            <p style={{ color: nickName.length > 0 ? (isNickName ? 'green' : 'red') : 'red' }}>{nickNameMessage}</p>
+            <p
+              style={{
+                color:
+                  nickName.length > 0 ? (isNickName ? "green" : "red") : "red",
+              }}
+            >
+              {nickNameMessage}
+            </p>
           </span>
         </div>
         <div className="">
           <div className="text-[20px] my-[10px] font-[600px]">이메일</div>
           <div className="flex mb-[6px] justify-between">
-            <InputBox onChange={onChangeEmail}></InputBox>
+            <InputBox
+              onChange={(e) => {
+                setEmail(e);
+                onChangeEmail(e);
+              }}
+              message="이메일을 작성해주세요."
+            ></InputBox>
             <div className="m-[5px]"></div>
             <Button
               text="인증번호 발송"
               fontSize={18}
               height={5}
               rounded="soft"
-              onClick={authNumSend}
+              onClick={() => {
+                handleEmailSend(email);
+              }}
             />
           </div>
           <span
@@ -232,27 +281,42 @@ function page() {
           bottom: -10px;
           left: 0;}}`}
           >
-            <p style={{ color: email.length > 0 ? (isEmail ? 'green' : 'red') : 'red' }}>{emailMessage}</p>
+            <p
+              style={{
+                color: email.length > 0 ? (isEmail ? "green" : "red") : "red",
+              }}
+            >
+              {emailMessage}
+            </p>
           </span>
-          {showAuthNum && (
-              <div className="flex mb-[6px] justify-between">
-                <InputBox onChange={setAuthNum}></InputBox>
-                <div className="m-[5px]"></div>
-                <Button
-                  text="인증번호 확인"
-                  fontSize={18}
-                  height={5}
-                  rounded="soft"
-                  onClick={authNumConfirm}
-                />
-              </div>
-              //인증번호 메시지 출력 참조 링크
-              //https://velog.io/@tmddud73/%EC%9D%B4%EB%A9%94%EC%9D%BC%EB%A1%9C-%EC%9D%B8%EC%A6%9D%EB%B2%88%ED%98%B8-%EB%B3%B4%EB%82%B4%EA%B8%B0
-          )}
+          <div className="flex mb-[6px] justify-between">
+            <InputBox
+              onChange={(e) => {
+                setEmailCheckNum(e);
+                // 이메일 인증 확인 검사 로직 필요
+              }}
+              message="인증번호를 입력해주세요."
+            ></InputBox>
+            <div className="m-[5px]"></div>
+            <Button
+              text="인증번호 확인"
+              fontSize={18}
+              height={5}
+              rounded="soft"
+              onClick={() => {
+                handleEmailCheck(email, emailCheckNum);
+              }}
+            />
+          </div>
+          {/* //인증번호 메시지 출력 참조 링크
+          //https://velog.io/@tmddud73/%EC%9D%B4%EB%A9%94%EC%9D%BC%EB%A1%9C-%EC%9D%B8%EC%A6%9D%EB%B2%88%ED%98%B8-%EB%B3%B4%EB%82%B4%EA%B8%B0 */}
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600px]">휴대폰번호</div>
-          <InputBox onChange={onChangePhone}></InputBox>
+          <div className="text-[20px] my-[10px] font-[600px]">전화번호</div>
+          <InputBox
+            onChange={onChangePhone}
+            message="전화번호를 작성해주세요."
+          ></InputBox>
           <span
             className={`style={{
           font-weight: 500;
@@ -263,7 +327,13 @@ function page() {
           bottom: -10px;
           left: 0;}}`}
           >
-            <p style={{ color: phone.length > 0 ? (isPhone ? 'green' : 'red') : 'red' }}>{phoneMessage}</p>
+            <p
+              style={{
+                color: phone.length > 0 ? (isPhone ? "green" : "red") : "red",
+              }}
+            >
+              {phoneMessage}
+            </p>
           </span>
         </div>
         <div className="">
@@ -290,14 +360,14 @@ function page() {
               placeholder="도로명 주소"
               className="p-2 border-[0.5px] rounded-[8px] h-[40px] w-[48%] mr-[5px]"
               value={address.roadAddr}
-            // readOnly
+              // readOnly
             />
             <input
               type="text"
               placeholder="지번 주소"
               className="p-2 border-[0.5px] rounded-[8px] h-[40px] w-[50%]"
               value={address.jibunAddr}
-            // readOnly
+              // readOnly
             />
           </div>
           <div className="w-full mt-[10px]">
@@ -319,12 +389,16 @@ function page() {
             bottom: -10px;
             left: 0;}}`}
           >
-            <p style={{ color: 'red' }}>{addressMessage}</p>
+            <p style={{ color: "red" }}>{addressMessage}</p>
           </span>
         </div>
         <div className="my-[20px]">
           <div className="text-[20px] my-[10px] font-[600]">비밀번호</div>
-          <InputBox onChange={onChangePassword} type="password"></InputBox>
+          <InputBox
+            onChange={onChangePassword}
+            type="password"
+            message="비밀번호를 입력해주세요."
+          ></InputBox>
           <span
             className={`style={{
             font-weight: 500;
@@ -335,12 +409,23 @@ function page() {
             bottom: -10px;
             left: 0;}}`}
           >
-            <p style={{ color: password.length > 0 ? (isPassword ? 'green' : 'red') : 'red' }}>{passwordMessage}</p>
+            <p
+              style={{
+                color:
+                  password.length > 0 ? (isPassword ? "green" : "red") : "red",
+              }}
+            >
+              {passwordMessage}
+            </p>
           </span>
         </div>
         <div className="my-[20px]">
           <div className="text-[20px] my-[10px] font-[600]">비밀번호 확인</div>
-          <InputBox onChange={onChangeCheckPassword} type="password"></InputBox>
+          <InputBox
+            onChange={onChangeCheckPassword}
+            type="password"
+            message="비밀번호를 재입력해주세요."
+          ></InputBox>
           <span
             className={`style={{
             font-weight: 500;
@@ -351,7 +436,18 @@ function page() {
             bottom: -10px;
             left: 0;}}`}
           >
-            <p style={{ color: checkPassword.length > 0 ? (isCheckPassword ? 'green' : 'red') : 'red' }}>{checkPasswordMessage}</p>
+            <p
+              style={{
+                color:
+                  checkPassword.length > 0
+                    ? isCheckPassword
+                      ? "green"
+                      : "red"
+                    : "red",
+              }}
+            >
+              {checkPasswordMessage}
+            </p>
           </span>
         </div>
         <div className="text-center my-[20px]">

@@ -42,15 +42,15 @@ function Page() {
         </div>
         <div className="flex items-center text-center mb-[25px]">
           <ReviewContainer>
-            <FaRegFaceGrinBeam size={'2rm'} color={'#e00685'} />
+            <FaRegFaceGrinBeam size={'50'} color={'#e00685'} />
             <div className="text-[15px]">완전 추천해요!</div>
           </ReviewContainer>
           <ReviewContainer>
-            <FaRegFaceSmile size={'2rm'} color={'#e00685'} />
+            <FaRegFaceSmile size={'50'} color={'#e00685'} />
             <div className="text-[15px]">괜찮아요.</div>
           </ReviewContainer>
           <ReviewContainer>
-            <FaRegFaceFrown size={'2rm'} color={'#e00685'} />
+            <FaRegFaceFrown size={'50'} color={'#e00685'} />
             <div className="text-[15px]">추천하지 않아요.</div>
           </ReviewContainer>
         </div>
