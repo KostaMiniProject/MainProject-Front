@@ -2,9 +2,10 @@
 import Header from '@/components/Header';
 import React, { useState } from 'react';
 import Button from '@/components/Button';
-import TextAreaBox from '@/components/TextAreaBox';
+import useInputLength from '@/components/useInputLength';
 import { FaRegFaceGrinBeam, FaRegFaceSmile, FaRegFaceFrown } from "react-icons/fa6";
 
+const MAX_LENGTH = 500;
 
 function ReviewContainer({ children }: { children: React.ReactNode }) {
     return (
@@ -18,6 +19,12 @@ function ReviewContainer({ children }: { children: React.ReactNode }) {
 
 function Page() {
     const [content, setContent] = useState<String>('');
+    const [inputCount, handleInput] = useInputLength(MAX_LENGTH);
+
+    const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        handleInput(e);
+        setContent(e.target.value);
+      };
 
     return (
         <div className='mx-default'>
@@ -41,8 +48,19 @@ function Page() {
                     </ReviewContainer>
                 </div>
                 <div className="my-[5px]">
-                    <div className="text-header font-[600] flex">리뷰 작성하기(0/500)</div>
-                    <TextAreaBox onChange={setContent}></TextAreaBox>
+                    <div className="text-header font-[600] flex">리뷰 작성하기(
+                        <span>{inputCount.toLocaleString()}</span>
+                        <span>/{MAX_LENGTH.toLocaleString()}자</span>
+                        )</div>
+                    <div className={`border-[0.5px] rounded-[8px]  flex-1 border-gray`}>
+                    <textarea
+                        placeholder="입력해 주세요"
+                        rows={8}
+                        className="resize-none w-full h-full p-2 outline-none border-transparent bg-transparent text-subtitle"
+                        maxLength={MAX_LENGTH}
+                        onChange={handleTextChange}
+                    ></textarea>
+                    </div>
                 </div>
                 <div className="text-center my-[15px] cursor-pointer">
                     <Button
