@@ -27,12 +27,12 @@ function Comment({
   comment,
   setCommentId,
   parentId,
-  setSelectDeleteCommentId,
+  handleShowDeleteCommentModal,
 }: {
   comment: any;
   setCommentId: any;
   parentId?: number;
-  setSelectDeleteCommentId: any;
+  handleShowDeleteCommentModal: any;
 }) {
   return (
     <div key={comment.commentId} className="my-[10px]">
@@ -60,9 +60,16 @@ function Comment({
               >
                 <MdOutlineReply size={20} />
               </div>
-              <div className="m-[5px]" onClick={setSelectDeleteCommentId}>
-                <MdClose size={20} />
-              </div>
+              {comment.isOwner && (
+                <div
+                  className="m-[5px]"
+                  onClick={() => {
+                    handleShowDeleteCommentModal(comment.commentId);
+                  }}
+                >
+                  <MdClose size={20} />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -75,7 +82,7 @@ function Comment({
               comment={reply}
               setCommentId={setCommentId}
               parentId={comment.commentId}
-              setSelectDeleteCommentId={setSelectDeleteCommentId}
+              handleShowDeleteCommentModal={handleShowDeleteCommentModal}
             />
           ))}
         </div>
@@ -89,6 +96,7 @@ interface postType {
   comments?: {
     commentId: number;
     content: string;
+    isOwner: boolean;
     profile: {
       userId: number;
       name: string;
@@ -176,7 +184,7 @@ function page({ params }: { params: any }) {
     try {
       deleteCommunityComment(selectDeleteCommentId);
       alert('댓글이 삭제되었습니다.');
-      router.back();
+      fetchPost();
     } catch (error) {
       console.log(error);
     }
@@ -220,7 +228,8 @@ function page({ params }: { params: any }) {
     setShowModal(false);
   };
   //댓글 삭제 모달 핸들
-  const handleShowDeleteCommentModal = () => {
+  const handleShowDeleteCommentModal = (commentId: number) => {
+    setSelectDeleteCommentId(commentId);
     setShowDeleteCommentModal(true);
   };
 
@@ -254,6 +263,25 @@ function page({ params }: { params: any }) {
             <Button
               text="취소"
               onClick={handleCloseModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
+      {showDeleteCommentModal && (
+        <Modal setState={handleDeleteCommentCloseModal}>
+          <div className="my-[5px]">댓글을 삭제 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="삭제"
+              onClick={handleDeleteCommentComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleDeleteCommentCloseModal}
               height={5}
               rounded="soft"
             />
@@ -314,7 +342,7 @@ function page({ params }: { params: any }) {
                 key={index}
                 comment={comment}
                 setCommentId={setSelectComment}
-                setSelectDeleteCommentId={setSelectDeleteCommentId}
+                handleShowDeleteCommentModal={handleShowDeleteCommentModal}
               />
             ))}
         </div>

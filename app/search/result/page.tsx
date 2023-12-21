@@ -42,7 +42,7 @@ function Page() {
   return (
     <div className="relative">
       <div className="mx-default">
-        <Header title="물물교환">
+        <Header backNav title="물물교환">
           <Link href={'/search'}>
             <MdOutlineSearch size={40} />
           </Link>
