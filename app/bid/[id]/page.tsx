@@ -3,9 +3,12 @@ import Header from '@/components/Header';
 import Profile from '@/components/Profile';
 import React, { useEffect, useState } from 'react';
 import Item from '@/components/item/Item';
-import { MdOutlineReportGmailerrorred } from 'react-icons/md';
-import { getBidItemList } from '@/apis/BidApi';
+import { MdDeleteForever, MdOutlineReportGmailerrorred } from 'react-icons/md';
+import { deleteBid, getBidItemList } from '@/apis/BidApi';
 import Link from 'next/link';
+import Modal from '@/components/Modal';
+import Button from '@/components/Button';
+import { useRouter } from 'next/navigation';
 interface ItemList {
   isOwner: boolean;
   profile: {
@@ -25,7 +28,10 @@ interface ItemList {
 }
 
 function page({ params }: { params: any }) {
+  const [showModal, setShowModal] = useState(false);
   const [itemList, setItemList] = useState<ItemList>();
+  const router = useRouter();
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -38,13 +44,60 @@ function page({ params }: { params: any }) {
     fetchData();
   }, [params.id]);
 
+  const deleteComplete = async () => {
+    try {
+      await deleteBid(params.id);
+      router.back();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handlePostComplete = async () => {
+    setShowModal(false);
+    deleteComplete();
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="relative">
       <Header title="입찰 아이템 리스트" backNav>
         <div className="w-[60px] flex justify-center">
-          <MdOutlineReportGmailerrorred size={40} />
+          {itemList?.isOwner ? (
+            <div onClick={handleShowModal} className="cursor-pointer">
+              <MdDeleteForever size={40} />
+            </div>
+          ) : (
+            <MdOutlineReportGmailerrorred size={40} />
+          )}
         </div>
       </Header>
+      {showModal && (
+        <Modal setState={handleCloseModal}>
+          <div className="my-[5px]">입찰을 취소 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="입찰 취소"
+              onClick={handlePostComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="닫기"
+              onClick={handleCloseModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
       {/* 프로필 */}
       {itemList && <Profile profile={itemList.profile} />}
       {/* 물건 리스트 */}
