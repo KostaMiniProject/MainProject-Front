@@ -1,39 +1,82 @@
 'use client';
 import Header from '@/components/Header';
 import Carousel from '@/components/carousel/Carousel';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { MdDeleteForever, MdOutlineSend } from 'react-icons/md';
+import {
+  MdClose,
+  MdDeleteForever,
+  MdOutlineReply,
+  MdOutlineSend,
+} from 'react-icons/md';
 import { FaAngleRight } from 'react-icons/fa';
 import Profile from '@/components/Profile';
 import {
+  deleteCommunityComment,
+  deleteCommunityPost,
   getCommunityPostDetail,
   postCommunityPostComment,
   putCommunityPostLike,
 } from '@/apis/CommunityApi';
 import InputBox from '@/components/InputBox';
+import Modal from '@/components/Modal';
+import Button from '@/components/Button';
+import { useRouter } from 'next/navigation';
 
-function Comment({ comment }: { comment: any }) {
-  const [replyOfComment, setReplyOfComment] = useState();
+function Comment({
+  comment,
+  setCommentId,
+  parentId,
+  setSelectDeleteCommentId,
+}: {
+  comment: any;
+  setCommentId: any;
+  parentId?: number;
+  setSelectDeleteCommentId: any;
+}) {
   return (
-    <div key={comment.id} className="my-[10px]">
+    <div key={comment.commentId} className="my-[10px]">
       <div className="flex mb-[5px] w-full border-b-[0.5px] border-gray">
         {comment.parent_id === null ? <></> : <div className="w-[40px]"></div>}
         <div className="w-[25px] h-[25px] bg-gray rounded-[50%]"></div>
-        <div className="ml-[15px]">
+        <div className="ml-[15px] flex-1">
           <div className="flex items-center text-gray mr-[10px]">
             {comment.profile.name} <FaAngleRight size={15} />
           </div>
           <div className="text-gray mr-[10px] text-subtitle">
             {comment.created_at}
           </div>
-          <div>{comment.content}</div>
+          <div className="flex justify-between">
+            <div className="">{comment.content}</div>
+            <div className="flex">
+              <div
+                className="m-[5px]"
+                onClick={() => {
+                  setCommentId({
+                    commentId: parentId ? parentId : comment.commentId,
+                    profile: comment.profile,
+                  });
+                }}
+              >
+                <MdOutlineReply size={20} />
+              </div>
+              <div className="m-[5px]" onClick={setSelectDeleteCommentId}>
+                <MdClose size={20} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      {comment.replies && comment.replies.length > 0 && (
+      {comment.children && comment.children.length > 0 && (
         <div className="ml-[20px]">
-          {comment.children.map((reply: any) => (
-            <Comment key={reply.id} comment={reply} />
+          {comment.children?.map((reply: any, index: number) => (
+            <Comment
+              key={index}
+              comment={reply}
+              setCommentId={setCommentId}
+              parentId={comment.commentId}
+              setSelectDeleteCommentId={setSelectDeleteCommentId}
+            />
           ))}
         </div>
       )}
@@ -71,19 +114,33 @@ interface postType {
     userId: number;
   };
 }
+const initComment = {
+  commentId: -1,
+  profile: {
+    userId: -1,
+    name: null,
+    imageUrl: null,
+  },
+};
 function page({ params }: { params: any }) {
   const [post, setPost] = useState<postType>();
   const [comment, setComment] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [showDeleteCommentModal, setShowDeleteCommentModal] = useState(false);
+  const [selectDeleteCommentId, setSelectDeleteCommentId] = useState(-1);
+  const [selectComment, setSelectComment] = useState(initComment);
+  const inputBox: any = useRef(null);
+  const router = useRouter();
 
+  const fetchPost = async () => {
+    try {
+      const data = await getCommunityPostDetail(params.id);
+      setPost(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const data = await getCommunityPostDetail(params.id);
-        setPost(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchPost();
   }, []);
   const handleLike = async () => {
@@ -100,40 +157,112 @@ function page({ params }: { params: any }) {
       alert('로그인이 필요합니다');
       console.log(error);
     }
-    // console.log(data?.isPressLike);
   };
-  const handleDeletePost = () => {
-    alert('delete post');
+  const handleResetReplyOfComment = () => {
+    setSelectComment(initComment);
   };
-  const handlePostComents = async () => {
-    const body = {
-      content: comment,
-    };
+
+  const handleDeletePost = async () => {
     try {
-      const res = await postCommunityPostComment(params.id, body);
+      deleteCommunityPost(params.id);
+      alert('글이 삭제되었습니다.');
+      router.back();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDeleteComment = async () => {
+    try {
+      deleteCommunityComment(selectDeleteCommentId);
+      alert('댓글이 삭제되었습니다.');
+      router.back();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlePostComents = async () => {
+    let body = null;
+    if (selectComment.commentId >= 0) {
+      body = {
+        content: comment,
+        parentId: selectComment.commentId,
+      };
+    } else {
+      body = {
+        content: comment,
+      };
+    }
+    try {
+      const res = await postCommunityPostComment(params.id, body);
+      fetchPost();
+      if (inputBox.current) {
+        inputBox.current.value = '';
+      }
+      setSelectComment(initComment);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //모달 핸들
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handlePostComplete = async () => {
+    setShowModal(false);
+    handleDeletePost();
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  //댓글 삭제 모달 핸들
+  const handleShowDeleteCommentModal = () => {
+    setShowDeleteCommentModal(true);
+  };
+
+  const handleDeleteCommentComplete = async () => {
+    setShowDeleteCommentModal(false);
+    handleDeleteComment();
+  };
+
+  const handleDeleteCommentCloseModal = () => {
+    setShowDeleteCommentModal(false);
   };
   return (
     <div>
       <Header backNav title={post?.title}>
         {post?.postOwner && (
-          <div className="cursor-pointer" onClick={handleDeletePost}>
+          <div className="cursor-pointer" onClick={handleShowModal}>
             <MdDeleteForever size={40} />
           </div>
         )}
       </Header>
+      {showModal && (
+        <Modal setState={handleCloseModal}>
+          <div className="my-[5px]">글을 삭제 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="삭제"
+              onClick={handlePostComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleCloseModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
       <div className="w-full p-[10px] flex border-solid border-[0.5px] border-gray rounded-[10px] my-[5px]">
         <div></div>
         <div className="w-full ">
-          {/* <div className="flex mb-[10px]">
-            <div className="w-[40px] h-[40px] bg-black rounded-[50%]"></div>
-            <div className="flex justify-center items-center text-gray ml-[10px]">
-              {post.user.name}
-              <FaAngleRight size={15} />
-            </div>
-          </div> */}
           {post && (
             <Profile
               profile={{
@@ -181,16 +310,34 @@ function page({ params }: { params: any }) {
             post.comments &&
             post.comments.length > 0 &&
             post.comments.map((comment: any, index: number) => (
-              <Comment key={index} comment={comment} />
+              <Comment
+                key={index}
+                comment={comment}
+                setCommentId={setSelectComment}
+                setSelectDeleteCommentId={setSelectDeleteCommentId}
+              />
             ))}
         </div>
-        <div className="flex">
-          <div className="flex-1">
-            <InputBox onChange={setComment} />
-          </div>
-          <div className="items-center text-center my-auto ">
-            <div className="m-[5px] cursor-pointer" onClick={handlePostComents}>
-              <MdOutlineSend size={20} />
+        <div>
+          {selectComment.commentId >= 0 && (
+            <div className="flex justify-between">
+              <div>{selectComment.profile.name} 에게 답글 다는중</div>
+              <div onClick={handleResetReplyOfComment}>X</div>
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col">
+          <div className="flex">
+            <div className="flex-1">
+              <InputBox ref={inputBox} onChange={setComment} />
+            </div>
+            <div className="items-center text-center my-auto ">
+              <div
+                className="m-[5px] cursor-pointer"
+                onClick={handlePostComents}
+              >
+                <MdOutlineSend size={20} />
+              </div>
             </div>
           </div>
         </div>
