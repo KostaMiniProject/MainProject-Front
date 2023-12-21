@@ -216,7 +216,7 @@ function Page() {
       return exchangePosts.map((post) => (
         <div
           key={post.exchangePostId}
-          className="flex items-center p-4 mb-[2px] bg-lightgray cursor-pointer hover:bg-gray"
+          className="flex items-center p-3 bg-lightgray cursor-pointer hover:bg-gray"
           onClick={() => router.push(`/exchange/${post.exchangePostId}`)}
         >
           <div className=""> {/* 여기에서 마진을 조정했습니다 */}
