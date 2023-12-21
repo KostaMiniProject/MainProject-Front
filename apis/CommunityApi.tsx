@@ -51,12 +51,13 @@ export async function putCommunityPostLike(postId: number) {
     throw error;
   }
 }
-export async function getCommunityPostComment(postId: number) {
+export async function getCommunityPostDetail(postId: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/community-posts/${postId}/comments`,
+      `https://itsop.shop/api/community-posts/${postId}`,
       {
         method: 'GET',
+        checkToken: true,
         // 기타 다른 옵션들...
       }
     );

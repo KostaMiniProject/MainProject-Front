@@ -12,11 +12,13 @@ function Carousel({ images }: { images: any }) {
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
-    const img = new window.Image();
-    img.src = images[currentIndex];
-    img.onload = () => {
-      setImageSize({ width: img.naturalWidth, height: img.naturalHeight });
-    };
+    if (images) {
+      const img = new window.Image();
+      img.src = images[currentIndex];
+      img.onload = () => {
+        setImageSize({ width: img.naturalWidth, height: img.naturalHeight });
+      };
+    }
   }, [currentIndex, images]);
 
   const handleShowModal = () => {
@@ -44,8 +46,9 @@ function Carousel({ images }: { images: any }) {
   return (
     <div className="relative w-full h-0 pb-[70%] overflow-hidden bg-black">
       <div className="flex absolute top-0 left-0 w-full h-full transition-transform">
-        {images.map((src: any, index: any) => (
+        {images?.map((src: any, index: any) => (
           <div
+            key={index}
             className="z-20"
             onClick={() => {
               handleShowModal();
@@ -84,13 +87,15 @@ function Carousel({ images }: { images: any }) {
               maxHeight: imageSize.height,
             }}
           >
-            <Image
-              src={images[currentIndex]}
-              alt={`carouselImage-${currentIndex}`}
-              fill
-              style={{ objectFit: 'contain' }}
-              onClick={handleCloseModal}
-            />
+            {images && (
+              <Image
+                src={images[currentIndex]}
+                alt={`carouselImage-${currentIndex}`}
+                fill
+                style={{ objectFit: 'contain' }}
+                onClick={handleCloseModal}
+              />
+            )}
           </div>
         </Modal>
       )}

@@ -3,10 +3,14 @@ import Header from '@/components/Header';
 import Carousel from '@/components/carousel/Carousel';
 import React, { useEffect, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { MdDeleteForever } from 'react-icons/md';
+import { MdDeleteForever, MdOutlineSend } from 'react-icons/md';
 import { FaAngleRight } from 'react-icons/fa';
 import Profile from '@/components/Profile';
-import { putCommunityPostLike } from '@/apis/CommunityApi';
+import {
+  getCommunityPostDetail,
+  putCommunityPostLike,
+} from '@/apis/CommunityApi';
+import InputBox from '@/components/InputBox';
 
 // const communityTag = [
 //   '#식품',
@@ -40,79 +44,111 @@ function Comment({ comment }: { comment: any }) {
     </div>
   );
 }
-const post = {
+// const post = {
+//   user: {
+//     address: '오리동',
+//     email: 'a@a.com',
+//     name: '닉넴',
+//     phone: '010',
+//     profileImage: '',
+//     rating: 5,
+//     userId: 2,
+//   },
+//   communityPostId: 3,
+//   communityPostStatus: 'PUBLIC',
+//   content: '컨텐츠 내용입니다',
+//   date: '2023년 12월',
+//   imageUrl: '',
+//   isPressLike: true,
+//   likeCount: 5,
+//   postOwner: true,
+//   title: '글 제목',
+// };
+// const comments = [
+//   {
+//     id: 0,
+//     profile: {
+//       id: 0,
+//       name: '김',
+//       imageUrl: '',
+//       rating: 5,
+//     },
+//     parent_id: null,
+//     content: '와 진짜 쩐다',
+//     created_at: '2023-11-30',
+//   },
+//   {
+//     id: 1,
+//     profile: {
+//       id: 1,
+//       name: '이',
+//       imageUrl: '',
+//       rating: 5,
+//     },
+//     parent_id: 0,
+//     content: '쩔긴 뭐가쩔어',
+//     created_at: '2023-11-30',
+//   },
+//   {
+//     id: 2,
+//     profile: {
+//       id: 2,
+//       name: '박',
+//       imageUrl: '',
+//       rating: 5,
+//     },
+//     parent_id: null,
+//     content: '가쩔어',
+//     created_at: '2023-11-30',
+//   },
+// ];
+interface postType {
+  commentCount: number;
+  communityPostId: number;
+  comments: [];
+  communityPostStatus: string;
+  content: string;
+  date: string;
+  imageUrl: [];
+  isPressLike: boolean;
+  likeCount: number;
+  postOwner: boolean;
+  title: string;
   user: {
-    address: '오리동',
-    email: 'a@a.com',
-    name: '닉넴',
-    phone: '010',
-    profileImage: '',
-    rating: 5,
-    userId: 2,
-  },
-  communityPostId: 3,
-  communityPostStatus: 'PUBLIC',
-  content: '컨텐츠 내용입니다',
-  date: '2023년 12월',
-  imageUrl: '',
-  isPressLike: true,
-  likeCount: 5,
-  postOwner: true,
-  title: '글 제목',
-};
-const comments = [
-  {
-    id: 0,
-    profile: {
-      id: 0,
-      name: '김',
-      imageUrl: '',
-      rating: 5,
-    },
-    parent_id: null,
-    content: '와 진짜 쩐다',
-    created_at: '2023-11-30',
-  },
-  {
-    id: 1,
-    profile: {
-      id: 1,
-      name: '이',
-      imageUrl: '',
-      rating: 5,
-    },
-    parent_id: 0,
-    content: '쩔긴 뭐가쩔어',
-    created_at: '2023-11-30',
-  },
-  {
-    id: 2,
-    profile: {
-      id: 2,
-      name: '박',
-      imageUrl: '',
-      rating: 5,
-    },
-    parent_id: null,
-    content: '가쩔어',
-    created_at: '2023-11-30',
-  },
-];
+    address: string;
+    email: string;
+    name: string;
+    phone: string;
+    profileImage: string;
+    rating: number;
+    userId: number;
+  };
+}
+function page({ params }: { params: any }) {
+  const [post, setPost] = useState<postType>();
+  const [comment, setComment] = useState('');
 
-function page() {
-  const [data, setData] = useState();
-
-  // useEffect(() => {
-  //   setData(post);
-  // }, [post]);
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const data = await getCommunityPostDetail(params.id);
+        setPost(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPost();
+  }, []);
   const handleLike = async () => {
     try {
-      await putCommunityPostLike(post.communityPostId);
-      setData((prev: any) => ({
-        ...prev,
-        isPressLike: !prev.isPressLike,
-        likeCount: prev.isPressLike ? prev.likeCount - 1 : prev.likeCount + 1,
-      }));
+      if (post) {
+        await putCommunityPostLike(post.communityPostId);
+        setPost((prev: any) => ({
+          ...prev,
+          isPressLike: !prev.isPressLike,
+          likeCount: prev.isPressLike ? prev.likeCount - 1 : prev.likeCount + 1,
+        }));
+      }
     } catch (error) {
       alert('로그인이 필요합니다');
       console.log(error);
@@ -124,14 +160,14 @@ function page() {
   };
   return (
     <div>
-      <Header backNav title={post.title}>
+      <Header backNav title={post?.title}>
         {post?.postOwner && (
           <div className="cursor-pointer" onClick={handleDeletePost}>
             <MdDeleteForever size={40} />
           </div>
         )}
       </Header>
-      <div className="w-full p-[10px] flex border-solid border-[0.5px] border-gray rounded-[15px] my-[5px]">
+      <div className="w-full p-[10px] flex border-solid border-[0.5px] border-gray rounded-[10px] my-[5px]">
         <div></div>
         <div className="w-full ">
           {/* <div className="flex mb-[10px]">
@@ -141,16 +177,20 @@ function page() {
               <FaAngleRight size={15} />
             </div>
           </div> */}
-          <Profile
-            profile={{
-              ...post.user,
-              imageUrl: post.user.profileImage,
-              id: post.user.userId,
-            }}
-          />
+          {post && (
+            <Profile
+              profile={{
+                ...post.user,
+                imageUrl: post.user.profileImage,
+                id: post.user.userId,
+              }}
+            />
+          )}
           <div className="w-[100%] h-[auto]">
             {/* 캐러셀에 대한 설정 */}
-            <Carousel images={[{}, {}]}></Carousel>
+            {post && post.imageUrl.length > 0 && (
+              <Carousel images={post.imageUrl}></Carousel>
+            )}
           </div>
           <div className="flex justify-between my-[5px]">
             <div className="flex cursor-pointer">
@@ -166,12 +206,12 @@ function page() {
             </div>
           </div>
           <div className="flex text-[20px] font-[600] mt-[5px]">
-            {post.title}
+            {post?.title}
           </div>
-          <div className="text-gray mr-[10px] text-subtitle">{post.date}</div>
+          <div className="text-gray mr-[10px] text-subtitle">{post?.date}</div>
 
           <div className="whitespace-nowrap text-ellipsis overflow-hidden mb-[5px]">
-            {post.content}
+            {post?.content}
           </div>
         </div>
       </div>
@@ -180,11 +220,21 @@ function page() {
           댓글
         </div>
         <div>
-          {comments.map((comment) => (
-            <Comment key={comment.id} comment={comment} />
-          ))}
+          {/* {post &&
+            post.comments.length > 0 &&
+            post.comments.map((comment) => (
+              <div>comment</div>
+              // <Comment key={comment.id} comment={comment} />
+            ))} */}
         </div>
-        <div></div>
+        <div className="flex">
+          <div className="flex-1">
+            <InputBox onChange={setComment} />
+          </div>
+          <div className="items-center text-center my-auto ">
+            <MdOutlineSend size={15} />
+          </div>
+        </div>
       </div>
     </div>
   );
