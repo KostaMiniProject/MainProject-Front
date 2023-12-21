@@ -19,6 +19,24 @@ export async function getCommunityPost(page: number = 0) {
   }
 }
 
+export async function getMyCommunityPost(page: number = 0) {
+  try {
+    const result = await commonFetch(
+      `https://itsop.shop/api/users/community-post-list?page=${page}`,
+      {
+        method: 'GET',
+        checkToken: true, // 토큰 체크 활성화
+        // 기타 다른 옵션들...
+      }
+    );
+
+    console.log('Fetched data:', result);
+    return result;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
 export async function postCommunityPost(formData: FormData) {
   try {
     const result = await commonFetch('https://itsop.shop/api/community-posts', {
