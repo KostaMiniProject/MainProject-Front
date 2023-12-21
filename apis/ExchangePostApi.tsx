@@ -31,10 +31,10 @@ export async function getPostList(page: number) {
   }
 }
 
-export async function getSearchPostList(page: number, keyword : String) {
+export async function getSearchPostList(page: number, keyword: string) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts?page=${page}&keyword=${keyword}`,
+      `https://itsop.shop/api/exchange-posts/search?page=${page}&keyword=${keyword}`,
       {
         method: 'GET',
         // checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨

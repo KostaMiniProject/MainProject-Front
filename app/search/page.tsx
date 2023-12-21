@@ -15,13 +15,12 @@ function page() {
   const [hasMoreData, setHasMoreData] = useState(true);
   const [pageNation, setPageNation] = useState(0);
 
-
   const route = useRouter();
   const recentSearches = [
     '갤럭시S22',
     '스타벅스 텀블러',
     '삼성노트북',
-    '소니 헤드셋'
+    '소니 헤드셋',
   ];
   const category = [
     '패션의류잡화',
@@ -40,47 +39,44 @@ function page() {
     '스포츠레저',
     '문구오피스',
   ];
-  const wishList = [
-    '감자',
-    '고구마',
-    '바나나'
-  ];
+  const wishList = ['감자', '고구마', '바나나'];
   // InputBox에서의 입력값 변경 처리
   const handleInputChange = (value: string) => {
     setKeyWord(value);
   };
 
   const handleSearchClick = async () => {
-    setPageNation(0); // 검색 시작 시 페이지 번호를 0으로 초기화
-    setHasMoreData(true); // 더 많은 데이터가 있음을 가정
-    await fetchPostData(); // 검색 실행
+    route.push(`/search/result?keyword=${keyWord}`);
+    // setPageNation(0); // 검색 시작 시 페이지 번호를 0으로 초기화
+    // setHasMoreData(true); // 더 많은 데이터가 있음을 가정
+    // await fetchPostData(); // 검색 실행
   };
 
-  const fetchPostData = async () => {
-    if (!hasMoreData) return;
+  // const fetchPostData = async () => {
+  //   if (!hasMoreData) return;
 
-    try {
-      const data = await getSearchPostList(pageNation, keyWord);
+  //   try {
+  // const data = await getSearchPostList(pageNation, keyWord);
 
-      if (pageNation === 0) {
-        setPostData(data); // 첫 페이지의 경우, 기존 데이터를 덮어쓴다
-      } else {
-        // 서버에서 받아온 데이터가 배열인 경우에만 병합
-        if (Array.isArray(data)) {
-          setPostData(prevData => [...prevData, ...data]); // 추가 데이터를 기존 데이터에 병합
-        }
-      }
+  //     if (pageNation === 0) {
+  //       setPostData(data); // 첫 페이지의 경우, 기존 데이터를 덮어쓴다
+  //     } else {
+  //       // 서버에서 받아온 데이터가 배열인 경우에만 병합
+  //       if (Array.isArray(data)) {
+  //         setPostData(prevData => [...prevData, ...data]); // 추가 데이터를 기존 데이터에 병합
+  //       }
+  //     }
 
-      setPageNation((prev) => prev + 1);
+  //     setPageNation((prev) => prev + 1);
 
-      if (!data || data.length < 10) {
-        setHasMoreData(false);
-      }
-    } catch (error) {
-      console.error('Error fetching post data:', error);
-      setHasMoreData(false);
-    }
-  };
+  //     if (!data || data.length < 10) {
+  //       setHasMoreData(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching post data:', error);
+  //     setHasMoreData(false);
+  //   }
+  // };
 
   return (
     <div>
@@ -94,9 +90,7 @@ function page() {
             console.log(keyWord);
           }}
         >
-          <div
-            onClick={handleSearchClick}
-          >
+          <div onClick={handleSearchClick}>
             <MdOutlineSearch size={40} />
           </div>
         </div>
@@ -147,15 +141,11 @@ function page() {
                 {e}
               </div>
               {/* 주소 */}
-              <div className="text-gray text-subtitle leading-none">
-                {e}
-              </div>
+              <div className="text-gray text-subtitle leading-none">{e}</div>
             </div>
             {/* 태그 */}
             <div className="flex justify-between absolute bottom-0">
-              <div className="text-gray mr-[10px] text-subtitle">
-                {e}
-              </div>
+              <div className="text-gray mr-[10px] text-subtitle">{e}</div>
             </div>
           </div>
         </div>

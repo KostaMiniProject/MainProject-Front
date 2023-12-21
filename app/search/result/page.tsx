@@ -1,23 +1,31 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import ExchangePost from '@/components/exchange/ExchangePost';
-import { getPostList } from '@/apis/ExchangePostApi';
+import { getPostList, getSearchPostList } from '@/apis/ExchangePostApi';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { MdOutlineSearch } from 'react-icons/md';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import InfiniteScrollObserver from '@/components/InfiniteScrollObserver';
+import { useSearchParams } from 'next/navigation';
 
 function Page() {
   const [postData, setPostData] = useState<any[]>([]);
   const [hasMoreData, setHasMoreData] = useState(true);
   const [pageNation, setPageNation] = useState(0);
+  const searchParams = useSearchParams();
+
   const fetchPostData = async () => {
     if (!hasMoreData) return;
+    const keyword = searchParams.get('keyword');
+    console.log(encodeURI(keyword ?? ''));
 
     try {
-      const data = await getPostList(pageNation);
+      const data = await getSearchPostList(
+        pageNation,
+        encodeURI(keyword ?? '')
+      );
       setPostData((oldData) => [...oldData, ...data.data]);
       setPageNation((prev) => prev + 1);
       console.log(pageNation);
