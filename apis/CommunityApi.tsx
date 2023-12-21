@@ -86,3 +86,37 @@ export async function postCommunityPostComment(postId: number, body: any) {
     throw error;
   }
 }
+export async function deleteCommunityPost(postId: number) {
+  try {
+    const result = await commonFetch(
+      `https://itsop.shop/api/community-posts/${postId}`,
+      {
+        method: 'DELETE',
+        checkToken: true, // 토큰 체크 활성화
+      }
+    );
+
+    console.log('Upload successful:', result);
+    return result;
+  } catch (error) {
+    console.error('Error uploading:', error);
+    throw error;
+  }
+}
+export async function deleteCommunityComment(commentId: number) {
+  try {
+    const result = await commonFetch(
+      `https://itsop.shop/api/community-posts/comments/${commentId}`,
+      {
+        method: 'DELETE',
+        checkToken: true, // 토큰 체크 활성화
+      }
+    );
+
+    console.log('Upload successful:', result);
+    return result;
+  } catch (error) {
+    console.error('Error uploading:', error);
+    throw error;
+  }
+}

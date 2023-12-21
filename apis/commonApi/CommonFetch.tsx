@@ -42,8 +42,13 @@ export async function commonFetch(
       throw new Error(`Request failed with status ${response.status}`);
     }
 
-    // return await response;
-    return await response.json();
+    const contentType = response.headers.get('Content-Type');
+    if (contentType && contentType.includes('application/json')) {
+      return await response.json();
+    } else {
+      console.log('Response format is not JSON.');
+      return response;
+    }
   } catch (error) {
     console.error('Error in commonFetch:', error);
     throw error;
