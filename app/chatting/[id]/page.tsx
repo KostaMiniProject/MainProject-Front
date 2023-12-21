@@ -143,16 +143,18 @@ function Page({ params }: { params: any }) {
       window.removeEventListener('scroll', onScroll);
     };
   }, []);
-  const onScroll = () => {
+  const onScroll = async () => {
     const { scrollY } = window;
     // console.log(scrollY);
     // console.log(waitData);
     if (scrollY <= 20 && !waitData) {
       // alert('불러오는중');
-      window.scrollTo(0, 1000);
+      const scrollHeight = window.innerHeight;
+      console.log(scrollHeight);
       pagenation++;
       waitData = true;
-      fetchChatHistory(pagenation); // 업데이트된 pagenation을 사용
+      await fetchChatHistory(pagenation); // 업데이트된 pagenation을 사용
+      window.scrollTo(0, window.innerHeight - scrollHeight);
     } else {
       setScroll('');
     }
