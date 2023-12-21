@@ -12,6 +12,8 @@ export async function postEmailCheck(userData: any) {
     if (!res.ok) {
       // 로그인 실패 처리
       throw new Error(`이메일 인증 실패: ${res.status}`);
+    } else {
+      alert("이메일 인증이 완료되었습니다.");
     }
 
     // const data = await res.json();
