@@ -8,17 +8,13 @@ import { FaAngleRight } from 'react-icons/fa';
 import Profile from '@/components/Profile';
 import {
   getCommunityPostDetail,
+  postCommunityPostComment,
   putCommunityPostLike,
 } from '@/apis/CommunityApi';
 import InputBox from '@/components/InputBox';
 
-// const communityTag = [
-//   '#식품',
-//   '#생활용품',
-//   '#카테고리'
-// ]
-
 function Comment({ comment }: { comment: any }) {
+  const [replyOfComment, setReplyOfComment] = useState();
   return (
     <div key={comment.id} className="my-[10px]">
       <div className="flex mb-[5px] w-full border-b-[0.5px] border-gray">
@@ -36,7 +32,7 @@ function Comment({ comment }: { comment: any }) {
       </div>
       {comment.replies && comment.replies.length > 0 && (
         <div className="ml-[20px]">
-          {comment.replies.map((reply: any) => (
+          {comment.children.map((reply: any) => (
             <Comment key={reply.id} comment={reply} />
           ))}
         </div>
@@ -44,68 +40,19 @@ function Comment({ comment }: { comment: any }) {
     </div>
   );
 }
-// const post = {
-//   user: {
-//     address: '오리동',
-//     email: 'a@a.com',
-//     name: '닉넴',
-//     phone: '010',
-//     profileImage: '',
-//     rating: 5,
-//     userId: 2,
-//   },
-//   communityPostId: 3,
-//   communityPostStatus: 'PUBLIC',
-//   content: '컨텐츠 내용입니다',
-//   date: '2023년 12월',
-//   imageUrl: '',
-//   isPressLike: true,
-//   likeCount: 5,
-//   postOwner: true,
-//   title: '글 제목',
-// };
-// const comments = [
-//   {
-//     id: 0,
-//     profile: {
-//       id: 0,
-//       name: '김',
-//       imageUrl: '',
-//       rating: 5,
-//     },
-//     parent_id: null,
-//     content: '와 진짜 쩐다',
-//     created_at: '2023-11-30',
-//   },
-//   {
-//     id: 1,
-//     profile: {
-//       id: 1,
-//       name: '이',
-//       imageUrl: '',
-//       rating: 5,
-//     },
-//     parent_id: 0,
-//     content: '쩔긴 뭐가쩔어',
-//     created_at: '2023-11-30',
-//   },
-//   {
-//     id: 2,
-//     profile: {
-//       id: 2,
-//       name: '박',
-//       imageUrl: '',
-//       rating: 5,
-//     },
-//     parent_id: null,
-//     content: '가쩔어',
-//     created_at: '2023-11-30',
-//   },
-// ];
 interface postType {
   commentCount: number;
   communityPostId: number;
-  comments: [];
+  comments?: {
+    commentId: number;
+    content: string;
+    profile: {
+      userId: number;
+      name: string;
+      imageUrl: string;
+    };
+    children: [];
+  }[];
   communityPostStatus: string;
   content: string;
   date: string;
@@ -157,6 +104,16 @@ function page({ params }: { params: any }) {
   };
   const handleDeletePost = () => {
     alert('delete post');
+  };
+  const handlePostComents = async () => {
+    const body = {
+      content: comment,
+    };
+    try {
+      const res = await postCommunityPostComment(params.id, body);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
@@ -220,19 +177,21 @@ function page({ params }: { params: any }) {
           댓글
         </div>
         <div>
-          {/* {post &&
+          {post &&
+            post.comments &&
             post.comments.length > 0 &&
-            post.comments.map((comment) => (
-              <div>comment</div>
-              // <Comment key={comment.id} comment={comment} />
-            ))} */}
+            post.comments.map((comment: any, index: number) => (
+              <Comment key={index} comment={comment} />
+            ))}
         </div>
         <div className="flex">
           <div className="flex-1">
             <InputBox onChange={setComment} />
           </div>
           <div className="items-center text-center my-auto ">
-            <MdOutlineSend size={15} />
+            <div className="m-[5px] cursor-pointer" onClick={handlePostComents}>
+              <MdOutlineSend size={20} />
+            </div>
           </div>
         </div>
       </div>

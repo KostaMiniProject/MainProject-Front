@@ -68,3 +68,21 @@ export async function getCommunityPostDetail(postId: number) {
     console.error('Error fetching data:', error);
   }
 }
+export async function postCommunityPostComment(postId: number, body: any) {
+  try {
+    const result = await commonFetch(
+      `https://itsop.shop/api/community-posts/${postId}/comments`,
+      {
+        method: 'POST',
+        checkToken: true, // 토큰 체크 활성화
+        body: body,
+      }
+    );
+
+    console.log('Upload successful:', result);
+    return result;
+  } catch (error) {
+    console.error('Error uploading:', error);
+    throw error;
+  }
+}
