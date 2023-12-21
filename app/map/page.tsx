@@ -1,11 +1,12 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { withAuthorization } from '@/HOC/withAuthorization';
 import Header from '@/components/Header';
 import { getExchangePostsForMap } from '@/apis/MapApi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import Location from '@/image/location.png';
+
 
 declare global {
   interface Window {
@@ -20,12 +21,34 @@ const styleObj = {
 function Page() {
   const [exchangePosts, setExchangePosts] = useState<any[]>([]); // 교환 게시글 목록 상태
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const router = useRouter();
+  const mapRef = useRef<any>(null);
 
   const togglePanel = () => {
     setIsPanelOpen(!isPanelOpen);
   };
 
-  const router = useRouter();
+  const moveToCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const locPosition = new window.kakao.maps.LatLng(lat, lon);
+
+        // mapRef.current가 지도 객체를 참조하고 있는지 확인
+        if (mapRef.current) {
+          mapRef.current.setCenter(locPosition); // 지도의 중심을 현재 위치로 설정
+        } else {
+          console.error('Map object is not initialized');
+        }
+      }, (error) => {
+        console.error('Error getting location:', error);
+      });
+    } else {
+      console.log('Geolocation is not supported by this browser.');
+    }
+  };
+
 
   useEffect(() => {
     async function fetchLocationAndData() {
@@ -102,17 +125,13 @@ function Page() {
       center: locPosition,
       level: 2,
     };
+
+    // 지도 객체 생성
     const map = new window.kakao.maps.Map(mapContainer, mapOption);
-    const marker = new window.kakao.maps.Marker({
-      map: map,
-      position: locPosition,
-    });
-    const infowindow = new window.kakao.maps.InfoWindow({
-      content: message,
-      removable: true,
-    });
-    infowindow.open(map, marker);
-    map.setCenter(locPosition);
+
+    // mapRef에 지도 객체 참조를 저장
+    mapRef.current = map;
+
     addMarkers(map);
   };
 
@@ -233,21 +252,31 @@ function Page() {
             style={{ width: '100vw', height: '75vh' }}
           >
             <div id="map" style={{ width: '100%', height: '100%' }}></div>
+
           </div>
+
         </div>
       </div>
       <div
         style={{
           transform: ` translateY(${isPanelOpen ? '-20px' : '250px'})`,
         }}
-        className={`fixed duration-300 bottom-0 max-w-[480px] w-full mx-auto z-20 bg-white object-cover rounded-lg`}
-      >
+        className="fixed duration-300 bottom-0 max-w-[480px] w-full mx-auto z-20 rounded-lg"
+        >
+        {/* 현재 위치로 이동 버튼 */}
         <button
-          className="w-full py-2 text-black  hover:bg-skyblue rounded-lg shadow"
+          onClick={moveToCurrentLocation}
+          className="bg-skyblue p-3 rounded-full shadow-lg flex items-center justify-center z-30 ml-[10px] mb-[10px]" 
+          >
+          위치
+        </button>
+        <button
+          className="w-full py-2 text-black bg-white hover:bg-skyblue rounded-lg shadow"
           onClick={togglePanel}
         >
           {isPanelOpen ? '▼' : '▲'}
         </button>
+
         <div className="overflow-scroll h-[400px] hide-scrollbar">
           <div>{renderExchangePostList()}</div>
         </div>
