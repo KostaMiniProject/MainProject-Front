@@ -36,7 +36,9 @@ function Page() {
     <div className="relative">
       <div className="mx-default">
         <Header title="물물교환">
-          <MdOutlineSearch size={40} />
+          <Link href={'/search'}>
+            <MdOutlineSearch size={40} />
+          </Link>
         </Header>
 
         {/* 컨텐츠 */}
