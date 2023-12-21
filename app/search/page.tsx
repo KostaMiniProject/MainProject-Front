@@ -3,11 +3,19 @@ import Button from '@/components/Button';
 import InputBox from '@/components/InputBox';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { getSearchPostList } from '@/apis/ExchangePostApi';
+
 import Image from 'next/image';
 import { MdArrowBack, MdOutlineSearch } from 'react-icons/md';
 
 function page() {
   const [keyWord, setKeyWord] = useState<string>('');
+  const [postData, setPostData] = useState<any[]>([]); // postData 초기값을 빈 배열로 설정
+  const [searchResults, setSearchResults] = useState([]); // 검색 결과를 저장할 상태
+  const [hasMoreData, setHasMoreData] = useState(true);
+  const [pageNation, setPageNation] = useState(0);
+
+
   const route = useRouter();
   const recentSearches = [
     '갤럭시S22',
@@ -37,19 +45,60 @@ function page() {
     '고구마',
     '바나나'
   ];
+  // InputBox에서의 입력값 변경 처리
+  const handleInputChange = (value: string) => {
+    setKeyWord(value);
+  };
+
+  const handleSearchClick = async () => {
+    setPageNation(0); // 검색 시작 시 페이지 번호를 0으로 초기화
+    setHasMoreData(true); // 더 많은 데이터가 있음을 가정
+    await fetchPostData(); // 검색 실행
+  };
+
+  const fetchPostData = async () => {
+    if (!hasMoreData) return;
+
+    try {
+      const data = await getSearchPostList(pageNation, keyWord);
+
+      if (pageNation === 0) {
+        setPostData(data); // 첫 페이지의 경우, 기존 데이터를 덮어쓴다
+      } else {
+        // 서버에서 받아온 데이터가 배열인 경우에만 병합
+        if (Array.isArray(data)) {
+          setPostData(prevData => [...prevData, ...data]); // 추가 데이터를 기존 데이터에 병합
+        }
+      }
+
+      setPageNation((prev) => prev + 1);
+
+      if (!data || data.length < 10) {
+        setHasMoreData(false);
+      }
+    } catch (error) {
+      console.error('Error fetching post data:', error);
+      setHasMoreData(false);
+    }
+  };
+
   return (
     <div>
       <div className="h-[60px] flex items-center">
         <div onClick={route.back}>
           <MdArrowBack size={60} />
         </div>
-        <InputBox onChange={setKeyWord} onFocusChange={(bool) => { }} />
+        <InputBox onChange={handleInputChange} message="검색어 입력" />
         <div
           onClick={() => {
             console.log(keyWord);
           }}
         >
-          <MdOutlineSearch size={40} />
+          <div
+            onClick={handleSearchClick}
+          >
+            <MdOutlineSearch size={40} />
+          </div>
         </div>
       </div>
       <div className="text-[16px] font-[600] border-t-[0.5px] border-gray p-[10px]">
