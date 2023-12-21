@@ -19,7 +19,6 @@ function Page() {
   const fetchPostData = async () => {
     if (!hasMoreData) return;
     const keyword = searchParams.get('keyword');
-    console.log(encodeURI(keyword ?? ''));
 
     try {
       const data = await getSearchPostList(
@@ -53,7 +52,7 @@ function Page() {
 
         <div>
           <div className="text-header font-[600] border-b-[0.5px] border-gray py-[10px]">
-            현재 진행중인 교환
+            {searchParams.get('keyword')} 로 검색한 결과
           </div>
           {/* ExchangePost 리스트 */}
           <div>
