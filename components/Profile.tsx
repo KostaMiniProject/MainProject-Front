@@ -5,7 +5,7 @@ import Link from 'next/link';
 interface profileType {
   id: number;
   name: string;
-  address: string;
+  address?: string;
   imageUrl: string;
   rating: number;
 }
