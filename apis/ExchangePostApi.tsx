@@ -31,6 +31,22 @@ export async function getPostList(page: number) {
   }
 }
 
+export async function getMyPostList(page: number) {
+  try {
+    const result = await commonFetch(
+      `https://itsop.shop/api/users/exchange-post-list?page=${page}`,
+      {
+        method: 'GET',
+        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+      }
+    );
+    console.log('Fetched data:', result);
+    return result;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
 export async function getSearchPostList(page: number, keyword: string) {
   try {
     const result = await commonFetch(
