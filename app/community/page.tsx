@@ -4,7 +4,7 @@ import InputBox from '@/components/InputBox';
 import React, { useEffect, useState } from 'react';
 import { MdOutlinePostAdd, MdSearch } from 'react-icons/md';
 import CommunityPost from '@/components/community/CommunityPost';
-import { getCommunityPost, getCommunityPostComment } from '@/apis/CommunityApi';
+import { getCommunityPost } from '@/apis/CommunityApi';
 import Link from 'next/link';
 
 function Page() {
