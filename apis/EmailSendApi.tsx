@@ -12,6 +12,8 @@ export async function postEmailSend(userData: any) {
     if (!res.ok) {
       // 로그인 실패 처리
       throw new Error(`이메일 발송 실패: ${res.status}`);
+    } else {
+      alert("해당 이메일로 인증번호를 발송했습니다.\n확인 후 입력해주세요.");
     }
 
     // const data = await res.json();
