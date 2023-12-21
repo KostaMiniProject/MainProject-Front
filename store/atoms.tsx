@@ -10,6 +10,11 @@ export const userId = atom({
   default: -1,
 });
 
+export const navState = atom({
+  key: 'navState',
+  default: '물물교환',
+});
+
 export const isToken = selector({
   key: 'isToken',
   get: ({ get }) => {
