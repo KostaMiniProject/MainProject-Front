@@ -8,11 +8,17 @@ import { MdOutlineSearch } from 'react-icons/md';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import InfiniteScrollObserver from '@/components/InfiniteScrollObserver';
+import { useRecoilState } from 'recoil';
+import { navState } from '@/store/atoms';
 
 function Page() {
   const [postData, setPostData] = useState<any[]>([]);
   const [hasMoreData, setHasMoreData] = useState(true);
   const [pageNation, setPageNation] = useState(0);
+  const [activeButton, setActiveButton] = useRecoilState(navState);
+  useEffect(() => {
+    setActiveButton('물물교환');
+  }, []);
   const fetchPostData = async () => {
     if (!hasMoreData) return;
 

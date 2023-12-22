@@ -78,6 +78,13 @@ function Page({ params }: { params: any }) {
   let socket: any = null;
   const chatRoomId = params.id;
 
+  //엔터키 눌렀을 때 이벤트
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); // 엔터 키에 의한 줄바꿈 방지
+      sendMessage(); // 메시지 전송 함수 호출
+    }
+  };
   //예약하기 모달 핸들
   const handleShowModal = () => {
     setShowModal(true);
@@ -276,13 +283,13 @@ function Page({ params }: { params: any }) {
         }, 1000);
         const chatHistory = response.data.messages.reverse().map((msg: any) => {
           const myId = getCookie('userId');
-          if (msg.senderId !== myId) {
+          if (msg.senderId !== parseInt(myId ?? '')) {
             return {
               senderId: msg.senderId,
               content: msg.content,
               imageUrl: msg.imageUrl,
               createAt: formatDate(msg.createAt),
-              isRead: true,
+              isRead: true, // 상대방이 보낸 메시지
             };
           }
           return {
@@ -290,7 +297,7 @@ function Page({ params }: { params: any }) {
             content: msg.content,
             imageUrl: msg.imageUrl,
             createAt: formatDate(msg.createAt),
-            isRead: msg.isRead,
+            isRead: msg.isRead, // 내가 보낸 메시지의 기존 isRead 상태 유지
           };
         });
 
@@ -367,8 +374,8 @@ function Page({ params }: { params: any }) {
 
             <div className="text-subtitle text-gray">
               {!messageOwner
-                ? `${message.createAt} ${message.isRead && '-읽음'}`
-                : `${message.isRead && '읽음-'} ${message.createAt}`}
+                ? `${message.createAt} ${message.isRead ? '-읽음' : ''}`
+                : `${message.isRead ? '읽음-' : ''} ${message.createAt}`}
             </div>
           </div>
         </div>
@@ -413,21 +420,25 @@ function Page({ params }: { params: any }) {
         <div className="text-header font-bold my-[10px]">
           교환하려고 하는 게시물
         </div>
-        <div className="flex ">
-          <div className="w-[80px] h-[80px] flex ">
-            <img src={initRoom?.exchangePostImage} />
+        <div className="flex">
+          <div className="w-[80px] h-[80px] flex items-center justify-center overflow-hidden rounded-md mr-4">
+            <img
+              src={initRoom?.exchangePostImage}
+              alt="Exchange Post"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
           </div>
-          <div className="whitespace-nowrap text-ellipsis overflow-hidden  flex justify-between w-full">
+          <div className="flex-1 flex justify-between">
             <div>
-              <div className="w-full text-ellipsis overflow-hidden text-title font-bold">
+              <div className="text-title font-bold truncate">
                 {initRoom?.exchangePostTittle}
               </div>
-              <div className="text-content text-gray">
+              <div className="text-content text-gray truncate">
                 {initRoom?.exchangePostAddress}
               </div>
-              <div>{initRoom?.exchangePostCategory}</div>
+              <div className="truncate">{initRoom?.exchangePostCategory}</div>
             </div>
-            <div className="w-[100px] text-center">
+            <div className="w-[100px] text-center self-center">
               {initRoom &&
                 initRoom.isOwner &&
                 (initRoom.status === 'BIDDING' ? (
@@ -511,6 +522,7 @@ function Page({ params }: { params: any }) {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type your message here..."
+            onKeyDown={handleKeyPress}
           />
           <button onClick={sendMessage}>Send</button>
         </div>
