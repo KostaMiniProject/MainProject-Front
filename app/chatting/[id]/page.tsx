@@ -283,7 +283,6 @@ function Page({ params }: { params: any }) {
         }, 1000);
         const chatHistory = response.data.messages.reverse().map((msg: any) => {
           const myId = getCookie('userId');
-          console.log(msg.senderId, myId);
           if (msg.senderId !== parseInt(myId ?? '')) {
             return {
               senderId: msg.senderId,
