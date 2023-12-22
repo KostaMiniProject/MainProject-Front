@@ -413,21 +413,25 @@ function Page({ params }: { params: any }) {
         <div className="text-header font-bold my-[10px]">
           교환하려고 하는 게시물
         </div>
-        <div className="flex ">
-          <div className="w-[80px] h-[80px] flex ">
-            <img src={initRoom?.exchangePostImage} />
+        <div className="flex">
+          <div className="w-[80px] h-[80px] flex items-center justify-center overflow-hidden rounded-md mr-4">
+            <img
+              src={initRoom?.exchangePostImage}
+              alt="Exchange Post"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
           </div>
-          <div className="whitespace-nowrap text-ellipsis overflow-hidden  flex justify-between w-full">
+          <div className="flex-1 flex justify-between">
             <div>
-              <div className="w-full text-ellipsis overflow-hidden text-title font-bold">
+              <div className="text-title font-bold truncate">
                 {initRoom?.exchangePostTittle}
               </div>
-              <div className="text-content text-gray">
+              <div className="text-content text-gray truncate">
                 {initRoom?.exchangePostAddress}
               </div>
-              <div>{initRoom?.exchangePostCategory}</div>
+              <div className="truncate">{initRoom?.exchangePostCategory}</div>
             </div>
-            <div className="w-[100px] text-center">
+            <div className="w-[100px] text-center self-center">
               {initRoom &&
                 initRoom.isOwner &&
                 (initRoom.status === 'BIDDING' ? (

@@ -5,7 +5,11 @@ import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
 import Header from '@/components/Header';
 import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
-import { deleteExchangePost, getExchangePost } from '@/apis/ExchangePostApi';
+import {
+  deleteExchangePost,
+  getExchangePost,
+  postdib,
+} from '@/apis/ExchangePostApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '@/apis/Cookie';
@@ -46,7 +50,6 @@ interface PostContent {
 function Page({ params }: { params: any }) {
   const [postContent, setPostContent] = useState<PostContent | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [returnData, setReturnData] = useState();
   const router = useRouter();
   const userId: string | undefined = getCookie('userId');
 
@@ -75,6 +78,13 @@ function Page({ params }: { params: any }) {
 
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+  const handledib = async () => {
+    try {
+      await postdib(params.id);
+    } catch (error) {
+      router.push('/login');
+    }
   };
   async function handleDeletePost() {
     try {
@@ -176,6 +186,7 @@ function Page({ params }: { params: any }) {
           </div>
         </div>
       ) : (
+        //포스트 오너가 아닐 때
         <>
           {/* 본문 */}
           {/* 캐러셀 섹션 */}
@@ -190,8 +201,11 @@ function Page({ params }: { params: any }) {
               {/* 글 상세내용 */}
               <div className={` bg-white border-gray border-b-[0.5px]`}>
                 <div>
-                  <div className="text-header font-[600]">
-                    물건 이름 : {postContent.item.title}
+                  <div className="text-header font-[600] flex justify-between">
+                    <div>물건 이름 : {postContent.item.title}</div>
+                    <div className="cursor-pointer" onClick={handledib}>
+                      찜하기
+                    </div>
                   </div>
                   <div className="text-subtitle">
                     거래 장소 : {postContent.address}
