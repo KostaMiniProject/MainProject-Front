@@ -78,6 +78,13 @@ function Page({ params }: { params: any }) {
   let socket: any = null;
   const chatRoomId = params.id;
 
+  //엔터키 눌렀을 때 이벤트
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); // 엔터 키에 의한 줄바꿈 방지
+      sendMessage(); // 메시지 전송 함수 호출
+    }
+  };
   //예약하기 모달 핸들
   const handleShowModal = () => {
     setShowModal(true);
@@ -276,13 +283,14 @@ function Page({ params }: { params: any }) {
         }, 1000);
         const chatHistory = response.data.messages.reverse().map((msg: any) => {
           const myId = getCookie('userId');
-          if (msg.senderId !== myId) {
+          console.log(msg.senderId, myId);
+          if (msg.senderId !== parseInt(myId ?? '')) {
             return {
               senderId: msg.senderId,
               content: msg.content,
               imageUrl: msg.imageUrl,
               createAt: formatDate(msg.createAt),
-              isRead: true,
+              isRead: true, // 상대방이 보낸 메시지
             };
           }
           return {
@@ -290,7 +298,7 @@ function Page({ params }: { params: any }) {
             content: msg.content,
             imageUrl: msg.imageUrl,
             createAt: formatDate(msg.createAt),
-            isRead: msg.isRead,
+            isRead: msg.isRead, // 내가 보낸 메시지의 기존 isRead 상태 유지
           };
         });
 
@@ -367,8 +375,8 @@ function Page({ params }: { params: any }) {
 
             <div className="text-subtitle text-gray">
               {!messageOwner
-                ? `${message.createAt} ${message.isRead && '-읽음'}`
-                : `${message.isRead && '읽음-'} ${message.createAt}`}
+                ? `${message.createAt} ${message.isRead ? '-읽음' : ''}`
+                : `${message.isRead ? '읽음-' : ''} ${message.createAt}`}
             </div>
           </div>
         </div>
@@ -515,6 +523,7 @@ function Page({ params }: { params: any }) {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type your message here..."
+            onKeyDown={handleKeyPress}
           />
           <button onClick={sendMessage}>Send</button>
         </div>
