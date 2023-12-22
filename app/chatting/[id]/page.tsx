@@ -87,7 +87,7 @@ function Page({ params }: { params: any }) {
     if (initRoom) {
       try {
         putExchange(initRoom?.exchangePostId, initRoom?.bidId);
-        setInitRoom((prev: any) => ({ ...prev, status: 'EXCHANGE' }));
+        setInitRoom((prev: any) => ({ ...prev, status: 'RESERVATION' }));
       } catch (error) {
         console.log(error);
       }

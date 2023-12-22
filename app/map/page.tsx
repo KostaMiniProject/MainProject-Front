@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Location from '@/image/location.png';
 
-
 declare global {
   interface Window {
     kakao: any;
@@ -30,31 +29,36 @@ function Page() {
 
   const moveToCurrentLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        const locPosition = new window.kakao.maps.LatLng(lat, lon);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const locPosition = new window.kakao.maps.LatLng(lat, lon);
 
-        // mapRef.current가 지도 객체를 참조하고 있는지 확인
-        if (mapRef.current) {
-          mapRef.current.setCenter(locPosition); // 지도의 중심을 현재 위치로 설정
-        } else {
-          console.error('Map object is not initialized');
+          // mapRef.current가 지도 객체를 참조하고 있는지 확인
+          if (mapRef.current) {
+            mapRef.current.setCenter(locPosition); // 지도의 중심을 현재 위치로 설정
+          } else {
+            console.error('Map object is not initialized');
+          }
+        },
+        (error) => {
+          console.error('Error getting location:', error);
         }
-      }, (error) => {
-        console.error('Error getting location:', error);
-      });
+      );
     } else {
       console.log('Geolocation is not supported by this browser.');
     }
   };
 
-
   useEffect(() => {
     async function fetchLocationAndData() {
       const fetchWithLocation = async (latitude: any, longitude: any) => {
         try {
-          const data = await getExchangePostsForMap(longitude.toString(), latitude.toString());
+          const data = await getExchangePostsForMap(
+            longitude.toString(),
+            latitude.toString()
+          );
           setExchangePosts(data); // 서버로부터 받은 데이터를 상태에 저장
         } catch (error) {
           console.error('Error fetching exchange posts:', error);
@@ -62,21 +66,24 @@ function Page() {
       };
 
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          await fetchWithLocation(lat, lon);
-        }, async (error) => {
-          console.error('Error getting location:', error);
-          // Geolocation을 사용할 수 없는 경우 하드코딩된 위치(오리역) 사용
-          const defaultLat = 37.338860;
-          const defaultLon = 127.109316;
-          await fetchWithLocation(defaultLat, defaultLon);
-        });
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            await fetchWithLocation(lat, lon);
+          },
+          async (error) => {
+            console.error('Error getting location:', error);
+            // Geolocation을 사용할 수 없는 경우 하드코딩된 위치(오리역) 사용
+            const defaultLat = 37.33886;
+            const defaultLon = 127.109316;
+            await fetchWithLocation(defaultLat, defaultLon);
+          }
+        );
       } else {
         console.log('Geolocation is not supported by this browser.');
         // 브라우저가 Geolocation을 지원하지 않는 경우 하드코딩된 위치(오리역) 사용
-        const defaultLat = 37.338860;
+        const defaultLat = 37.33886;
         const defaultLon = 127.109316;
         await fetchWithLocation(defaultLat, defaultLon);
       }
@@ -84,7 +91,6 @@ function Page() {
 
     fetchLocationAndData();
   }, []);
-
 
   useEffect(() => {
     console.log('Posts', exchangePosts);
@@ -219,7 +225,9 @@ function Page() {
           className="flex items-center p-3 bg-lightgray cursor-pointer hover:bg-gray"
           onClick={() => router.push(`/exchange/${post.exchangePostId}`)}
         >
-          <div className=""> {/* 여기에서 마진을 조정했습니다 */}
+          <div className="">
+            {' '}
+            {/* 여기에서 마진을 조정했습니다 */}
             {post.imgUrl && (
               <img
                 src={post.imgUrl}
@@ -235,12 +243,11 @@ function Page() {
         </div>
       ));
     } else {
-      return <p className="text-center text-gray-600 py-4">게시물이 없습니다.</p>;
+      return (
+        <p className="text-center text-gray-600 py-4">게시물이 없습니다.</p>
+      );
     }
   };
-
-
-
 
   return (
     <div>
@@ -252,9 +259,7 @@ function Page() {
             style={{ width: '100vw', height: '75vh' }}
           >
             <div id="map" style={{ width: '100%', height: '100%' }}></div>
-
           </div>
-
         </div>
       </div>
       <div
@@ -262,12 +267,12 @@ function Page() {
           transform: ` translateY(${isPanelOpen ? '-20px' : '250px'})`,
         }}
         className="fixed duration-300 bottom-0 max-w-[480px] w-full mx-auto z-20 rounded-lg"
-        >
+      >
         {/* 현재 위치로 이동 버튼 */}
         <button
           onClick={moveToCurrentLocation}
-          className="bg-skyblue p-3 rounded-full shadow-lg flex items-center justify-center z-30 ml-[10px] mb-[10px]" 
-          >
+          className="bg-skyblue p-3 rounded-full shadow-lg flex items-center justify-center z-30 ml-[10px] mb-[10px]"
+        >
           위치
         </button>
         <button
@@ -277,7 +282,7 @@ function Page() {
           {isPanelOpen ? '▼' : '▲'}
         </button>
 
-        <div className="overflow-scroll h-[400px] hide-scrollbar">
+        <div className="overflow-scroll h-[400px] hide-scrollbar bg-white">
           <div>{renderExchangePostList()}</div>
         </div>
       </div>
