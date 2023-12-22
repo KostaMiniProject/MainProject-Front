@@ -66,14 +66,16 @@ function page() {
         <div className="flex items-center mx-[15px] py-[10px] border-b-[0.5px] border-gray">
           <div className="h-[120px] w-[120px] bg-black rounded-[50%] overflow-hidden">
             {/* 프로필 사진 */}
-            <Image
-              src={profile?.profileImage ?? ''}
-              alt="프로필사진"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              width={60}
-              height={60}
-              className="w-full h-full "
-            />
+            {profile && (
+              <Image
+                src={profile.profileImage}
+                alt="프로필사진"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                width={60}
+                height={60}
+                className="w-full h-full "
+              />
+            )}
           </div>
           <div className="ml-default flex-1">
             <div className=" text-header font-[600]">
