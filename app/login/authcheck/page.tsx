@@ -9,6 +9,7 @@ import InputBox from '@/components/InputBox';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import PostCode from '@/components/signup/PostCode';
+import { postSignUp } from '@/apis/SignUpApi';
 function page() {
   const searchParams = useSearchParams();
 
@@ -101,6 +102,7 @@ function page() {
 
   const signUp = async () => {
     const userData = {
+      email: accessUserEmail,
       nickName: nickName,
       address: address,
       addressDetail: addressDetail,
@@ -114,11 +116,10 @@ function page() {
       isPhone
     ) {
       try {
-        console.log(userData);
-        // postSignUp(userData);
-
+        // console.log(userData);
+        await postSignUp(userData);
         document.cookie = `token=${token}; path=/;`;
-        // router.push('/login');
+        router.push('/');
       } catch (error) {
         alert('회원가입 실패');
       }
