@@ -1,29 +1,24 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import ExchangePost from '@/components/exchange/ExchangePost';
-import { getPostList } from '@/apis/ExchangePostApi';
+import { getMyPostList } from '@/apis/ExchangePostApi';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { MdOutlineSearch } from 'react-icons/md';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import InfiniteScrollObserver from '@/components/InfiniteScrollObserver';
-import { useRecoilState } from 'recoil';
-import { navState } from '@/store/atoms';
 
 function Page() {
   const [postData, setPostData] = useState<any[]>([]);
   const [hasMoreData, setHasMoreData] = useState(true);
   const [pageNation, setPageNation] = useState(0);
-  const [activeButton, setActiveButton] = useRecoilState(navState);
-  useEffect(() => {
-    setActiveButton('물물교환');
-  }, []);
+  
   const fetchPostData = async () => {
     if (!hasMoreData) return;
 
     try {
-      const data = await getPostList(pageNation);
+      const data = await getMyPostList(pageNation);
       setPostData((oldData) => [...oldData, ...data.data]);
       setPageNation((prev) => prev + 1);
       console.log(pageNation);
@@ -41,7 +36,7 @@ function Page() {
   return (
     <div className="relative">
       <div className="mx-default">
-        <Header title="물물교환">
+        <Header title="내가 작성한 교환 게시글">
           <Link href={'/search'}>
             <MdOutlineSearch size={40} />
           </Link>
@@ -51,7 +46,7 @@ function Page() {
 
         <div>
           <div className="text-header font-[600] border-b-[0.5px] border-gray py-[10px]">
-            현재 진행중인 교환
+            {/* 현재 진행중인 교환 */}
           </div>
           {/* ExchangePost 리스트 */}
           <div>

@@ -1,72 +1,51 @@
 'use client';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
-import ProfileContainer from '@/components/profile/ProfileContainer';
 import React, { useState, useEffect } from 'react';
-import { MdTagFaces, MdThumbDown, MdThumbUp } from 'react-icons/md';
-import { getCookie, removeCookie } from '@/apis/Cookie';
+import { MdChevronRight } from 'react-icons/md';
+import { removeCookie } from '@/apis/Cookie';
 import { useRouter } from 'next/navigation';
 import { withAuthorization } from '@/HOC/withAuthorization';
-import { getMyDibs, getMyHistory, getMyItemList } from '@/apis/ProfileApi';
-
-// ReviewContainer 컴포넌트
-function ReviewContainer({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex-1 border-solid border-[2px] border-base rounded-[10px] m-[10px] bg-white">
-      <div className="flex flex-col items-center justify-center h-full p-[20px]">
-        {children}
-      </div>
-    </div>
-  );
-}
+import { getMyProfile } from '@/apis/ProfileApi';
+import Image from 'next/image';
+import Link from 'next/link';
 
 function handleLogout() {
   // 쿠키에서 토큰 및 사용자 ID 삭제  `1    1/.
   removeCookie('token');
   removeCookie('userId');
 }
+interface profileType {
+  address: string;
+  email: string;
+  name: string;
+  phone: string;
+  profileImage: string;
+  userStatus: string;
+}
 
 function page() {
-  const [items, setItems] = useState<[]>([]);
-  const [dibs, setDibs] = useState<[]>([]);
-  const [history, setHistory] = useState<[]>([]);
   const router = useRouter();
+  const [profile, setProfile] = useState<profileType>();
+  const profileMenu =
+    'p-[10px] border-b-[0.5px] border-gray text-title flex justify-between';
+  const iconSize = 20;
 
   useEffect(() => {
-    const myId = getCookie('userId');
-
-    async function fetchItem(page: number) {
+    const fetchData = async () => {
       try {
-        const data: any = await getMyItemList(page);
-        setItems(data.data);
+        const data = await getMyProfile();
+        setProfile(data);
       } catch (error) {
         console.log(error);
       }
-    }
-    async function fetchDibs(userId: number) {
-      try {
-        const data: any = await getMyDibs(userId);
-        setDibs(data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    async function fetchHistory(page: number) {
-      try {
-        const data: any = await getMyHistory(page);
-        setHistory(data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchHistory(0);
-    fetchItem(0);
-    if (myId) {
-      fetchDibs(parseInt(myId));
-    }
+    };
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log(profile);
+  }, [profile]);
 
   return (
     <div>
@@ -84,78 +63,72 @@ function page() {
         />
       </Header>
       <div className="">
-        <div className="flex items-center mx-[15px] py-[10px]">
+        <div className="flex items-center mx-[15px] py-[10px] border-b-[0.5px] border-gray">
           <div className="h-[120px] w-[120px] bg-black rounded-[50%] overflow-hidden">
             {/* 프로필 사진 */}
-            <div className="text-white">프로필</div>
-            <div className="text-white">프로필</div>
+            {profile && (
+              <Image
+                src={profile.profileImage}
+                alt="프로필사진"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                width={60}
+                height={60}
+                className="w-full h-full "
+              />
+            )}
           </div>
           <div className="ml-default flex-1">
             <div className=" text-header font-[600]">
               {/* {myProfile.name} */}
-              닉네임
+              {profile?.name}
             </div>
             <div className=" text-title font-[600]">
               {/* {myProfile.name} */}
-              주소
+              {profile?.address}
             </div>
             <div className="flex">
               <div className="flex items-center justify-between flex-1">
-                <div className="text-subtitle">점수</div>
-                <Button
-                  text="내 정보"
-                  fontSize={16}
-                  height={5}
-                  rounded="soft"
-                />
+                <div className="flex">
+                  내 정보 <MdChevronRight size={iconSize} />
+                </div>
               </div>
             </div>
           </div>
         </div>
-        {/* <div className="flex items-center text-center mx-[15px]">
-          <ReviewContainer>
-            <MdThumbDown size={20} color={'#e00685'} />
-            <div className="text-[20px]">0</div>
-          </ReviewContainer>
-          <ReviewContainer>
-            <MdTagFaces size={20} color={'#e00685'} />
-            <div className="text-[20px]">0</div>
-          </ReviewContainer>
-          <ReviewContainer>
-            <MdThumbUp size={20} color={'#e00685'} />
-            <div className="text-[20px]">0</div>
-          </ReviewContainer>
-        </div> */}
-
-        <ProfileContainer text="내 물건">
-          <div className="flex">
-            {items.length > 0 ? (
-              items.map((e: any, i: any) => {
-                return <Button text={e.title} height={8} key={i}></Button>;
-              })
-            ) : (
-              <>아이템이 없습니다</>
-            )}
+        <div className="flex flex-col mx-default flex-1">
+          <Link href={'/myexchangepostlist'}>
+            <div className={profileMenu}>
+              <div>내 교환 게시글</div>
+              <MdChevronRight size={iconSize} />
+            </div>
+          </Link>
+          <Link href={'/myitem'}>
+            <div className={profileMenu}>
+              <div>내 아이템</div>
+              <MdChevronRight size={iconSize} />
+            </div>
+          </Link>
+          <Link href={'/profile/exchangeHistory'}>
+            <div className={profileMenu}>
+              <div>거래내역</div>
+              <MdChevronRight size={iconSize} />
+            </div>
+          </Link>
+          <Link href={'/mycommunitypostlist'}>
+            <div className={profileMenu}>
+              <div>내 커뮤니티 게시글</div>
+              <MdChevronRight size={iconSize} />
+            </div>
+          </Link>
+          <div className={profileMenu}>
+            <div>찜목록</div>
+            <MdChevronRight size={iconSize} />
           </div>
-        </ProfileContainer>
-        <ProfileContainer text="거래 내역">
-          {history.length > 0 ? (
-            history.map((e: any) => {
-              return <div></div>;
-            })
-          ) : (
-            <>최근 거래내역이 없습니다</>
-          )}
-        </ProfileContainer>
-        <ProfileContainer text="찜 목록">
-          {dibs.length > 0 ? (
-            dibs.map((e: any) => {
-              return <div></div>;
-            })
-          ) : (
-            <>찜한 상품이 없습니다</>
-          )}
-        </ProfileContainer>
+          <div className={profileMenu}>
+            <div>차단 리스트</div>
+            <MdChevronRight size={iconSize} />
+          </div>
+        </div>
       </div>
     </div>
   );

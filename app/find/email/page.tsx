@@ -34,7 +34,7 @@ function Page() {
     <div>
       <Header title="아이디 찾기"></Header>
       <div className="w-full flex-col flex">
-        <div className="text-[20px] mt-[150px] mb-[50px] m-[auto] font-[600]">
+        <div className="text-[20px] mt-[100px] mb-[50px] m-[auto] font-[600]">
           아래내용을 작성해주세요.
         </div>
       </div>

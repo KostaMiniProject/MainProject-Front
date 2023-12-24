@@ -5,6 +5,7 @@ import { getItemById } from '@/apis/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
+import Modal from '@/components/Modal';
 import TextAreaBox from '@/components/TextAreaBox';
 import Item, { itemType } from '@/components/item/Item';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -26,6 +27,7 @@ function page() {
   const [preferItems, setPreferItems] = useState<String>('');
   const [address, setAddress] = useState<String>('');
   const [content, setContent] = useState<String>('');
+  const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<itemType>();
   const [edit, setEdit] = useState<number>(0);
   const [postNumber, setPostNumber] = useState<number>();
@@ -35,6 +37,26 @@ function page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const urlPath = usePathname();
+
+  const handleShowModal = () => {
+    if (title.length < 1) {
+      alert('제목을 입력 해 주세요');
+    } else if (content.length < 0) {
+      alert('내용을 입력 해 주세요');
+    } else {
+      setShowModal(true);
+    }
+  };
+
+  const handlePostComplete = async () => {
+    setShowModal(false);
+    postComplete();
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   useEffect(() => {
     const kakaoMapScript = document.createElement('script');
     kakaoMapScript.async = false;
@@ -46,8 +68,8 @@ function page() {
         var mapContainer = document.getElementById('map');
         var mapOption = {
           center: new window.kakao.maps.LatLng(
-            37.51041308786375,
-            126.98140551962696
+            37.338860,
+            127.109316
           ),
           level: 3,
         };
@@ -57,7 +79,26 @@ function page() {
 
         var marker = new window.kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
           infowindow = new window.kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              function (position) {
+                var lat = position.coords.latitude,
+                    lon = position.coords.longitude;
+                var locPosition = new window.kakao.maps.LatLng(lat, lon);
+      
+                map.setCenter(locPosition);
 
+                searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+              },
+              function (error) {
+                console.error("Geolocation error: " + error.message);
+                searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+              }
+            );
+          } else {
+            console.log("Geolocation is not supported by this browser.");
+            searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+          }
         // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
         searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 
@@ -233,16 +274,35 @@ function page() {
             <div id="map" style={{ width: '100%', height: '100%' }}></div>
           </div>
         </div>
-        <div className="text-center my-[15px]">
+        <div className="text-center my-[15px] z-20">
           <Button
             text="작성 완료"
             fontSize={20}
             height={8}
             rounded="soft"
-            onClick={postComplete}
+            onClick={handleShowModal}
           />
         </div>
       </div>
+      {showModal && (
+        <Modal setState={handleCloseModal}>
+          <div className="my-[5px]">글을 등록 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="등록"
+              onClick={handlePostComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleCloseModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

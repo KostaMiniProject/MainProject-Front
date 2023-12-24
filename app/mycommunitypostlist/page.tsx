@@ -4,7 +4,7 @@ import InputBox from '@/components/InputBox';
 import React, { useEffect, useState } from 'react';
 import { MdOutlinePostAdd, MdSearch } from 'react-icons/md';
 import CommunityPost from '@/components/community/CommunityPost';
-import { getCommunityPost } from '@/apis/CommunityApi';
+import { getMyCommunityPost } from '@/apis/CommunityApi';
 import Link from 'next/link';
 
 function Page() {
@@ -13,7 +13,7 @@ function Page() {
   useEffect(() => {
     async function getPosts() {
       try {
-        const data: any = await getCommunityPost(0);
+        const data: any = await getMyCommunityPost(0);
         setPostData(data.data);
       } catch (error) {
         console.log(error);
@@ -28,7 +28,7 @@ function Page() {
 
   return (
     <div>
-      <Header title="커뮤니티">
+      <Header title="내가 작성한 커뮤니티 게시글 목록">
         <Link href={'/community/posting'}>
           <MdOutlinePostAdd size={40} />
         </Link>

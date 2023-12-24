@@ -1,29 +1,30 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import ExchangePost from '@/components/exchange/ExchangePost';
-import { getPostList } from '@/apis/ExchangePostApi';
+import { getPostList, getSearchPostList } from '@/apis/ExchangePostApi';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { MdOutlineSearch } from 'react-icons/md';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import InfiniteScrollObserver from '@/components/InfiniteScrollObserver';
-import { useRecoilState } from 'recoil';
-import { navState } from '@/store/atoms';
+import { useSearchParams } from 'next/navigation';
 
 function Page() {
   const [postData, setPostData] = useState<any[]>([]);
   const [hasMoreData, setHasMoreData] = useState(true);
   const [pageNation, setPageNation] = useState(0);
-  const [activeButton, setActiveButton] = useRecoilState(navState);
-  useEffect(() => {
-    setActiveButton('물물교환');
-  }, []);
+  const searchParams = useSearchParams();
+
   const fetchPostData = async () => {
     if (!hasMoreData) return;
+    const keyword = searchParams.get('keyword');
 
     try {
-      const data = await getPostList(pageNation);
+      const data = await getSearchPostList(
+        pageNation,
+        encodeURI(keyword ?? '')
+      );
       setPostData((oldData) => [...oldData, ...data.data]);
       setPageNation((prev) => prev + 1);
       console.log(pageNation);
@@ -41,7 +42,7 @@ function Page() {
   return (
     <div className="relative">
       <div className="mx-default">
-        <Header title="물물교환">
+        <Header backNav title="물물교환">
           <Link href={'/search'}>
             <MdOutlineSearch size={40} />
           </Link>
@@ -51,7 +52,7 @@ function Page() {
 
         <div>
           <div className="text-header font-[600] border-b-[0.5px] border-gray py-[10px]">
-            현재 진행중인 교환
+            {searchParams.get('keyword')} 로 검색한 결과
           </div>
           {/* ExchangePost 리스트 */}
           <div>
