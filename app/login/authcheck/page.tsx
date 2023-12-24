@@ -10,6 +10,8 @@ function page() {
 
   const [accessToken, setAccessToken] = useRecoilState(token);
   const [accessUserId, setAccessUserId] = useRecoilState(userId);
+  const [accessUserEmail, setAccessUserEmail] = useState('');
+
   const router = useRouter();
   useEffect(() => {
     const data: string = searchParams.get('token') ?? '';
@@ -21,6 +23,7 @@ function page() {
         const res: any = await postCheckAuth(body);
         setAccessToken(res.token);
         setAccessUserId(res.userId);
+        setAccessUserEmail(res.userEmail);
         router.push('/');
       } catch (error) {
         console.log(error);
