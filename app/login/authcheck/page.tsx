@@ -2,7 +2,7 @@
 import { postCheckAuth } from '@/apis/CheckAuthApi';
 import { token, userId } from '@/store/atoms';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { FaCheck } from 'react-icons/fa6';
 import InputBox from '@/components/InputBox';
@@ -35,6 +35,7 @@ function page() {
     const { zcode, jibunAddr, roadAddr } = address;
     return !(zcode && (jibunAddr || roadAddr));
   };
+  const emailInputRef: any = useRef();
 
   const onClickAddrBtn = () => {
     PostCode({ info: address, setInfo: setAddress });
@@ -115,6 +116,8 @@ function page() {
       try {
         console.log(userData);
         // postSignUp(userData);
+
+        document.cookie = `token=${token}; path=/;`;
         // router.push('/login');
       } catch (error) {
         alert('회원가입 실패');
@@ -133,17 +136,27 @@ function page() {
       };
       try {
         const res: any = await postCheckAuth(body);
-        setAccessToken(res.token);
-        setAccessUserId(res.userId);
-        setAccessUserEmail(res.userEmail);
-        setIsAuth(true);
-        // router.push('/');
+        const data = await res.json();
+        const token = res.headers.get('Authorization');
+        document.cookie = `userId=${data.userId}; path=/;`;
+        if (data.additionalInfo) {
+          setAccessToken(token);
+          setAccessUserId(data.userId);
+          setAccessUserEmail(data.userEmail);
+          setIsAuth(true);
+        } else {
+          router.push('/');
+        }
+        //additionalInfo
       } catch (error) {
         console.log(error);
       }
     };
     checkAuth();
   }, []);
+  // useEffect(() => {
+  //   emailInputRef.current.value = accessUserEmail;
+  // }, [accessUserEmail]);
 
   return (
     <div>
@@ -156,6 +169,7 @@ function page() {
                 <div className="text-[20px] my-[10px] font-[600px]">이메일</div>
                 <div className="p-2 border-[0.5px] rounded-[8px] h-[40px] w-full">
                   {/* 인증된 이메일값 필요 */}
+                  {accessUserEmail}
                 </div>
                 <div className="flex items-center text-gray">
                   <FaCheck />
