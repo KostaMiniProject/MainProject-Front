@@ -17,6 +17,7 @@ function Item({ item }: { item: itemType }) {
           <Image
             src={item.images[0]}
             alt="Item image"
+            sizes="(max-width: 768px) 100vw"
             fill
             style={{ objectFit: 'cover' }}
           />
@@ -24,6 +25,7 @@ function Item({ item }: { item: itemType }) {
           <Image
             src={item.imageUrls[0]}
             alt="Item image"
+            sizes="(max-width: 768px) 100vw"
             fill
             style={{ objectFit: 'cover' }}
           />

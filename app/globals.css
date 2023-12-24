@@ -9,7 +9,9 @@
   font-weight: 400;
   font-style: normal;
 }
-
+* {
+  font-family: 'Pretendard-Regular';
+}
 /* 드래그 방지 옵션 */
 body {
   -webkit-user-select: none;

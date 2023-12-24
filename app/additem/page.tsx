@@ -23,6 +23,7 @@ function Page() {
   const router = useRouter();
   const postid = searchParams.get('postId');
 
+  //모달 핸들부분
   const handleShowModal = () => {
     setShowModal(true);
   };
@@ -35,12 +36,12 @@ function Page() {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
+  // 이미지 더 보기
   function handleMoreView() {
     setIsMoreView(!isMoreView);
   }
+  // 이미지 삭제
   function removeImage(index: number) {
-    // 이미지 삭제
     setSelectedImages((prevImages) => {
       const newImages = [...prevImages];
       newImages.splice(index, 1);
@@ -127,8 +128,10 @@ function Page() {
               <Image
                 src={URL.createObjectURL(image)}
                 alt={`Selected Image ${index + 1}`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{
+                  objectFit: 'cover',
+                }}
               />
               <div
                 className="absolute top-0 right-0 cursor-pointer"

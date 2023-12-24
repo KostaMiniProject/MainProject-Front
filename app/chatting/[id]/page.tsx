@@ -10,6 +10,14 @@ import { getCookie } from '@/apis/Cookie';
 import Header from '@/components/Header';
 import Button from '@/components/Button';
 import BottomFixed from '@/components/BottomFixed';
+import Modal from '@/components/Modal';
+import {
+  deleteChattingRoom,
+  putExchange,
+  putExchangeComplete,
+} from '@/apis/ChattingApi';
+import { MdExitToApp } from 'react-icons/md';
+import { useRouter } from 'next/navigation';
 
 // 보내는 메시지 인터페이스
 interface IReceivedMessage {
@@ -30,6 +38,8 @@ interface ISendMessage {
 
 // 받는 메시지 인터페이스
 interface IRoomMessages {
+  isOwner: boolean;
+  bidId: number;
   exchangePostAddress: string;
   exchangePostCategory: string;
   exchangePostId: number;
@@ -39,6 +49,7 @@ interface IRoomMessages {
   userName: string;
   userProfileImage: string;
   messages: [];
+  status: string;
 }
 
 function Page({ params }: { params: any }) {
@@ -58,9 +69,80 @@ function Page({ params }: { params: any }) {
   let pagenation = 0;
   // const [pagenation, setPagenation] = useState(0);
   const [scroll, setScroll] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  showCompleteModal;
+  const route = useRouter();
 
   let socket: any = null;
   const chatRoomId = params.id;
+
+  //엔터키 눌렀을 때 이벤트
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); // 엔터 키에 의한 줄바꿈 방지
+      sendMessage(); // 메시지 전송 함수 호출
+    }
+  };
+  //예약하기 모달 핸들
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handlePostComplete = async () => {
+    if (initRoom) {
+      try {
+        putExchange(initRoom?.exchangePostId, initRoom?.bidId);
+        setInitRoom((prev: any) => ({ ...prev, status: 'RESERVATION' }));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setShowModal(false);
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  //거래완료 모달 핸들
+  const handleShowCompleteModal = () => {
+    setShowCompleteModal(true);
+  };
+
+  const handlePostCompleteExchange = async () => {
+    if (initRoom) {
+      try {
+        putExchangeComplete(initRoom?.exchangePostId, initRoom?.bidId);
+        setInitRoom((prev: any) => ({ ...prev, status: 'COMPLETE' }));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setShowCompleteModal(false);
+  };
+  const handleCloseCompleteModal = () => {
+    setShowCompleteModal(false);
+  };
+
+  //나가기 모달 핸들
+  const handleCloseExitModal = () => {
+    setShowExitModal(false);
+  };
+
+  const handleShowExitModal = () => {
+    setShowExitModal(true);
+  };
+
+  const handleExitComplete = async () => {
+    if (initRoom) {
+      try {
+        handleExitChatting();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setShowExitModal(false);
+  };
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
@@ -68,16 +150,18 @@ function Page({ params }: { params: any }) {
       window.removeEventListener('scroll', onScroll);
     };
   }, []);
-  const onScroll = () => {
+  const onScroll = async () => {
     const { scrollY } = window;
     // console.log(scrollY);
     // console.log(waitData);
     if (scrollY <= 20 && !waitData) {
       // alert('불러오는중');
-      window.scrollTo(0, 1000);
+      const scrollHeight = window.innerHeight;
+      console.log(scrollHeight);
       pagenation++;
       waitData = true;
-      fetchChatHistory(pagenation); // 업데이트된 pagenation을 사용
+      await fetchChatHistory(pagenation); // 업데이트된 pagenation을 사용
+      window.scrollTo(0, window.innerHeight - scrollHeight);
     } else {
       setScroll('');
     }
@@ -199,13 +283,13 @@ function Page({ params }: { params: any }) {
         }, 1000);
         const chatHistory = response.data.messages.reverse().map((msg: any) => {
           const myId = getCookie('userId');
-          if (msg.senderId !== myId) {
+          if (msg.senderId !== parseInt(myId ?? '')) {
             return {
               senderId: msg.senderId,
               content: msg.content,
               imageUrl: msg.imageUrl,
               createAt: formatDate(msg.createAt),
-              isRead: true,
+              isRead: true, // 상대방이 보낸 메시지
             };
           }
           return {
@@ -213,16 +297,9 @@ function Page({ params }: { params: any }) {
             content: msg.content,
             imageUrl: msg.imageUrl,
             createAt: formatDate(msg.createAt),
-            isRead: msg.isRead,
+            isRead: msg.isRead, // 내가 보낸 메시지의 기존 isRead 상태 유지
           };
         });
-        // .map((msg: any) => ({
-        //   senderId: msg.senderId,
-        //   content: msg.content,
-        //   imageUrl: msg.imageUrl,
-        //   createAt: formatDate(msg.createAt),
-        //   isRead: msg.isRead,
-        // }));
 
         if (chatHistory.length === 0) {
           setMessages(chatHistory);
@@ -297,45 +374,101 @@ function Page({ params }: { params: any }) {
 
             <div className="text-subtitle text-gray">
               {!messageOwner
-                ? `${message.createAt} ${message.isRead && '-읽음'}`
-                : `${message.isRead && '읽음-'} ${message.createAt}`}
+                ? `${message.createAt} ${message.isRead ? '-읽음' : ''}`
+                : `${message.isRead ? '읽음-' : ''} ${message.createAt}`}
             </div>
           </div>
         </div>
       </div>
     );
   }
-
+  const handleExitChatting = async () => {
+    try {
+      await deleteChattingRoom(params.id);
+      route.back();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="chat-page">
-      <Header title="채팅"></Header>
-      <div className="fixed w-full bg-white max-w-[464px] pr-[16px]">
+      <Header backNav title="채팅">
+        <div onClick={handleShowExitModal}>
+          <MdExitToApp size={40} />
+        </div>
+      </Header>
+      {showExitModal && (
+        <Modal setState={handleCloseExitModal}>
+          <div className="my-[5px]">채팅방을 나가시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="나가기"
+              onClick={handleExitComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleCloseExitModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
+      <div className="fixed w-full bg-white max-w-[480px] pr-[16px]">
         <div className="text-header font-bold my-[10px]">
           교환하려고 하는 게시물
         </div>
-        <div className="flex ">
-          <div className="w-[80px] h-[80px] flex ">
-            <img src={initRoom?.exchangePostImage} />
+        <div className="flex">
+          <div className="w-[80px] h-[80px] flex items-center justify-center overflow-hidden rounded-md mr-4">
+            <img
+              src={initRoom?.exchangePostImage}
+              alt="Exchange Post"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
           </div>
-          <div className="whitespace-nowrap text-ellipsis overflow-hidden  flex justify-between w-full">
+          <div className="flex-1 flex justify-between">
             <div>
-              <div className="w-full text-ellipsis overflow-hidden text-title font-bold">
+              <div className="text-title font-bold truncate">
                 {initRoom?.exchangePostTittle}
               </div>
-              <div className="text-content text-gray">
+              <div className="text-content text-gray truncate">
                 {initRoom?.exchangePostAddress}
               </div>
-              <div>{initRoom?.exchangePostCategory}</div>
+              <div className="truncate">{initRoom?.exchangePostCategory}</div>
             </div>
-            <div className="w-[100px] text-center">
-              <Button text="예약하기" height={5} rounded="soft"></Button>
+            <div className="w-[100px] text-center self-center">
+              {initRoom &&
+                initRoom.isOwner &&
+                (initRoom.status === 'BIDDING' ? (
+                  <Button
+                    text="예약하기"
+                    height={5}
+                    rounded="soft"
+                    onClick={handleShowModal}
+                  ></Button>
+                ) : initRoom.status === 'RESERVATION' ? (
+                  <Button
+                    text="거래완료"
+                    height={5}
+                    rounded="soft"
+                    onClick={handleShowCompleteModal}
+                  ></Button>
+                ) : (
+                  <Button
+                    text="거래완료"
+                    height={5}
+                    rounded="soft"
+                    btnStyle="disable"
+                  ></Button>
+                ))}
             </div>
           </div>
         </div>
       </div>
       <div className="h-[130px]"></div>
-
-      <div className="chat-history">
+      <div className="mx-default">
         <ul className="flex-col flex">
           {messages.map((message, index) => (
             <MessageItem key={index} message={message} />
@@ -343,6 +476,44 @@ function Page({ params }: { params: any }) {
         </ul>
       </div>
       <div ref={chatHistoryRef}></div>
+      {showModal && (
+        <Modal setState={handleCloseModal}>
+          <div className="my-[5px]">예약 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="예약하기"
+              onClick={handlePostComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleCloseModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
+      {showCompleteModal && (
+        <Modal setState={handleCloseCompleteModal}>
+          <div className="my-[5px]">거래를 완료 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="거래완료"
+              onClick={handlePostCompleteExchange}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleCloseCompleteModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
       <BottomFixed>
         <div className="flex justify-between w-full h-[40px] bg-white">
           <input
@@ -351,6 +522,7 @@ function Page({ params }: { params: any }) {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type your message here..."
+            onKeyDown={handleKeyPress}
           />
           <button onClick={sendMessage}>Send</button>
         </div>

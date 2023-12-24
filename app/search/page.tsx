@@ -2,19 +2,37 @@
 import Button from '@/components/Button';
 import InputBox from '@/components/InputBox';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { MdArrowBack, MdOutlineSearch } from 'react-icons/md';
+import React, { useEffect, useState } from 'react';
+
+import { MdArrowBack, MdClose, MdOutlineSearch } from 'react-icons/md';
 
 function page() {
   const [keyWord, setKeyWord] = useState<string>('');
+
+  const [recentSearches, setRecentSearches] = useState<string[]>([]); // 최근 검색어 상태
+
   const route = useRouter();
-  const recentSearches = [
-    '갤럭시S22',
-    '스타벅스 텀블러',
-    '삼성노트북',
-    '소니 헤드셋'
-  ];
+
+  useEffect(() => {
+    const searches = localStorage.getItem('recentSearches');
+    if (searches) {
+      setRecentSearches(JSON.parse(searches));
+    }
+  }, []);
+
+  // 최근 검색어를 로컬 스토리지에 저장하는 함수
+  const saveSearchTerm = (term: string) => {
+    const updatedSearches = [...recentSearches, term];
+    localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
+    // setRecentSearches(updatedSearches);
+  };
+
+  const deleteSearchTerm = (index: number) => {
+    const updatedSearches = recentSearches.filter((_, i) => i !== index);
+    localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
+    setRecentSearches(updatedSearches);
+  };
+
   const category = [
     '패션의류잡화',
     '음반DVD',
@@ -32,37 +50,50 @@ function page() {
     '스포츠레저',
     '문구오피스',
   ];
-  const wishList = [
-    '감자',
-    '고구마',
-    '바나나'
-  ];
+  // InputBox에서의 입력값 변경 처리
+  const handleInputChange = (value: string) => {
+    setKeyWord(value);
+  };
+
+  const handleSearchClick = async () => {
+    saveSearchTerm(keyWord);
+    route.push(`/search/result?keyword=${keyWord}`);
+  };
+
   return (
     <div>
       <div className="h-[60px] flex items-center">
         <div onClick={route.back}>
           <MdArrowBack size={60} />
         </div>
-        <InputBox onChange={setKeyWord} onFocusChange={(bool) => { }} />
+        <InputBox onChange={handleInputChange} message="검색어 입력" />
         <div
           onClick={() => {
             console.log(keyWord);
           }}
         >
-          <MdOutlineSearch size={40} />
+          <div onClick={handleSearchClick}>
+            <MdOutlineSearch size={40} />
+          </div>
         </div>
       </div>
       <div className="text-[16px] font-[600] border-t-[0.5px] border-gray p-[10px]">
         최근 검색어
       </div>
       <div className="flex flex-wrap">
-        {recentSearches.map((e: any, i: any) => {
-          return (
-            <div className="m-[5px]" key={i}>
-              <Button text={e} fontSize={16} height={8} />
-            </div>
-          );
-        })}
+        {recentSearches.map((searchTerm, index) => (
+          <div className="m-[5px] flex items-center" key={index}>
+            <Button text={searchTerm} fontSize={16} height={8} />
+            <MdClose
+              size={20}
+              className="cursor-pointer ml-2"
+              onClick={(e: any) => {
+                e.stopPropagation(); // 이벤트 전파 중단
+                deleteSearchTerm(index);
+              }}
+            />
+          </div>
+        ))}
       </div>
       <div className="text-[16px] font-[600] border-t-[0.5px] border-gray p-[10px] mt-[60px]">
         카테고리
@@ -77,7 +108,7 @@ function page() {
           );
         })}
       </div>
-      <div className="text-[16px] font-[600] border-t-[0.5px] border-gray p-[10px] mt-[60px]">
+      {/* <div className="text-[16px] font-[600] border-t-[0.5px] border-gray p-[10px] mt-[60px]">
         찜 목록
       </div>
       {wishList.map((e: any, i: any) => (
@@ -93,24 +124,17 @@ function page() {
           </div>
           <div className="relative flex-1 px-[5px] flex-col flex justify-between whitespace-nowrap text-ellipsis overflow-hidden border-b-[0.5px] border-gray p-[10px]">
             <div>
-              {/* 타이틀 */}
               <div className="font-[800] text-title leading-none text-ellipsis overflow-hidden">
                 {e}
               </div>
-              {/* 주소 */}
-              <div className="text-gray text-subtitle leading-none">
-                {e}
-              </div>
+              <div className="text-gray text-subtitle leading-none">{e}</div>
             </div>
-            {/* 태그 */}
             <div className="flex justify-between absolute bottom-0">
-              <div className="text-gray mr-[10px] text-subtitle">
-                {e}
-              </div>
+              <div className="text-gray mr-[10px] text-subtitle">{e}</div>
             </div>
           </div>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 }

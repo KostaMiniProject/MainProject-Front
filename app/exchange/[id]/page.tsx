@@ -5,7 +5,11 @@ import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
 import Header from '@/components/Header';
 import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
-import { getExchangePost } from '@/apis/ExchangePostApi';
+import {
+  deleteExchangePost,
+  getExchangePost,
+  postdib,
+} from '@/apis/ExchangePostApi';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '@/apis/Cookie';
@@ -13,6 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { postCreateRoom } from '@/apis/ChattingApi';
 import BottomFixed from '@/components/BottomFixed';
+import Modal from '@/components/Modal';
 
 interface bidContent {
   id: number;
@@ -44,7 +49,7 @@ interface PostContent {
 
 function Page({ params }: { params: any }) {
   const [postContent, setPostContent] = useState<PostContent | null>(null);
-  const [returnData, setReturnData] = useState();
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const userId: string | undefined = getCookie('userId');
 
@@ -62,7 +67,34 @@ function Page({ params }: { params: any }) {
     fetchPostContent();
   }, [params.id, userId]);
 
-  function handleDeletePost() {}
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handlePostComplete = async () => {
+    setShowModal(false);
+    handleDeletePost();
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  const handledib = async () => {
+    try {
+      await postdib(params.id);
+    } catch (error) {
+      router.push('/login');
+    }
+  };
+  async function handleDeletePost() {
+    try {
+      await deleteExchangePost(params.id);
+      alert('삭제되었습니다.');
+      router.push('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
   if (!postContent) {
     // 데이터 로딩 중에 표시할 내용
     return <div>Loading...</div>;
@@ -87,7 +119,7 @@ function Page({ params }: { params: any }) {
           <>
             <div
               className="w-[60px] flex justify-center cursor-pointer "
-              onClick={handleDeletePost}
+              onClick={handleShowModal}
             >
               <MdDeleteForever size={40} />
             </div>
@@ -154,6 +186,7 @@ function Page({ params }: { params: any }) {
           </div>
         </div>
       ) : (
+        //포스트 오너가 아닐 때
         <>
           {/* 본문 */}
           {/* 캐러셀 섹션 */}
@@ -168,8 +201,11 @@ function Page({ params }: { params: any }) {
               {/* 글 상세내용 */}
               <div className={` bg-white border-gray border-b-[0.5px]`}>
                 <div>
-                  <div className="text-header font-[600]">
-                    물건 이름 : {postContent.item.title}
+                  <div className="text-header font-[600] flex justify-between">
+                    <div>물건 이름 : {postContent.item.title}</div>
+                    <div className="cursor-pointer" onClick={handledib}>
+                      찜하기
+                    </div>
                   </div>
                   <div className="text-subtitle">
                     거래 장소 : {postContent.address}
@@ -209,6 +245,25 @@ function Page({ params }: { params: any }) {
             </div>
           </BottomFixed>
         </>
+      )}
+      {showModal && (
+        <Modal setState={handleCloseModal}>
+          <div className="my-[5px]">글을 삭제 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="삭제하기"
+              onClick={handlePostComplete}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="취소"
+              onClick={handleCloseModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
       )}
     </div>
   );
