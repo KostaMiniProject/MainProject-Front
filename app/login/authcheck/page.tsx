@@ -1,3 +1,4 @@
+'use client';
 import { postCheckAuth } from '@/apis/CheckAuthApi';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
