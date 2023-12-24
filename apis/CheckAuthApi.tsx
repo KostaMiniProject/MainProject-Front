@@ -14,16 +14,11 @@ export async function postCheckAuth(body: any) {
     }
 
     // 응답 헤더에서 토큰 추출
-    const token = res.headers.get('Authorization');
     // const token = getCookie('Set-Cookie');
     // console.log('토큰값');
-    console.log(token);
-    const data = await res.json();
     // 토큰을 반환하거나 저장, 사용 등을 수행
-    document.cookie = `token=${token}; path=/;`;
-    document.cookie = `userId=${data.userId}; path=/;`;
 
-    return [token, data.userId];
+    return res;
   } catch (error) {
     // 오류 처리
     console.error('로그인 중 오류 발생:', error);
