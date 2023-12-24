@@ -95,7 +95,7 @@ function page() {
             <Image src={KakaoButton}  width={60} height={60} alt="카카오 버튼" priority></Image>
             </Link>
             <div className="mx-[20px]">|</div>
-            <Link href={"https://itsop.shop/oauth2/authorization/google?redirect_uri=https://www.itsop.shop"}>
+            <Link href={"https://itsop.shop/oauth2/authorization/google?redirect_uri=https://itsop.shop/login/oauth2/code/google"}>
             <Image src={GoogleButton} width={60} height={60} alt="구글 버튼" priority></Image>
             </Link>
           </div>
