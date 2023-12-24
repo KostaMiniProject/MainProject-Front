@@ -3,7 +3,6 @@ interface AddressInfo {
   zcode: string;
   roadAddr: string;
   jibunAddr: string;
-  detailAddr: string;
 }
 
 interface Props {

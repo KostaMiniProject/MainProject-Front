@@ -18,23 +18,28 @@ function page() {
     zcode: "",
     roadAddr: "",
     jibunAddr: "",
-    detailAddr: "",
   });
+  const [addressDetail, setAddressDetail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [checkPassword, setCheckPassword] = useState<string>("");
+  const [passwordConfirm, setPasswordConfirm] = useState<string>("");
   // 유효성 검사 메세지 출력
   const [nickNameMessage, setNickNameMessage] = useState<string>("");
   const [emailMessage, setEmailMessage] = useState<string>("");
   const [phoneMessage, setPhoneMessage] = useState<string>("");
   const [passwordMessage, setPasswordMessage] = useState<string>("");
-  const [checkPasswordMessage, setCheckPasswordMessage] = useState<string>("");
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState<string>("");
   const [addressMessage, setAddressMessage] = useState<string>("");
   // 유효성 검사 여부 확인
   const [isNickName, setIsNickName] = useState<boolean>(false);
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [isPhone, setIsPhone] = useState<boolean>(false);
   const [isPassword, setIsPassword] = useState<boolean>(false);
-  const [isCheckPassword, setIsCheckPassword] = useState<boolean>(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false);
+  const [isAddress, setIsAddress] = useState<boolean>(false);
+  const readCheckAddress = () => {
+    const { zcode, jibunAddr, roadAddr } = address;
+    return !(zcode && (jibunAddr || roadAddr));
+  };
 
   const router = useRouter();
 
@@ -77,17 +82,58 @@ function page() {
     PostCode({ info: address, setInfo: setAddress });
   };
 
-  const onChangeDetailAddr = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress({ ...address, detailAddr: e.target.value });
-  };
+  // const onChangeDetailAddr = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setAddress({ ...address, detailAddr: e.target.value });
+  // };
+
+  const checkAddress = (addressCurrent: string) => {
+    if (addressCurrent.length === 0) {
+      setAddressMessage("주소는 필수 항목입니다.");
+      setIsAddress(false);
+    }
+  }
+
+  const checkNickname = (nickNameCurrent: string) => {
+    if (nickNameCurrent.length === 0) {
+      setNickNameMessage("닉네임은 필수 항목입니다.");
+      setIsNickName(false);
+    }
+  }
+
+  const checkEmail = (emailCurrent: string) => {
+    if (emailCurrent.length === 0) {
+      setEmailMessage("이메일은 필수 항목입니다.");
+      setIsEmail(false);
+    }
+  }
+
+  const checkPhone = (phoneCurrent: string) => {
+    if (phoneCurrent.length === 0) {
+      setPhoneMessage("휴대폰번호는 필수 항목입니다.");
+      setIsPhone(false);
+    }
+  }
+
+  const checkPassword = (passwordCurrent: string) => {
+    if (passwordCurrent.length === 0) {
+      setPasswordMessage("비밀번호는 필수 항목입니다.");
+      setIsPassword(false);
+    }
+  }
+
+  const checkPasswordConfirm = (passwordConfirmCurrent: string) => {
+    if (passwordConfirmCurrent.length === 0) {
+      setPasswordConfirmMessage("비밀번호 확인은 필수 항목입니다.");
+      setIsPasswordConfirm(false);
+    }
+  }
 
   const onChangeNickName = useCallback((nickNameCurrent: string) => {
     const nickNameRegex = /^[가-힣a-zA-Z0-9]{2,13}$/;
     setNickName(nickNameCurrent);
-    if (nickNameCurrent.length === 0) {
-      setNickNameMessage("닉네임은 필수 항목입니다.");
-      setIsNickName(false);
-    } else if (!nickNameRegex.test(nickNameCurrent)) {
+    checkNickname(nickNameCurrent);
+
+    if (!nickNameRegex.test(nickNameCurrent)) {
       setNickNameMessage("2글자 이상 14글자 미만으로 입력해주세요.");
       setIsNickName(false);
     } else {
@@ -100,11 +146,9 @@ function page() {
     const emailRegex =
       /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     setEmail(emailCurrent);
+    checkEmail(emailCurrent);
 
-    if (emailCurrent.length === 0) {
-      setEmailMessage("이메일은 필수 항목입니다.");
-      setIsEmail(false);
-    } else if (!emailRegex.test(emailCurrent)) {
+    if (!emailRegex.test(emailCurrent)) {
       setEmailMessage("이메일 형식이 틀렸습니다.");
       setIsEmail(false);
     } else {
@@ -116,11 +160,9 @@ function page() {
   const onChangePhone = useCallback((phoneCurrent: string) => {
     const phoneRegex = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
     setPhone(phoneCurrent);
+    checkPhone(phoneCurrent);
 
-    if (phoneCurrent.length === 0) {
-      setPhoneMessage("휴대폰번호는 필수 항목입니다.");
-      setIsPhone(false);
-    } else if (!phoneRegex.test(phoneCurrent)) {
+    if (!phoneRegex.test(phoneCurrent)) {
       setPhoneMessage("휴대폰번호 11자리를 입력해주세요.");
       setIsPhone(false);
     } else {
@@ -129,15 +171,22 @@ function page() {
     }
   }, []);
 
+  const onChangeDetailAddr = useCallback((addressCurrent: string) => {
+    setAddressDetail(addressCurrent);
+    checkAddress(addressCurrent);
+    if (addressCurrent.length != 0) {
+      setAddressMessage(" ");
+      setIsAddress(true);
+    }
+  }, []);
+
   const onChangePassword = useCallback((passwordCurrent: string) => {
     const passwordRegex =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     setPassword(passwordCurrent);
+    checkPassword(passwordCurrent);
 
-    if (passwordCurrent.length === 0) {
-      setPasswordMessage("비밀번호는 필수 항목입니다.");
-      setIsPassword(false);
-    } else if (!passwordRegex.test(passwordCurrent)) {
+    if (!passwordRegex.test(passwordCurrent)) {
       setPasswordMessage(
         "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
       );
@@ -148,45 +197,31 @@ function page() {
     }
   }, []);
 
-  const onChangeCheckPassword = useCallback(
-    (checkPasswordCurrent: string) => {
-      setCheckPassword(checkPasswordCurrent);
+  const onChangePasswordConfirm = useCallback(
+    (passwordConfirmCurrent: string) => {
+      setPasswordConfirm(passwordConfirmCurrent);
+      checkPasswordConfirm(passwordConfirmCurrent);
 
-      if (checkPasswordCurrent.length === 0) {
-        setCheckPasswordMessage("비밀번호는 필수 항목입니다.");
-        setIsCheckPassword(false);
-      } else if (password === checkPasswordCurrent) {
-        setCheckPasswordMessage("비밀번호와 비밀번호 확인이 동일합니다.");
-        setIsCheckPassword(true);
+      if (password === passwordConfirmCurrent) {
+        setPasswordConfirmMessage("비밀번호와 비밀번호 확인이 동일합니다.");
+        setIsPasswordConfirm(true);
       } else {
-        setCheckPasswordMessage(
+        setPasswordConfirmMessage(
           "비밀번호와 비밀번호 확인이 동일하지 않습니다."
         );
-        setIsCheckPassword(false);
+        setIsPasswordConfirm(false);
       }
     },
     [password]
   );
 
-  useEffect(() => {
-    onChangeNickName(nickName);
-    onChangeEmail(email);
-    onChangePhone(phone);
-    onChangePassword(password);
-    onChangeCheckPassword(checkPassword);
-  }, []);
-
-  useEffect(() => {
-    if (
-      address.zcode &&
-      (address.jibunAddr || address.roadAddr) &&
-      address.detailAddr
-    ) {
-      setAddressMessage("");
-    } else {
-      setAddressMessage("주소는 필수 항목입니다.");
-    }
-  }, [address]); // 의존성 배열에 address 상태 전체를 넣음
+  // useEffect(() => {
+  //   onChangeNickName(nickName);
+  //   onChangeEmail(email);
+  //   onChangePhone(phone);
+  //   onChangePassword(password);
+  //   onChangeCheckPassword(checkPassword);
+  // }, []);
 
   const signUp = async () => {
     // 비동기 처리
@@ -194,9 +229,10 @@ function page() {
     const userData = {
       email: email,
       password: password,
-      checkPassword: checkPassword,
+      passwordConfirm: passwordConfirm,
       nickName: nickName,
       address: address,
+      addressDetail : addressDetail,
       phone: phone,
     };
     if (
@@ -204,9 +240,10 @@ function page() {
       isEmail &&
       (address.jibunAddr || address.roadAddr) &&
       address &&
+      isAddress &&
       isPhone &&
       isPassword &&
-      isCheckPassword
+      isPasswordConfirm
     ) {
       try {
         console.log(userData);
@@ -216,9 +253,25 @@ function page() {
         alert("회원가입 실패");
       }
     } else {
-      alert("입력한 정보를 다시 확인해주세요.");
+      //alert("입력한 정보를 다시 확인해주세요.");
+      checkNickname(nickName);
+      checkEmail(email);
+      checkPhone(phone);
+      checkPassword(password);
+      checkPasswordConfirm(passwordConfirm);
+      checkAddress(addressDetail);
     }
   };
+
+  // useEffect(() => {
+  //   if (
+  //     address.zcode &&
+  //     (address.jibunAddr || address.roadAddr) &&
+  //     address.detailAddr
+  //   ) {
+  //     setAddressMessage("");
+  //   }
+  // }, [address]); // 의존성 배열에 address 상태 전체를 넣음
 
   return (
     <div>
@@ -308,8 +361,6 @@ function page() {
               }}
             />
           </div>
-          {/* //인증번호 메시지 출력 참조 링크
-          //https://velog.io/@tmddud73/%EC%9D%B4%EB%A9%94%EC%9D%BC%EB%A1%9C-%EC%9D%B8%EC%A6%9D%EB%B2%88%ED%98%B8-%EB%B3%B4%EB%82%B4%EA%B8%B0 */}
         </div>
         <div className="">
           <div className="text-[20px] my-[10px] font-[600px]">전화번호</div>
@@ -360,24 +411,24 @@ function page() {
               placeholder="도로명 주소"
               className="p-2 border-[0.5px] rounded-[8px] h-[40px] w-[48%] mr-[5px]"
               value={address.roadAddr}
-              // readOnly
+              readOnly
             />
             <input
               type="text"
               placeholder="지번 주소"
               className="p-2 border-[0.5px] rounded-[8px] h-[40px] w-[50%]"
               value={address.jibunAddr}
-              // readOnly
+              readOnly
             />
           </div>
           <div className="w-full mt-[10px]">
-            <input
-              type="text"
-              placeholder="상세 주소"
-              className="p-2 w-full border-[0.5px] rounded-[8px] h-[40px]"
-              value={address.detailAddr}
+            <InputBox
               onChange={onChangeDetailAddr}
-            />
+              type="text"
+              message="우편번호 찾기 후 상세 주소를 입력해주세요."
+              readOnly={readCheckAddress()}
+            ></InputBox>
+
           </div>
           <span
             className={`style={{
@@ -422,7 +473,7 @@ function page() {
         <div className="my-[20px]">
           <div className="text-[20px] my-[10px] font-[600]">비밀번호 확인</div>
           <InputBox
-            onChange={onChangeCheckPassword}
+            onChange={onChangePasswordConfirm}
             type="password"
             message="비밀번호를 재입력해주세요."
           ></InputBox>
@@ -439,14 +490,14 @@ function page() {
             <p
               style={{
                 color:
-                  checkPassword.length > 0
-                    ? isCheckPassword
+                passwordConfirm.length > 0
+                    ? isPasswordConfirm
                       ? "green"
                       : "red"
                     : "red",
               }}
             >
-              {checkPasswordMessage}
+              {passwordConfirmMessage}
             </p>
           </span>
         </div>
