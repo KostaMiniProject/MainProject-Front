@@ -146,6 +146,8 @@ function page() {
           setAccessUserEmail(data.userEmail);
           setIsAuth(true);
         } else {
+          setAccessToken(token);
+          setAccessUserId(data.userId);
           router.push('/');
         }
         //additionalInfo

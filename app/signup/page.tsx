@@ -8,6 +8,7 @@ import { postEmailCheck } from "@/apis/EmailCheckApi";
 import { postEmailSend } from "@/apis/EmailSendApi";
 import { useRouter } from "next/navigation";
 import { relative } from "path";
+import { postSignUp } from "@/apis/SignUpApi";
 
 function page() {
   const [nickName, setNickName] = useState<string>("");
@@ -247,8 +248,8 @@ function page() {
     ) {
       try {
         console.log(userData);
-        // postSignUp(userData);
-        // router.push('/login');
+        postSignUp(userData);
+        router.push('/login');
       } catch (error) {
         alert("회원가입 실패");
       }
