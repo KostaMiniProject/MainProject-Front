@@ -32,6 +32,7 @@ function page() {
   const [isPhone, setIsPhone] = useState<boolean>(false);
   const [isAddress, setIsAddress] = useState<boolean>(false);
   const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [resData, setResData] = useState<any>();
   const readCheckAddress = () => {
     const { zcode, jibunAddr, roadAddr } = address;
     return !(zcode && (jibunAddr || roadAddr));
@@ -137,17 +138,7 @@ function page() {
       };
       try {
         const res: any = await postCheckAuth(body);
-        const data = await res.json();
-        const token = res.headers.get('Authorization');
-        document.cookie = `userId=${data.userId}; path=/;`;
-        if (data.additionalInfo) {
-          setAccessToken(token);
-          setAccessUserId(data.userId);
-          setAccessUserEmail(data.userEmail);
-          setIsAuth(true);
-        } else {
-          router.push('/');
-        }
+        setResData(res);
         //additionalInfo
       } catch (error) {
         console.log(error);
@@ -155,9 +146,21 @@ function page() {
     };
     checkAuth();
   }, []);
-  // useEffect(() => {
-  //   emailInputRef.current.value = accessUserEmail;
-  // }, [accessUserEmail]);
+  useEffect(() => {
+    if (resData) {
+      const data = resData.json();
+      const token = resData.headers.get('Authorization');
+      document.cookie = `userId=${data.userId}; path=/;`;
+      if (data.additionalInfo) {
+        setAccessToken(token);
+        setAccessUserId(data.userId);
+        setAccessUserEmail(data.userEmail);
+        setIsAuth(true);
+      } else {
+        router.push('/');
+      }
+    }
+  }, [resData]);
 
   return (
     <div>
