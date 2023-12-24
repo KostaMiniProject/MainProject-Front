@@ -1,32 +1,35 @@
-export async function postCheckAuth(body: any) {
-  try {
-    const res = await fetch('http://localhost:8080/api/oauth/check-token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
+'use client';
+import { postCheckAuth } from '@/apis/CheckAuthApi';
+import { token, userId } from '@/store/atoms';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
-    if (!res.ok) {
-      // 로그인 실패 처리
-      throw new Error(`로그인 실패: ${res.status}`);
-    }
+function page() {
+  const searchParams = useSearchParams();
 
-    // 응답 헤더에서 토큰 추출
-    const token = res.headers.get('Authorization');
-    // const token = getCookie('Set-Cookie');
-    // console.log('토큰값');
-    console.log(token);
-    const data = await res.json();
-    // 토큰을 반환하거나 저장, 사용 등을 수행
-    document.cookie = `token=${token}; path=/;`;
-    document.cookie = `userId=${data.userId}; path=/;`;
+  const [accessToken, setAccessToken] = useRecoilState(token);
+  const [accessUserId, setAccessUserId] = useRecoilState(userId);
+  const router = useRouter();
+  useEffect(() => {
+    const data: string = searchParams.get('token') ?? '';
+    const checkAuth = async () => {
+      const body = {
+        token: data,
+      };
+      try {
+        const res: any = await postCheckAuth(body);
+        setAccessToken(res.token);
+        setAccessUserId(res.userId);
+        router.push('/');
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    checkAuth();
+  }, []);
 
-    return [token, data.userId];
-  } catch (error) {
-    // 오류 처리
-    console.error('로그인 중 오류 발생:', error);
-    throw error; // 호출자에게 오류 전파
-  }
+  return <div>checkAuth</div>;
 }
+
+export default page;
