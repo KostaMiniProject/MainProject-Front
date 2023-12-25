@@ -1,15 +1,15 @@
-"use client";
-import React, { useState } from "react";
-import InputBox from "@/components/InputBox";
-import Button from "@/components/Button";
-import { useRouter } from "next/navigation";
-import { findPassword } from "@/apis/FindPasswordApi";
-import Header from "@/components/Header";
+'use client';
+import React, { useState } from 'react';
+import InputBox from '@/components/InputBox';
+import Button from '@/components/Button';
+import { useRouter } from 'next/navigation';
+import { findPassword } from '@/apis/FindPasswordApi';
+import Header from '@/components/Header';
 
 function Page() {
-  const [email, setEmail] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
 
   const router = useRouter();
 
@@ -30,16 +30,16 @@ function Page() {
       // Do something with the email data
 
       // findId 함수에서 서버에서 에러가 발생하지 않는다면, '/success'로 이동
-      router.push("/find/password/success");
+      router.push(`/find/password/success?email=${findEmail.email}`);
     } catch (error: any) {
       // 'error' 변수를 'any' 타입으로 선언하여 사용
-      alert((error as Error).message || "입력한 정보가 일치하지 않습니다.");
+      alert((error as Error).message || '입력한 정보가 일치하지 않습니다.');
     }
   }
 
   return (
     <div>
-      <Header title="비밀번호 찾기"></Header>
+      <Header backNav title="비밀번호 찾기"></Header>
       <div className="w-full flex-col flex">
         <div className="text-[20px] mt-[100px] mb-[50px] m-[auto] font-[600]">
           아래내용을 작성해주세요.
