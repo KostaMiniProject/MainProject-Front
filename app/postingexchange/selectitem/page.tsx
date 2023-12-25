@@ -91,7 +91,7 @@ function page() {
       </div>
       <div className="h-[110px]" />
       <BottomFixed>
-        <div className="flex my-[5px]">
+        <div className="flex my-[5px] ml-[10px] mb-[20px]">
           <Link href={`/additem?action=posting`}>
             <Button
               rounded="rounded"

@@ -180,7 +180,7 @@ function page() {
             <Header backNav title="회원가입"></Header>
             <div className="mx-[15px]">
               <div className="">
-                <div className="text-[20px] my-[10px] font-[600px]">이메일</div>
+                <div className="text-header my-[10px] font-[600px]">이메일</div>
                 <div className="p-2 border-[0.5px] rounded-[8px] h-[40px] w-full">
                   {/* 인증된 이메일값 필요 */}
                   {accessUserEmail}
@@ -191,7 +191,7 @@ function page() {
                 </div>
               </div>
               <div className="">
-                <div className="text-[20px] my-[10px] font-[600px]">닉네임</div>
+                <div className="text-header my-[10px] font-[600px]">닉네임</div>
                 <InputBox
                   onChange={onChangeNickName}
                   message="닉네임을 입력해주세요."
@@ -221,7 +221,7 @@ function page() {
                 </span>
               </div>
               <div className="">
-                <div className="text-[20px] my-[10px] font-[600px]">
+                <div className="text-header my-[10px] font-[600px]">
                   전화번호
                 </div>
                 <InputBox
@@ -249,7 +249,7 @@ function page() {
                 </span>
               </div>
               <div className="">
-                <div className="text-[20px] my-[10px] font-[600px]">주소</div>
+                <div className="text-header my-[10px] font-[600px]">주소</div>
                 <div className="flex mb-[6px] justify-between">
                   <input
                     type="text"

@@ -43,14 +43,14 @@ function Page() {
     );
   };
 
-  const handleSendData = () => {
+  const handleSendData = async () => {
     const body = {
       // itemIds: JSON.stringify(selectedItems),
       itemIds: selectedItems,
     };
     if (postId) {
       try {
-        postBid(postId, body);
+        await postBid(postId, body);
         router.push(`/exchange/${postId}`);
         // console.log(body);
       } catch (error) {
@@ -88,7 +88,7 @@ function Page() {
         </div>
       </div>
       <BottomFixed>
-        <div className="flex my-[5px]">
+        <div className="flex my-[5px] m-[15px]">
           <Button
             rounded="rounded"
             text="+ 물건 추가"
@@ -99,7 +99,7 @@ function Page() {
             fontSize={16}
           />
         </div>
-        <div className={` flex-1 text-center  `}>
+        <div className={` flex-1 text-center mx-default`}>
           <Button
             rounded="soft"
             text="입찰하기"

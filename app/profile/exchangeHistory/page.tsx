@@ -55,9 +55,9 @@ function Page() {
       {history &&
         history.map((e: historyType, i: any) => {
           return (
-            <div className="" key={i}>
+            <div className="mx-default" key={i}>
               <div className="w-full p-[10px] border-solid border-[0.5px] border-gray rounded-[5px] my-[5px]">
-                <div className="flex justify-between ml-[15px] mr-[15px] items-center">
+                <div className="flex justify-between items-center">
                   <div className="text-gray text-subtitle">{e.createdAt}</div>
                   <div className="w-[30%]">
                     {e.isWriteReview ? (
@@ -85,7 +85,7 @@ function Page() {
                 </div>
                 <div className="flex m-[15px] border-b-[0.5px] border-gray"></div>
                 <div className="flex justify-between ml-[70px] mr-[70px] items-center">
-                  <div className="relative w-[80px] h-[80px] ml-[15px] mr-[15px] border-gray border-solid border-[1px] rounded-[10px]">
+                  <div className="relative w-[80px] h-[80px] border-gray border-solid border-[1px] rounded-[10px]">
                     <Image
                       src={e.posterItem[0].imageUrl}
                       alt="Item image"
@@ -99,7 +99,7 @@ function Page() {
                     return (
                       <div
                         key={index}
-                        className="relative w-[80px] h-[80px] ml-[15px] mr-[15px] border-gray border-solid border-[1px] rounded-[10px]"
+                        className="relative w-[80px] h-[80px] border-gray border-solid border-[1px] rounded-[10px]"
                       >
                         <Image
                           src={item.imageUrl[index]}
