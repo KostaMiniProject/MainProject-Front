@@ -70,6 +70,7 @@ function Page({ params }: { params: any }) {
   // const [pagenation, setPagenation] = useState(0);
   const [scroll, setScroll] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   showCompleteModal;
@@ -142,6 +143,26 @@ function Page({ params }: { params: any }) {
       }
     }
     setShowExitModal(false);
+  };
+
+  //예약취소하기 모달 핸들
+  const handleShowCancelModal = () => {
+    setShowCancelModal(true);
+  };
+
+  const handleCancelExchange = async () => {
+    if (initRoom) {
+      try {
+        putExchange(initRoom?.exchangePostId, initRoom?.bidId);
+        setInitRoom((prev: any) => ({ ...prev, status: 'BIDDING' }));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setShowCancelModal(false);
+  };
+  const handleCloseCancelModal = () => {
+    setShowCancelModal(false);
   };
 
   useEffect(() => {
@@ -449,12 +470,24 @@ function Page({ params }: { params: any }) {
                     onClick={handleShowModal}
                   ></Button>
                 ) : initRoom.status === 'RESERVATION' ? (
-                  <Button
-                    text="거래완료"
-                    height={5}
-                    rounded="soft"
-                    onClick={handleShowCompleteModal}
-                  ></Button>
+                  <div>
+                    <div className="mb-[5px]">
+                      <Button
+                        text="거래완료"
+                        height={5}
+                        rounded="soft"
+                        onClick={handleShowCompleteModal}
+                      ></Button>
+                    </div>
+                    <div>
+                      <Button
+                        text="예약 취소"
+                        height={5}
+                        rounded="soft"
+                        onClick={handleShowCancelModal}
+                      ></Button>
+                    </div>
+                  </div>
                 ) : (
                   <Button
                     text="거래완료"
@@ -508,6 +541,25 @@ function Page({ params }: { params: any }) {
             <Button
               text="취소"
               onClick={handleCloseCompleteModal}
+              height={5}
+              rounded="soft"
+            />
+          </div>
+        </Modal>
+      )}
+      {showCancelModal && (
+        <Modal setState={handleCloseCancelModal}>
+          <div className="my-[5px]">예약을 취소 하시겠습니까?</div>
+          <div className="flex place-content-between">
+            <Button
+              text="예약취소"
+              onClick={handleCancelExchange}
+              height={5}
+              rounded="soft"
+            />
+            <Button
+              text="닫기"
+              onClick={handleCloseCancelModal}
               height={5}
               rounded="soft"
             />
