@@ -9,7 +9,7 @@ import InputBox from '@/components/InputBox';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import PostCode from '@/components/signup/PostCode';
-import { postSignUp } from '@/apis/SignUpApi';
+import { postSignUp, putSignUp } from '@/apis/SignUpApi';
 function page() {
   const searchParams = useSearchParams();
 
@@ -118,7 +118,7 @@ function page() {
     ) {
       try {
         // console.log(userData);
-        await postSignUp(userData);
+        await putSignUp(userData);
         document.cookie = `token=${token}; path=/;`;
         router.push('/');
       } catch (error) {
@@ -148,17 +148,27 @@ function page() {
   }, []);
   useEffect(() => {
     if (resData) {
-      const data = resData.json();
-      const token = resData.headers.get('Authorization');
-      document.cookie = `userId=${data.userId}; path=/;`;
-      if (data.additionalInfo) {
-        setAccessToken(token);
-        setAccessUserId(data.userId);
-        setAccessUserEmail(data.userEmail);
-        setIsAuth(true);
-      } else {
-        router.push('/');
-      }
+      const getData = async () => {
+        try {
+          const data = await resData.json(); // json() 메서드 앞에 await 추가
+          const token = resData.headers.get('Authorization');
+          document.cookie = `userId=${data.userId}; path=/;`;
+          console.log(data);
+          if (!data.additionalInfo) {
+            setAccessToken(token);
+            setAccessUserId(data.userId);
+            setAccessUserEmail(data.userEmail);
+            setIsAuth(true);
+          } else {
+            document.cookie = `token=${token}; path=/;`;
+            router.push('/');
+          }
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+        }
+      };
+  
+      getData(); // getData 함수 호출
     }
   }, [resData]);
 

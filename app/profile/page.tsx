@@ -88,9 +88,11 @@ function page() {
             </div>
             <div className="flex">
               <div className="flex items-center justify-between flex-1">
-                <div className="flex">
-                  내 정보 <MdChevronRight size={iconSize} />
-                </div>
+                <Link href={'/profile/editprofile'}>
+                  <div className="flex">
+                    내 정보 <MdChevronRight size={iconSize} />
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -130,6 +132,11 @@ function page() {
               <MdChevronRight size={iconSize} />
             </div>
           </Link>
+          <footer className="absolute bottom-12 left-[40%] text-gray">
+            <div className={profileMenu}>
+              <div>탈퇴 하기</div>
+            </div>
+          </footer>
         </div>
       </div>
     </div>
