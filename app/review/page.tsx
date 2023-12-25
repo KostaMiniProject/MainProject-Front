@@ -16,7 +16,7 @@ const MAX_LENGTH = 500;
 function ReviewContainer({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex-1 border-solid border-[2px] border-base rounded-[10px] m-[10px] bg-white">
-      <div className="flex flex-col items-center justify-center h-full p-[10px]">
+      <div className="flex flex-col items-center justify-center p-[10px]">
         {children}
       </div>
     </div>
@@ -74,6 +74,7 @@ function Page() {
         </div>
         <div className="flex items-center text-center mb-[25px] justify-between">
           <div
+            className='flex-grow w-[33%]'
             style={
               selectRating === 5
                 ? { borderWidth: borderPx }
@@ -89,6 +90,7 @@ function Page() {
             </ReviewContainer>
           </div>
           <div
+            className='flex-grow w-[33%]'
             style={
               selectRating === 3
                 ? { borderWidth: borderPx }
@@ -104,6 +106,7 @@ function Page() {
             </ReviewContainer>
           </div>
           <div
+            className='flex-grow w-[33%]'
             style={
               selectRating === 1
                 ? { borderWidth: borderPx }

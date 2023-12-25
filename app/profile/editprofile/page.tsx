@@ -214,7 +214,7 @@ function page() {
                     </div>
                 </div>
                 <div className="">
-                    <div className="text-[20px] my-[10px] font-[600]">닉네임</div>
+                    <div className="text-header my-[10px] font-[600]">닉네임</div>
                     <InputBox
                         onChange={onChangeNickName}
                         message="닉네임을 입력해주세요."
@@ -240,7 +240,7 @@ function page() {
                     </span>
                 </div>
                 <div className="">
-                    <div className="text-[20px] my-[10px] font-[600]">전화번호</div>
+                    <div className="text-header my-[10px] font-[600]">전화번호</div>
                     <InputBox
                         onChange={onChangePhone}
                         message="전화번호를 작성해주세요."
@@ -265,7 +265,7 @@ function page() {
                     </span>
                 </div>
                 <div className="">
-                    <div className="text-[20px] my-[10px] font-[600]">주소</div>
+                    <div className="text-header my-[10px] font-[600]">주소</div>
                     <div className="flex mb-[6px] justify-between">
                         <input
                             type="text"
@@ -321,7 +321,7 @@ function page() {
                     </span>
                 </div>
                 <div className="my-[20px]">
-                    <div className="text-[20px] my-[10px] font-[600]">비밀번호</div>
+                    <div className="text-header my-[10px] font-[600]">비밀번호</div>
                     <InputBox
                         onChange={onChangeExistingPassword}
                         type="password"
@@ -348,7 +348,7 @@ function page() {
                     </span>
                 </div>
                 <div className="my-[20px]">
-                    <div className="text-[20px] my-[10px] font-[600]">새 비밀번호</div>
+                    <div className="text-header my-[10px] font-[600]">새 비밀번호</div>
                     <InputBox
                         onChange={onChangeNewPassword}
                         type="password"

@@ -233,7 +233,7 @@ function Page({ params }: { params: any }) {
             </div>
           </div>
           <BottomFixed>
-            <div className="flex justify-end m-[10px]">
+            <div className="flex justify-end m-[15px]">
               <Link href={`/biding?postId=${params.id}`}>
                 <Button
                   text="입찰 하기"
