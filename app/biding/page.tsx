@@ -43,14 +43,14 @@ function Page() {
     );
   };
 
-  const handleSendData = () => {
+  const handleSendData = async () => {
     const body = {
       // itemIds: JSON.stringify(selectedItems),
       itemIds: selectedItems,
     };
     if (postId) {
       try {
-        postBid(postId, body);
+        await postBid(postId, body);
         router.push(`/exchange/${postId}`);
         // console.log(body);
       } catch (error) {
