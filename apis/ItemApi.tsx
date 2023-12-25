@@ -112,3 +112,21 @@ export async function getItemDetailById(id: number) {
     return error;
   }
 }
+export async function deleteItemById(id: number) {
+  try {
+    const result = await commonFetch(`https://itsop.shop/api/items/${id}`, {
+      method: 'DELETE',
+      checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+      // 기타 다른 옵션들...
+    });
+
+    // const data = await res.json();
+    console.log(result);
+    // Response 객체가 아니라 data를 반환하도록 수정
+    return result;
+  } catch (error) {
+    console.error('Error in getPostList:', error);
+    // 오류 발생 시 에러 객체 반환
+    return error;
+  }
+}
