@@ -45,6 +45,7 @@ function page() {
       // 다른 작업 수행 (예: 페이지 리디렉션)
     } catch (error: any) {
       // 로그인 실패 시의 처리
+      alert("아이디 또는 비밀번호가 일치하지 않습니다.")
       console.error("로그인 실패:", error.message);
     }
     console.log(document.cookie);
@@ -87,15 +88,15 @@ function page() {
           <div className="flex items-center justify-center text-[20px] mb-[5px] py-[5px]" > SNS 로그인</div>
           <div className="flex items-center justify-center text-[14px] text-gray">
             
-          <Link href={"http://localhost:8080/oauth2/authorization/naver"}>
+          <Link href={"https://itsop.shop/oauth2/authorization/naver"}>
           <Image src={NaverButton} width={60} height={60} alt="네이버 버튼" priority></Image>
           </Link>
             <div className="mx-[20px]">|</div>
-            <Link href={"http://localhost:8080/oauth2/authorization/kakao"}>
+            <Link href={"https://itsop.shop/oauth2/authorization/kakao"}>
             <Image src={KakaoButton}  width={60} height={60} alt="카카오 버튼" priority></Image>
             </Link>
             <div className="mx-[20px]">|</div>
-            <Link href={"http://localhost:8080/oauth2/authorization/google?redirect_uri=http://www.itsop.shop"}>
+            <Link href={"https://itsop.shop/oauth2/authorization/google?redirect_uri=http://www.itsop.shop"}>
             <Image src={GoogleButton} width={60} height={60} alt="구글 버튼" priority></Image>
             </Link>
           </div>
