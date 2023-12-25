@@ -10,7 +10,10 @@ interface InputBoxProps {
 }
 
 const InputBox = forwardRef<HTMLInputElement, InputBoxProps>(
-  ({ onChange, onFocusChange, type = 'text', content, message, readOnly }, ref) => {
+  (
+    { onChange, onFocusChange, type = 'text', content, message, readOnly },
+    ref
+  ) => {
     const [color, setColor] = useState('');
 
     const handleFocus = () => {
