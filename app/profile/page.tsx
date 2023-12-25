@@ -9,12 +9,9 @@ import { withAuthorization } from '@/HOC/withAuthorization';
 import { getMyProfile } from '@/apis/ProfileApi';
 import Image from 'next/image';
 import Link from 'next/link';
+import Modal from '@/components/Modal';
+import { deleteUser } from '@/apis/DeleteUserApi';
 
-function handleLogout() {
-  // 쿠키에서 토큰 및 사용자 ID 삭제  `1    1/.
-  removeCookie('token');
-  removeCookie('userId');
-}
 interface profileType {
   address: string;
   email: string;
@@ -27,9 +24,38 @@ interface profileType {
 function page() {
   const router = useRouter();
   const [profile, setProfile] = useState<profileType>();
+  const [showModal, setShowModal] = useState(false);
   const profileMenu =
     'p-[10px] border-b-[0.5px] border-gray text-title flex justify-between';
   const iconSize = 20;
+  function handleLogout() {
+    // 쿠키에서 토큰 및 사용자 ID 삭제  `1    1/.
+    removeCookie('token');
+    removeCookie('userId');
+    router.push('/login');
+  }
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handlePostComplete = async () => {
+    setShowModal(false);
+    wthdrawal();
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  const wthdrawal = async () => {
+    try {
+      const data = await deleteUser();
+      handleLogout();
+      alert('탈퇴가 완료되었습니다. 이용해 주셔서 감사합니다.');
+    } catch (error) {
+      console.log(error);
+      alert('탈퇴중 에러 발생');
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,8 +82,6 @@ function page() {
           height={5}
           rounded="soft"
           onClick={() => {
-            router.push('/login');
-
             handleLogout();
           }}
         />
@@ -88,9 +112,11 @@ function page() {
             </div>
             <div className="flex">
               <div className="flex items-center justify-between flex-1">
-                <div className="flex">
-                  내 정보 <MdChevronRight size={iconSize} />
-                </div>
+                <Link href={'/profile/editprofile'}>
+                  <div className="flex">
+                    내 정보 <MdChevronRight size={iconSize} />
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -124,10 +150,36 @@ function page() {
             <div>찜목록</div>
             <MdChevronRight size={iconSize} />
           </div>
-          <div className={profileMenu}>
-            <div>차단 리스트</div>
-            <MdChevronRight size={iconSize} />
-          </div>
+          <Link href={'/profile/block'}>
+            <div className={profileMenu}>
+              <div>차단 리스트</div>
+              <MdChevronRight size={iconSize} />
+            </div>
+          </Link>
+          <footer className="absolute bottom-12 left-[40%] text-gray">
+            <div className={profileMenu} onClick={handleShowModal}>
+              <div>탈퇴 하기</div>
+            </div>
+          </footer>
+          {showModal && (
+            <Modal setState={handleCloseModal}>
+              <div className="my-[5px]">회원 탈퇴를 정말 하시겠습니까?</div>
+              <div className="flex place-content-between">
+                <Button
+                  text="탈퇴하기"
+                  onClick={handlePostComplete}
+                  height={5}
+                  rounded="soft"
+                />
+                <Button
+                  text="취소"
+                  onClick={handleCloseModal}
+                  height={5}
+                  rounded="soft"
+                />
+              </div>
+            </Modal>
+          )}
         </div>
       </div>
     </div>
