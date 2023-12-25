@@ -44,6 +44,7 @@ function page() {
       // 다른 작업 수행 (예: 페이지 리디렉션)
     } catch (error: any) {
       // 로그인 실패 시의 처리
+      alert('로그인에 실패하였습니다.');
       console.error('로그인 실패:', error.message);
     }
     console.log(document.cookie);
