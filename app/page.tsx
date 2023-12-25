@@ -1,15 +1,15 @@
-'use client';
-import React, { useState, useEffect, useRef } from 'react';
-import ExchangePost from '@/components/exchange/ExchangePost';
-import { getPostList } from '@/apis/ExchangePostApi';
-import BottomFixed from '@/components/BottomFixed';
-import Button from '@/components/Button';
-import { MdOutlineSearch } from 'react-icons/md';
-import Link from 'next/link';
-import Header from '@/components/Header';
-import InfiniteScrollObserver from '@/components/InfiniteScrollObserver';
-import { useRecoilState } from 'recoil';
-import { navState } from '@/store/atoms';
+"use client";
+import React, { useState, useEffect, useRef } from "react";
+import ExchangePost from "@/components/exchange/ExchangePost";
+import { getPostList } from "@/apis/ExchangePostApi";
+import BottomFixed from "@/components/BottomFixed";
+import Button from "@/components/Button";
+import { MdOutlineSearch } from "react-icons/md";
+import Link from "next/link";
+import Header from "@/components/Header";
+import InfiniteScrollObserver from "@/components/InfiniteScrollObserver";
+import { useRecoilState } from "recoil";
+import { navState } from "@/store/atoms";
 
 function Page() {
   const [postData, setPostData] = useState<any[]>([]);
@@ -17,7 +17,7 @@ function Page() {
   const [pageNation, setPageNation] = useState(0);
   const [activeButton, setActiveButton] = useRecoilState(navState);
   useEffect(() => {
-    setActiveButton('물물교환');
+    setActiveButton("물물교환");
   }, []);
   const fetchPostData = async () => {
     if (!hasMoreData) return;
@@ -33,7 +33,7 @@ function Page() {
       } else {
       }
     } catch (error) {
-      console.error('Error fetching post data:', error);
+      console.error("Error fetching post data:", error);
       setHasMoreData(false);
     }
   };
@@ -42,7 +42,7 @@ function Page() {
     <div className="relative">
       <div className="mx-default">
         <Header title="물물교환">
-          <Link href={'/search'}>
+          <Link href={"/search"}>
             <MdOutlineSearch size={40} />
           </Link>
         </Header>
@@ -72,8 +72,8 @@ function Page() {
         </div>
       </div>
       <BottomFixed>
-        <div className="flex justify-end">
-          <Link href={'/postingexchange/selectitem'}>
+        <div className="flex justify-end mr-[15px]">
+          <Link href={"/postingexchange/selectitem"}>
             <Button text="+ 글 쓰기" height={10} fontSize={16} />
           </Link>
         </div>
