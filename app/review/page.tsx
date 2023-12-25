@@ -72,9 +72,9 @@ function Page() {
             알려주세요!
           </div>
         </div>
-        <div className="flex items-center text-center mb-[25px] justify-between">
+        <div className="flex flex-basis mb-[25px] justify-between">
           <div
-            className='flex-grow w-[33%]'
+          className='w-[33%]'
             style={
               selectRating === 5
                 ? { borderWidth: borderPx }
@@ -86,11 +86,11 @@ function Page() {
           >
             <ReviewContainer>
               <FaRegFaceGrinBeam size={'50'} color={'#e00685'} />
-              <div className="text-[15px]">완전 추천해요!</div>
+              <div className="text-title">완전 추천해요!</div>
             </ReviewContainer>
           </div>
           <div
-            className='flex-grow w-[33%]'
+          className='w-[33%]'
             style={
               selectRating === 3
                 ? { borderWidth: borderPx }
@@ -102,11 +102,11 @@ function Page() {
           >
             <ReviewContainer>
               <FaRegFaceSmile size={'50'} color={'#e00685'} />
-              <div className="text-[15px]">괜찮아요.</div>
+              <div className="text-title">괜찮아요.</div>
             </ReviewContainer>
           </div>
           <div
-            className='flex-grow w-[33%]'
+          className='w-[33%]'
             style={
               selectRating === 1
                 ? { borderWidth: borderPx }
@@ -118,7 +118,7 @@ function Page() {
           >
             <ReviewContainer>
               <FaRegFaceFrown size={'50'} color={'#e00685'} />
-              <div className="text-[15px]">추천하지 않아요.</div>
+              <div className="text-title">추천하지 않아요.</div>
             </ReviewContainer>
           </div>
         </div>
