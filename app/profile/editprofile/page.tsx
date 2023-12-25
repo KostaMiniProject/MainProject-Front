@@ -286,7 +286,7 @@ function page() {
           />
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600]">닉네임</div>
+          <div className="text-header my-[10px] font-[600]">닉네임</div>
           <InputBox
             onChange={onChangeNickName}
             message="닉네임을 입력해주세요."
@@ -312,7 +312,7 @@ function page() {
           </span>
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600]">전화번호</div>
+          <div className="text-header my-[10px] font-[600]">전화번호</div>
           <InputBox
             onChange={onChangePhone}
             message="전화번호를 작성해주세요."
@@ -337,7 +337,7 @@ function page() {
           </span>
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600] flex justify-between">
+          <div className="text-header my-[10px] font-[600] flex justify-between">
             <div>주소</div>
             <div onClick={toggleEditAddress}>
               주소 변경하기 {isEditAddress ? '▼' : '▲'}
@@ -401,7 +401,7 @@ function page() {
           )}
         </div>
         <div className="my-[20px]">
-          <div className="text-[20px] my-[10px] font-[600] flex justify-between">
+          <div className="text-header my-[10px] font-[600] flex justify-between">
             <div>비밀번호</div>
             <div onClick={toggleEditPassword}>
               비밀번호 변경하기 {isEditPassword ? '▼' : '▲'}

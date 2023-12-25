@@ -72,7 +72,7 @@ function Page() {
         </div>
       </div>
       <BottomFixed>
-        <div className="flex justify-end">
+        <div className="flex justify-end m-[15px]">
           <Link href={'/postingexchange/selectitem'}>
             <Button text="+ 글 쓰기" height={10} fontSize={16} />
           </Link>

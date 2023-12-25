@@ -190,19 +190,19 @@ function Page() {
             <Modal setState={handleCloseModal}>
               <div className='text-subtitle w-[250px]'>
                 <div className="my-[5px] text-header font-[600]">작성을 완료하시겠습니까?</div>
-                <div className="flex place-content-between">
+                <div className="flex place-content-between p-[5px]">
                   <Button
                     text="작성완료"
                     fontSize={16}
                     onClick={handlePostComplete}
-                    height={8}
+                    height={6}
                     rounded="soft"
                   />
                   <Button
                     text="취소"
-                    onClick={handleCloseModal}
                     fontSize={16}
-                    height={8}
+                    onClick={handleCloseModal}
+                    height={6}
                     rounded="soft"
                   />
                 </div>

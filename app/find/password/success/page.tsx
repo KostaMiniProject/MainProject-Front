@@ -17,7 +17,7 @@ function Success() {
           아래 이메일 주소로 <span className="font-bold underline">임시 비밀번호</span>가 발송 되었습니다 :)
         </div>
       </div>
-      <div className="flex-col flex border border-gray p-5 rounded-md mb-[15px] ml-[15px] mr-[15px]">
+      <div className="flex-col flex border border-gray p-5 rounded-md mb-[15px] mx-default">
         <div className="text-[16px] m-[auto] font-[600]">
           이메일 : {searchParams.get("email")}
         </div>
@@ -27,7 +27,7 @@ function Success() {
           로그인 후 보안을 위해 비밀번호를 변경해주세요.
         </div>
       </div>
-      <div className="flex justify-between ml-[15px] mr-[15px]">
+      <div className="flex justify-between mx-default">
         <div className="w-[30%]">
           <Button text="취소" fontSize={10} height={8} rounded="soft" />
         </div>

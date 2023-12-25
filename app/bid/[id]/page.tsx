@@ -81,35 +81,41 @@ function page({ params }: { params: any }) {
       </Header>
       {showModal && (
         <Modal setState={handleCloseModal}>
-          <div className="my-[5px]">입찰을 취소 하시겠습니까?</div>
-          <div className="flex place-content-between">
-            <Button
-              text="입찰 취소"
-              onClick={handlePostComplete}
-              height={5}
-              rounded="soft"
-            />
-            <Button
-              text="닫기"
-              onClick={handleCloseModal}
-              height={5}
-              rounded="soft"
-            />
+          <div className='text-subtitle w-[250px]'>
+            <div className="my-[5px] text-header font-[600]">입찰을 취소 하시겠습니까?</div>
+            <div className="flex place-content-between p-[5px]">
+              <Button
+                text="입찰 취소"
+                fontSize={16}
+                onClick={handlePostComplete}
+                height={6}
+                rounded="soft"
+              />
+              <Button
+                text="아니오"
+                fontSize={16}
+                onClick={handleCloseModal}
+                height={6}
+                rounded="soft"
+              />
+            </div>
           </div>
         </Modal>
       )}
-      {/* 프로필 */}
-      {itemList && <Profile profile={itemList.profile} />}
-      {/* 물건 리스트 */}
-      <div className="">
-        {itemList &&
-          itemList.items.map((e: any, i: any) => {
-            return (
-              <Link href={`/itemdetail/${e.itemId}`} key={i}>
-                <Item item={e} />
-              </Link>
-            );
-          })}
+      <div className='mx-default'>
+        {/* 프로필 */}
+        {itemList && <Profile profile={itemList.profile} />}
+        {/* 물건 리스트 */}
+        <div className="">
+          {itemList &&
+            itemList.items.map((e: any, i: any) => {
+              return (
+                <Link href={`/itemdetail/${e.itemId}`} key={i}>
+                  <Item item={e} />
+                </Link>
+              );
+            })}
+        </div>
       </div>
     </div>
   );
