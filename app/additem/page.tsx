@@ -1,6 +1,6 @@
 'use client';
 import { withAuthorization } from '@/HOC/withAuthorization';
-import { postItem } from '@/apis/ItemApi';
+import { getCategoryList, postItem } from '@/apis/ItemApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import InputBox from '@/components/InputBox';
@@ -8,7 +8,7 @@ import Modal from '@/components/Modal';
 import TextAreaBox from '@/components/TextAreaBox';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdAddCircleOutline, MdCancel } from 'react-icons/md';
 
 function Page() {
@@ -16,13 +16,35 @@ function Page() {
   const [content, setContent] = useState<String>('');
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isMoreView, setIsMoreView] = useState<Boolean>(false);
+  const [category, setCategory] = useState<string[]>([]);
 
   const [showModal, setShowModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(''); // 선택된 카테고리를 관리하는 상태
 
   const searchParams = useSearchParams();
   const router = useRouter();
   const postid = searchParams.get('postId');
 
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        //카테고리 불러오기 /api/category
+        const data = await getCategoryList();
+        setCategory(data);
+        // await setCategory(['카테고리1', '카테고리2']);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCategory();
+  }, []);
+
+  // 카테고리 변경 이벤트 핸들러
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedCategory(event.target.value);
+  };
   //모달 핸들부분
   const handleShowModal = () => {
     setShowModal(true);
@@ -67,6 +89,8 @@ function Page() {
       alert('제목을 입력 해 주세요');
     } else if (content.length <= 0) {
       alert('상세 설명을 입력 해 주세요');
+    } else if (selectedCategory.length <= 0) {
+      alert('카테고리를 선택 해 주세요');
     } else {
       const formData = new FormData();
 
@@ -174,6 +198,21 @@ function Page() {
             <InputBox onChange={setTitle} />
           </div>
           <div className="my-[5px]">
+            <div className="text-header font-[600] flex">카테고리</div>
+            <select
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              className="w-full p-2 border-[1px] rounded-[8px]"
+            >
+              <option value="">카테고리 선택</option>
+              {category.map((cat: any, index: any) => (
+                <option key={index} value={cat.categoryName}>
+                  {cat.categoryName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="my-[5px]">
             <div className="text-header font-[600] flex">상세 설명</div>
             <TextAreaBox onChange={setContent}></TextAreaBox>
           </div>
@@ -188,8 +227,10 @@ function Page() {
           </div>
           {showModal && (
             <Modal setState={handleCloseModal}>
-              <div className='text-subtitle w-[250px]'>
-                <div className="my-[5px] text-header font-[600]">작성을 완료하시겠습니까?</div>
+              <div className="text-subtitle w-[250px]">
+                <div className="my-[5px] text-header font-[600]">
+                  작성을 완료하시겠습니까?
+                </div>
                 <div className="flex place-content-between p-[5px]">
                   <Button
                     text="작성완료"
