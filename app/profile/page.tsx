@@ -124,10 +124,12 @@ function page() {
             <div>찜목록</div>
             <MdChevronRight size={iconSize} />
           </div>
-          <div className={profileMenu}>
-            <div>차단 리스트</div>
-            <MdChevronRight size={iconSize} />
-          </div>
+          <Link href={'/profile/block'}>
+            <div className={profileMenu}>
+              <div>차단 리스트</div>
+              <MdChevronRight size={iconSize} />
+            </div>
+          </Link>
         </div>
       </div>
     </div>
