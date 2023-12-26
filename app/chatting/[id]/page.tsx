@@ -439,7 +439,8 @@ function Page({ params }: { params: any }) {
           </div>
         </Modal>
       )}
-      <div className="fixed w-full bg-white max-w-[480px] mx-default">
+      <div className="fixed w-full bg-white max-w-[480px]">
+        <div className='mx-default'>
         <div className="text-header font-bold my-[10px]">
           교환하려고 하는 게시물
         </div>
@@ -500,6 +501,7 @@ function Page({ params }: { params: any }) {
                 ))}
             </div>
           </div>
+        </div>
         </div>
       </div>
       <div className="h-[130px]"></div>
