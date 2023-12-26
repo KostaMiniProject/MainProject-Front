@@ -6,7 +6,13 @@ import Image from 'next/image';
 import Modal from '../Modal';
 import Button from '../Button';
 
-function Carousel({ images }: { images: any }) {
+function Carousel({
+  images,
+  disable = false,
+}: {
+  images: any;
+  disable?: boolean;
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
@@ -22,7 +28,7 @@ function Carousel({ images }: { images: any }) {
   }, [currentIndex, images]);
 
   const handleShowModal = () => {
-    setShowModal(true);
+    if (!disable) setShowModal(true);
   };
 
   const handlePostComplete = async () => {
@@ -34,13 +40,15 @@ function Carousel({ images }: { images: any }) {
   };
 
   const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    if (!disable)
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
   const prevImage = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
+    if (!disable)
+      setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      );
   };
 
   return (
