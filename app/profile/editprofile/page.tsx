@@ -484,7 +484,7 @@ function page() {
               </span>
 
               <div className="my-[20px]">
-                <div className="text-[20px] my-[10px] font-[600]">
+                <div className="text-header my-[10px] font-[600]">
                   새 비밀번호
                 </div>
                 <InputBox

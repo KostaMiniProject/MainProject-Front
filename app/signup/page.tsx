@@ -249,8 +249,8 @@ function page() {
     ) {
       try {
         console.log(userData);
-        postSignUp(userData);
-        alert("회원가입이 완료되었습니다!");
+        await postSignUp(userData);
+        alert('회원가입이 완료되었습니다.');
         router.push('/login');
       } catch (error) {
         alert('회원가입 실패');
