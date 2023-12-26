@@ -22,6 +22,7 @@ import InputBox from '@/components/InputBox';
 import Modal from '@/components/Modal';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 function Comment({
   comment,
@@ -35,11 +36,22 @@ function Comment({
   handleShowDeleteCommentModal: any;
 }) {
   return (
-    <div key={comment.commentId} className="my-[10px]">
+    <div key={comment.commentId} className="my-[10px] ">
       <div className="flex mb-[5px] w-full border-b-[0.5px] border-gray">
-        {comment.parent_id === null ? <></> : <div className="w-[40px]"></div>}
-        <div className="w-[25px] h-[25px] bg-gray rounded-[50%]"></div>
-        <div className="ml-[15px] flex-1">
+        {/* {comment.parent_id === null ? <></> : <div className="w-[40px]"></div>} */}
+        <div className="w-[25px] h-[25px] flex items-center justify-center overflow-hidden rounded-[50%] mr-4">
+          {/* <div className="w-[25px] h-[25px] bg-gray rounded-[50%]"> */}
+          <Image
+            src={comment.profile.imageUrl}
+            alt="프로필사진"
+            // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="width: 100%, height: 100%"
+            width={60}
+            height={60}
+            // className="w-[30px] h-[30px] rounded-[50%] my-auto"
+          />
+        </div>
+        <div className=" flex-1">
           <div className="flex items-center text-gray mr-[10px]">
             {comment.profile.name} <FaAngleRight size={15} />
           </div>
@@ -53,8 +65,8 @@ function Comment({
                 className="m-[5px]"
                 onClick={() => {
                   setCommentId({
-                    commentId: comment.commentId,
-                    // commentId: parentId ? parentId : comment.commentId,
+                    // commentId: comment.commentId,
+                    commentId: parentId ? parentId : comment.commentId,
                     profile: comment.profile,
                   });
                 }}
@@ -76,7 +88,7 @@ function Comment({
         </div>
       </div>
       {comment.children && comment.children.length > 0 && (
-        <div className="ml-[20px]">
+        <div className="pl-[40px] ">
           {comment.children?.map((reply: any, index: number) => (
             <Comment
               key={index}
@@ -195,8 +207,12 @@ function page({ params }: { params: any }) {
   const handlePostComents = async () => {
     let body = null;
     if (selectComment.commentId >= 0) {
+      let content = comment;
+      if (selectComment.commentId >= 0) {
+        content = '@' + selectComment.profile.name + ' ' + content;
+      }
       body = {
-        content: comment,
+        content: content,
         parentId: selectComment.commentId,
       };
     } else {

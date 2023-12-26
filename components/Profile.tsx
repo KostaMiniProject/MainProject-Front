@@ -23,7 +23,7 @@ function Profile({ profile }: { profile: profileType }) {
         className="w-[30px] h-[30px] rounded-[50%] my-auto"
       />
       <div className="flex flex-col mx-[5px] my-auto whitespace-nowrap text-ellipsis overflow-hidden">
-        <Link href={`/profile/${profile.userId}`}>
+        <Link href={`/profile/${profile.name}`}>
           <div className="text-title font-[600]">{profile.name}</div>
         </Link>
         {/* <div className="text-[16px] text-gray">{profile.address}</div> */}
