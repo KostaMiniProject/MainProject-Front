@@ -1,15 +1,16 @@
 //입찰 리스트 관련 API
 import { commonFetch } from './commonApi/CommonFetch';
 
-export async function getExchangePostsForMap(longitude: string, latitude: string) {
+export async function getExchangePostsForMap(
+  longitude: string,
+  latitude: string
+) {
   try {
-    const url = `https://itsop.shop/api/exchange-posts/exchangePostMap?longitude=${encodeURIComponent(longitude)}&latitude=${encodeURIComponent(latitude)}`;
-    const result = await commonFetch(
-      url,
-      {
-        method: 'GET',
-      }
-    );
+    const url = `https://itsop.shop/api/exchange-posts/exchangePostMap?longitude=${longitude}&latitude=${latitude}`;
+    const result = await commonFetch(url, {
+      method: 'GET',
+      checkToken: true,
+    });
 
     console.log('Fetched data:', result);
     return result;

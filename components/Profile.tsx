@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface profileType {
-  id: number;
+  userId: number;
   name: string;
   address?: string;
   imageUrl: string;
@@ -23,7 +23,7 @@ function Profile({ profile }: { profile: profileType }) {
         className="w-[30px] h-[30px] rounded-[50%] my-auto"
       />
       <div className="flex flex-col mx-[5px] my-auto whitespace-nowrap text-ellipsis overflow-hidden">
-        <Link href={''}>
+        <Link href={`/profile/${profile.userId}`}>
           <div className="text-title font-[600]">{profile.name}</div>
         </Link>
         {/* <div className="text-[16px] text-gray">{profile.address}</div> */}

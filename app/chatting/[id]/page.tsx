@@ -413,13 +413,11 @@ function Page({ params }: { params: any }) {
   };
   return (
     <div className="chat-page">
-      <div className='mx-default'>
       <Header backNav title="채팅">
         <div onClick={handleShowExitModal}>
           <MdExitToApp size={40} />
         </div>
       </Header>
-      </div>
       {showExitModal && (
         <Modal setState={handleCloseExitModal}>
           <div className="my-[5px]">채팅방을 나가시겠습니까?</div>
@@ -439,7 +437,7 @@ function Page({ params }: { params: any }) {
           </div>
         </Modal>
       )}
-      <div className="fixed w-full bg-white max-w-[480px] mx-default">
+      <div className="fixed w-full bg-white max-w-[480px] px-[16px]">
         <div className="text-header font-bold my-[10px]">
           교환하려고 하는 게시물
         </div>

@@ -22,7 +22,7 @@ function ReviewContainer({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
+//reviewedUserName api 추가
 function Page() {
   const [content, setContent] = useState<String>('');
   const [inputCount, handleInput] = useInputLength(MAX_LENGTH);
@@ -69,8 +69,10 @@ function Page() {
       <div className="">
         <div className="my-[5px] mb-[10px]">
           <div className="text-header font-[600] flex">
-            <span className="underline text-gray">사용자1</span>님에 대해
-            알려주세요!
+            <span className="underline text-gray">
+              {searchParams.get('userName')}
+            </span>
+            님에 대해 알려주세요!
           </div>
         </div>
         <div className="flex items-center text-center justify-between">
@@ -87,7 +89,7 @@ function Page() {
           >
             <ReviewContainer>
               <div className="p-[5px] w-full h-full">
-                <FaRegFaceGrinBeam size color={iconColor} />
+                <FaRegFaceGrinBeam size={'100%'} color={iconColor} />
               </div>
               <div className="text-title">추천해요</div>
             </ReviewContainer>
@@ -105,7 +107,7 @@ function Page() {
           >
             <ReviewContainer>
               <div className="p-[5px] w-full h-full">
-                <FaRegFaceSmile size color={iconColor} />
+                <FaRegFaceSmile size={'100%'} color={iconColor} />
               </div>
               <div className="text-title">괜찮아요</div>
             </ReviewContainer>
@@ -123,7 +125,7 @@ function Page() {
           >
             <ReviewContainer>
               <div className="p-[5px] w-full h-full">
-                <FaRegFaceFrown size color={iconColor} />
+                <FaRegFaceFrown size={'100%'} color={iconColor} />
               </div>
               <div className="text-title">별로예요</div>
             </ReviewContainer>
