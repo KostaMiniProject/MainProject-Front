@@ -95,6 +95,7 @@ function page() {
             SNS 로그인
           </div>
           <div className="flex items-center justify-center text-[14px] text-gray">
+            
             <Link href={'https://itsop.shop/oauth2/authorization/naver'}>
               <Image
                 src={NaverButton}
