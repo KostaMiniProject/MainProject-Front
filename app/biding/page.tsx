@@ -88,7 +88,7 @@ function Page() {
         </div>
       </div>
       <BottomFixed>
-        <div className="flex my-[5px] m-[15px]">
+        <div className="flex my-[5px] ml-[16px] mb-[16px]">
           <Button
             rounded="rounded"
             text="+ 물건 추가"

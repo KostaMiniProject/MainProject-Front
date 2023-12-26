@@ -250,7 +250,8 @@ function Page() {
   };
 
   return (
-    <div>
+    <div className=''>
+      <div className='mx-default'>
       <Header backNav title="지도 페이지"></Header>
       <div className="relative">
         <div className="flex justify-between">
@@ -262,6 +263,7 @@ function Page() {
           </div>
         </div>
       </div>
+      </div>
       <div
         style={{
           transform: ` translateY(${isPanelOpen ? '-20px' : '250px'})`,
@@ -271,7 +273,7 @@ function Page() {
         {/* 현재 위치로 이동 버튼 */}
         <button
           onClick={moveToCurrentLocation}
-          className="bg-skyblue p-3 rounded-full shadow-lg flex items-center justify-center z-30 ml-[10px] mb-[10px]"
+          className="bg-skyblue p-3 rounded-full shadow-lg flex items-center justify-center z-30 ml-[16px] mb-[20px]"
         >
           위치
         </button>

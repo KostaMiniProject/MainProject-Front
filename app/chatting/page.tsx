@@ -22,7 +22,7 @@ function Page() {
   }, []);
 
   return (
-    <div>
+    <div className='mx-default'>
       <Header title="채팅목록"></Header>
       <ul>
         {roomList && roomList.length > 0 ? (
