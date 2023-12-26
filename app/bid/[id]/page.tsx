@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 interface ItemList {
   isOwner: boolean;
   profile: {
-    id: number;
+    userId: number;
     name: string;
     address: string;
     imageUrl: string;
@@ -81,8 +81,10 @@ function page({ params }: { params: any }) {
       </Header>
       {showModal && (
         <Modal setState={handleCloseModal}>
-          <div className='text-subtitle w-[250px]'>
-            <div className="my-[5px] text-header font-[600]">입찰을 취소 하시겠습니까?</div>
+          <div className="text-subtitle w-[250px]">
+            <div className="my-[5px] text-header font-[600]">
+              입찰을 취소 하시겠습니까?
+            </div>
             <div className="flex place-content-between p-[5px]">
               <Button
                 text="입찰 취소"
@@ -102,7 +104,7 @@ function page({ params }: { params: any }) {
           </div>
         </Modal>
       )}
-      <div className='mx-default'>
+      <div className="mx-default">
         {/* 프로필 */}
         {itemList && <Profile profile={itemList.profile} />}
         {/* 물건 리스트 */}

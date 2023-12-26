@@ -53,7 +53,8 @@ function Comment({
                 className="m-[5px]"
                 onClick={() => {
                   setCommentId({
-                    commentId: parentId ? parentId : comment.commentId,
+                    commentId: comment.commentId,
+                    // commentId: parentId ? parentId : comment.commentId,
                     profile: comment.profile,
                   });
                 }}
@@ -81,6 +82,7 @@ function Comment({
               key={index}
               comment={reply}
               setCommentId={setCommentId}
+              // setCommentId={setCommentId}
               parentId={comment.commentId}
               handleShowDeleteCommentModal={handleShowDeleteCommentModal}
             />
@@ -242,7 +244,7 @@ function page({ params }: { params: any }) {
     setShowDeleteCommentModal(false);
   };
   return (
-    <div className='mx-default'>
+    <div className="mx-default">
       <Header backNav title={post?.title}>
         {post?.postOwner && (
           <div className="cursor-pointer" onClick={handleShowModal}>
@@ -296,7 +298,7 @@ function page({ params }: { params: any }) {
               profile={{
                 ...post.user,
                 imageUrl: post.user.profileImage,
-                id: post.user.userId,
+                userId: post.user.userId,
               }}
             />
           )}

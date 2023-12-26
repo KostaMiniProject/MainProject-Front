@@ -32,6 +32,7 @@ interface historyType {
   posterItem: posterItemType[];
   posterName: string;
   posterProfileImage: string;
+  reviewedUserName: string;
 }
 
 function Page() {
@@ -70,7 +71,7 @@ function Page() {
                       />
                     ) : (
                       <Link
-                        href={`/review?exchange=${e.exchangePostId}&userId=${e.reviewedUserId}`}
+                        href={`/review?exchange=${e.exchangePostId}&userId=${e.reviewedUserId}&userName=${e.reviewedUserName}`}
                       >
                         <Button
                           text="후기 작성하기"

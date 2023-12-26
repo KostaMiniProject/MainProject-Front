@@ -54,7 +54,7 @@ function Page({ params }: { params: any }) {
           </div>
           <Profile
             profile={{
-              id: item.user.userId,
+              userId: item.user.userId,
               name: item.user.name,
               address: item.user.address,
               imageUrl: item.user.profileImage,

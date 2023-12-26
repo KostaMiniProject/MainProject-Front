@@ -68,7 +68,7 @@ function CommunityPost({
             profile={{
               ...post.user,
               imageUrl: post.user.profileImage,
-              id: post.user.userId,
+              userId: post.user.userId,
             }}
           />
         </div>
