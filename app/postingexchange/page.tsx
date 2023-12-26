@@ -67,10 +67,7 @@ function page() {
       window.kakao.maps.load(() => {
         var mapContainer = document.getElementById('map');
         var mapOption = {
-          center: new window.kakao.maps.LatLng(
-            37.338860,
-            127.109316
-          ),
+          center: new window.kakao.maps.LatLng(37.33886, 127.109316),
           level: 3,
         };
 
@@ -79,26 +76,26 @@ function page() {
 
         var marker = new window.kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
           infowindow = new window.kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              function (position) {
-                var lat = position.coords.latitude,
-                    lon = position.coords.longitude;
-                var locPosition = new window.kakao.maps.LatLng(lat, lon);
-      
-                map.setCenter(locPosition);
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              var lat = position.coords.latitude,
+                lon = position.coords.longitude;
+              var locPosition = new window.kakao.maps.LatLng(lat, lon);
 
-                searchAddrFromCoords(map.getCenter(), displayCenterInfo);
-              },
-              function (error) {
-                console.error("Geolocation error: " + error.message);
-                searchAddrFromCoords(map.getCenter(), displayCenterInfo);
-              }
-            );
-          } else {
-            console.log("Geolocation is not supported by this browser.");
-            searchAddrFromCoords(map.getCenter(), displayCenterInfo);
-          }
+              map.setCenter(locPosition);
+
+              searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+            },
+            function (error) {
+              console.error('Geolocation error: ' + error.message);
+              searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+            }
+          );
+        } else {
+          console.log('Geolocation is not supported by this browser.');
+          searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+        }
         // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
         searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 
@@ -181,7 +178,7 @@ function page() {
   function handleOpenMap() {
     setOpenMap(!openMap);
   }
-  function postComplete() {
+  async function postComplete() {
     let data: any;
     if (selectedItem) {
       data = {
@@ -199,7 +196,7 @@ function page() {
         };
       }
       try {
-        postExchangePost(data);
+        await postExchangePost(data);
         router.push('/');
       } catch (error) {
         console.log(error);
