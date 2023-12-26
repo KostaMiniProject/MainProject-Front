@@ -118,7 +118,7 @@ function page() {
             <div className="mx-[20px]">|</div>
             <Link
               href={
-                'https://wass.itsop.shop/oauth2/authorization/google?redirect_uri=https://www.itsop.shop'
+                'https://wass.itsop.shop/oauth2/authorization/google?redirect_uri=https://wass.itsop.shop/login/oauth2/code/google'
               }
             >
               <Image
