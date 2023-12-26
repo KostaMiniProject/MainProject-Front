@@ -1,60 +1,66 @@
+'use client';
+import { getProfileById } from '@/apis/ProfileApi';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
-import ProfileContainer from '@/components/profile/ProfileContainer';
-import React from 'react';
-import { MdTagFaces, MdThumbDown, MdThumbUp } from 'react-icons/md';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import { MdChevronRight } from 'react-icons/md';
+//api/users/profile?name=&{name}
 
-// ReviewContainer 컴포넌트
-function ReviewContainer({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex-1 border-solid border-[2px] border-base rounded-[10px] m-[10px] bg-white">
-      <div className="flex flex-col items-center justify-center h-full p-[20px]">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-async function Page() {
+function Page({ params }: { params: any }) {
+  const [profile, setProfile] = useState<any>();
+  const iconSize = 20;
   // const myProfile = await getProfileById(1);
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const data = await getProfileById(encodeURI(params.id));
+        setProfile(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProfileData();
+  }, []);
   return (
     <div>
       <Header backNav title="프로필 정보" />
       <div className="">
-        <div className="flex items-center mx-[15px] py-[10px]">
+        <div className="flex items-center mx-[15px] py-[10px] border-b-[0.5px] border-gray">
           <div className="h-[120px] w-[120px] bg-black rounded-[50%] overflow-hidden">
             {/* 프로필 사진 */}
-            <div className="text-white">프로필</div>
-            <div className="text-white">프로필</div>
+            {profile && (
+              <Image
+                src={profile.profileImage}
+                alt="프로필사진"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                width={60}
+                height={60}
+                className="w-full h-full "
+              />
+            )}
           </div>
-          <div className="flex-1">
-            <div className="mx-[15px] text-[24px] font-[600]">
+          <div className="ml-default flex-1">
+            <div className=" text-header font-[600]">
               {/* {myProfile.name} */}
-              닉네임닉네임
+              {profile?.name}
+            </div>
+            <div className=" text-title font-[600]">
+              {/* {myProfile.name} */}
+              {profile?.address}
+            </div>
+            <div className="flex">
+              <div className="flex items-center justify-between flex-1">
+                <Link href={'/profile/editprofile'}>
+                  <div className="flex">
+                    내 정보 <MdChevronRight size={iconSize} />
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex items-center text-center mx-[15px]">
-          <ReviewContainer>
-            <MdThumbDown size={20} color={'#e00685'} />
-            <div className="text-[20px]">0</div>
-          </ReviewContainer>
-          <ReviewContainer>
-            <MdTagFaces size={20} color={'#e00685'} />
-            <div className="text-[20px]">0</div>
-          </ReviewContainer>
-          <ReviewContainer>
-            <MdThumbUp size={20} color={'#e00685'} />
-            <div className="text-[20px]">0</div>
-          </ReviewContainer>
-        </div>
-
-        <ProfileContainer text="가진 물건">
-          <div>ㅁㄴㅇㄹ</div>
-        </ProfileContainer>
-        <ProfileContainer text="거래 내역">
-          <div>ㅁㄴㅇㄹ</div>
-        </ProfileContainer>
       </div>
     </div>
   );
