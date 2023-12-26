@@ -242,7 +242,7 @@ function page({ params }: { params: any }) {
     setShowDeleteCommentModal(false);
   };
   return (
-    <div>
+    <div className='mx-default'>
       <Header backNav title={post?.title}>
         {post?.postOwner && (
           <div className="cursor-pointer" onClick={handleShowModal}>

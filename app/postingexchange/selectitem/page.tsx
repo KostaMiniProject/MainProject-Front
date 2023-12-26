@@ -91,7 +91,7 @@ function page() {
       </div>
       <div className="h-[110px]" />
       <BottomFixed>
-        <div className="flex my-[5px] ml-[10px] mb-[20px]">
+        <div className="flex my-[5px] ml-[16px] mb-[16px]">
           <Link href={`/additem?action=posting`}>
             <Button
               rounded="rounded"
@@ -101,7 +101,7 @@ function page() {
             />
           </Link>
         </div>
-        <div className={` flex-1 text-center cursor-pointer `}>
+        <div className={` flex-1 text-center cursor-pointer mx-default`}>
           <Button
             rounded="soft"
             text="선택 완료"
