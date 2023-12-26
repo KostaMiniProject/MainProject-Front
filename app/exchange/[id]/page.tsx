@@ -35,7 +35,7 @@ interface PostContent {
   };
   postOwner: boolean;
   profile: {
-    id: number;
+    userId: number;
     name: string;
     address: string;
     imageUrl: string;
@@ -113,7 +113,7 @@ function Page({ params }: { params: any }) {
     }
   }
   return (
-    <div className='mx-default'>
+    <div className="mx-default">
       <Header title={postContent.title} backNav>
         {postContent.postOwner ? (
           <>
@@ -248,24 +248,26 @@ function Page({ params }: { params: any }) {
       )}
       {showModal && (
         <Modal setState={handleCloseModal}>
-          <div className='text-subtitle w-[250px]'>
-          <div className="my-[5px] text-header font-[600]">글을 삭제 하시겠습니까?</div>
-          <div className="flex place-content-between p-[5px]">
-            <Button
-              text="삭제하기"
-              fontSize={16}
-              onClick={handlePostComplete}
-              height={6}
-              rounded="soft"
-            />
-            <Button
-              text="취소"
-              fontSize={16}
-              onClick={handleCloseModal}
-              height={6}
-              rounded="soft"
-            />
-          </div>
+          <div className="text-subtitle w-[250px]">
+            <div className="my-[5px] text-header font-[600]">
+              글을 삭제 하시겠습니까?
+            </div>
+            <div className="flex place-content-between p-[5px]">
+              <Button
+                text="삭제하기"
+                fontSize={16}
+                onClick={handlePostComplete}
+                height={6}
+                rounded="soft"
+              />
+              <Button
+                text="취소"
+                fontSize={16}
+                onClick={handleCloseModal}
+                height={6}
+                rounded="soft"
+              />
+            </div>
           </div>
         </Modal>
       )}
