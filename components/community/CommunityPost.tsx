@@ -76,7 +76,7 @@ function CommunityPost({
           {/* 캐러셀에 대한 설정 */}
           {post.imageUrl && post.imageUrl.length > 0 && (
             <Link href={`/community/${post.communityPostId}`}>
-              <Carousel images={post.imageUrl}></Carousel>
+              <Carousel images={post.imageUrl} disable></Carousel>
             </Link>
           )}
         </div>
