@@ -1,14 +1,14 @@
-"use client";
-import React, { useState } from "react";
-import InputBox from "@/components/InputBox";
-import Button from "@/components/Button";
-import { useRouter } from "next/navigation";
-import { findId } from "@/apis/FindIdApi";
-import Header from "@/components/Header";
+'use client';
+import React, { useState } from 'react';
+import InputBox from '@/components/InputBox';
+import Button from '@/components/Button';
+import { useRouter } from 'next/navigation';
+import { findId } from '@/apis/FindIdApi';
+import Header from '@/components/Header';
 
 function Page() {
-  const [name, setName] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
+  const [name, setName] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
   const router = useRouter();
 
   async function handleFindId(name: string, phone: string) {
@@ -26,13 +26,13 @@ function Page() {
       router.push(`/find/email/success?email=${findEmail.email}`);
     } catch (error: any) {
       // 'error' 변수를 'any' 타입으로 선언하여 사용
-      alert((error as Error).message || "입력한 정보가 일치하지 않습니다.");
+      alert((error as Error).message || '입력한 정보가 일치하지 않습니다.');
     }
   }
 
   return (
     <div>
-      <Header title="아이디 찾기"></Header>
+      <Header backNav title="아이디 찾기"></Header>
       <div className="w-full flex-col flex">
         <div className="text-[20px] mt-[100px] mb-[50px] m-[auto] font-[600]">
           아래내용을 작성해주세요.

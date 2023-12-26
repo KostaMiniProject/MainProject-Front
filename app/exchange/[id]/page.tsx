@@ -113,7 +113,7 @@ function Page({ params }: { params: any }) {
     }
   }
   return (
-    <div>
+    <div className='mx-default'>
       <Header title={postContent.title} backNav>
         {postContent.postOwner ? (
           <>
@@ -135,7 +135,7 @@ function Page({ params }: { params: any }) {
         )}
       </Header>
       {postContent.postOwner ? (
-        <div className="">
+        <div className="mx-default">
           <div className="flex border-gray border-y-[0.5px] border-solid">
             <div className="relative w-[80px] h-[80px] overflow-hidden my-auto">
               <Image
@@ -193,7 +193,7 @@ function Page({ params }: { params: any }) {
           <div className="w-[100%] h-[auto]">
             <Carousel images={postContent.item.imageUrls} />
           </div>
-          <div className="mx-default">
+          <div className="">
             {/* 프로필 섹션 */}
             <Profile profile={postContent.profile} />
             {/* 교환 게시글 본문 */}
@@ -233,7 +233,7 @@ function Page({ params }: { params: any }) {
             </div>
           </div>
           <BottomFixed>
-            <div className="flex justify-end m-[10px]">
+            <div className="flex justify-end mb-[16px] mr-[32px]">
               <Link href={`/biding?postId=${params.id}`}>
                 <Button
                   text="입찰 하기"
@@ -248,20 +248,24 @@ function Page({ params }: { params: any }) {
       )}
       {showModal && (
         <Modal setState={handleCloseModal}>
-          <div className="my-[5px]">글을 삭제 하시겠습니까?</div>
-          <div className="flex place-content-between">
+          <div className='text-subtitle w-[250px]'>
+          <div className="my-[5px] text-header font-[600]">글을 삭제 하시겠습니까?</div>
+          <div className="flex place-content-between p-[5px]">
             <Button
               text="삭제하기"
+              fontSize={16}
               onClick={handlePostComplete}
-              height={5}
+              height={6}
               rounded="soft"
             />
             <Button
               text="취소"
+              fontSize={16}
               onClick={handleCloseModal}
-              height={5}
+              height={6}
               rounded="soft"
             />
+          </div>
           </div>
         </Modal>
       )}

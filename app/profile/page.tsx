@@ -76,15 +76,17 @@ function page() {
   return (
     <div>
       <Header title="내 정보">
-        <Button
-          text="로그아웃"
-          fontSize={16}
-          height={5}
-          rounded="soft"
-          onClick={() => {
-            handleLogout();
-          }}
-        />
+        <div className="mr-[16px]">
+          <Button
+            text="로그아웃"
+            fontSize={16}
+            height={5}
+            rounded="soft"
+            onClick={() => {
+              handleLogout();
+            }}
+          />
+        </div>
       </Header>
       <div className="">
         <div className="flex items-center mx-[15px] py-[10px] border-b-[0.5px] border-gray">
@@ -146,10 +148,12 @@ function page() {
               <MdChevronRight size={iconSize} />
             </div>
           </Link>
-          <div className={profileMenu}>
-            <div>찜목록</div>
-            <MdChevronRight size={iconSize} />
-          </div>
+          <Link href={'/profile/dib'}>
+            <div className={profileMenu}>
+              <div>찜목록</div>
+              <MdChevronRight size={iconSize} />
+            </div>
+          </Link>
           <Link href={'/profile/block'}>
             <div className={profileMenu}>
               <div>차단 리스트</div>

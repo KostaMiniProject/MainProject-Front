@@ -67,3 +67,19 @@ export async function getMyProfile() {
     console.error('Error fetching data:', error);
   }
 }
+
+export async function putEditUser(formData: FormData) {
+  try {
+    const result = await commonFetch('https://itsop.shop/api/users', {
+      method: 'PUT',
+      body: formData,
+      checkToken: true, // 토큰 체크 활성화
+    });
+
+    console.log('Upload successful:', result);
+    return result;
+  } catch (error) {
+    console.error('Error uploading:', error);
+    throw error;
+  }
+}

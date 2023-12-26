@@ -8,6 +8,7 @@ export interface itemType {
   images?: any;
   imageUrls?: any;
   createdAt?: string;
+  isBiding?: string;
 }
 function Item({ item }: { item: itemType }) {
   return (

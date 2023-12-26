@@ -15,8 +15,8 @@ const MAX_LENGTH = 500;
 
 function ReviewContainer({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex-1 border-solid border-[2px] border-base rounded-[10px] m-[10px] bg-white">
-      <div className="flex flex-col items-center justify-center h-full p-[10px]">
+    <div className="flex-1 border-solid border-[2px] border-base rounded-[10px] m-[5px] bg-white">
+      <div className="flex flex-col items-center justify-center p-[5px]">
         {children}
       </div>
     </div>
@@ -32,6 +32,7 @@ function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const borderPx = '3px';
+  const iconColor = '#000';
 
   useEffect(() => {
     const exchangePostId = searchParams.get('exchange') ?? '';
@@ -72,8 +73,9 @@ function Page() {
             알려주세요!
           </div>
         </div>
-        <div className="flex items-center text-center mb-[25px] justify-between">
+        <div className="flex items-center text-center justify-between">
           <div
+            className="flex-1"
             style={
               selectRating === 5
                 ? { borderWidth: borderPx }
@@ -84,11 +86,14 @@ function Page() {
             }}
           >
             <ReviewContainer>
-              <FaRegFaceGrinBeam size={'50'} color={'#e00685'} />
-              <div className="text-[15px]">완전 추천해요!</div>
+              <div className="p-[5px] w-full h-full">
+                <FaRegFaceGrinBeam size color={iconColor} />
+              </div>
+              <div className="text-title">추천해요</div>
             </ReviewContainer>
           </div>
           <div
+            className="flex-1"
             style={
               selectRating === 3
                 ? { borderWidth: borderPx }
@@ -99,11 +104,14 @@ function Page() {
             }}
           >
             <ReviewContainer>
-              <FaRegFaceSmile size={'50'} color={'#e00685'} />
-              <div className="text-[15px]">괜찮아요.</div>
+              <div className="p-[5px] w-full h-full">
+                <FaRegFaceSmile size color={iconColor} />
+              </div>
+              <div className="text-title">괜찮아요</div>
             </ReviewContainer>
           </div>
           <div
+            className="flex-1"
             style={
               selectRating === 1
                 ? { borderWidth: borderPx }
@@ -114,8 +122,10 @@ function Page() {
             }}
           >
             <ReviewContainer>
-              <FaRegFaceFrown size={'50'} color={'#e00685'} />
-              <div className="text-[15px]">추천하지 않아요.</div>
+              <div className="p-[5px] w-full h-full">
+                <FaRegFaceFrown size color={iconColor} />
+              </div>
+              <div className="text-title">별로예요</div>
             </ReviewContainer>
           </div>
         </div>

@@ -27,7 +27,7 @@ function Page() {
   }, [postData]);
 
   return (
-    <div>
+    <div className='mx-default'>
       <Header title="커뮤니티">
         <Link href={'/community/posting'}>
           <MdOutlinePostAdd size={40} />

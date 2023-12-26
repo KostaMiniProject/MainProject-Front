@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import InputBox from '@/components/InputBox';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { relative } from 'path';
 import { MdAddCircleOutline } from 'react-icons/md';
-import { getMyProfile } from '@/apis/ProfileApi';
+import { getMyProfile, putEditUser } from '@/apis/ProfileApi';
 
 interface profileType {
   address: string;
@@ -38,8 +38,8 @@ function page() {
   const [newPasswordMessage, setNewPasswordMessage] = useState<string>('');
   const [addressMessage, setAddressMessage] = useState<string>('');
 
-  const [isNickName, setIsNickName] = useState<boolean>(false);
-  const [isPhone, setIsPhone] = useState<boolean>(false);
+  const [isNickName, setIsNickName] = useState<boolean>(true);
+  const [isPhone, setIsPhone] = useState<boolean>(true);
   const [isExistingPassword, setIsExistingPassword] = useState<boolean>(false);
   const [isNewPassword, setIsNewPassword] = useState<boolean>(false);
   const [isAddress, setIsAddress] = useState<boolean>(false);
@@ -48,12 +48,19 @@ function page() {
   const [isEditAddress, setIsEditAddress] = useState(false); // 주소 수정 가능 여부
   const [isEditPassword, setIsEditPassword] = useState(false); // 비밀번호 수정 가능 여부
   const router = useRouter();
+  const nickNameRef: any = useRef();
+  const phoneRef: any = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getMyProfile();
         setProfile(data);
+        setNickName(data.name);
+        nickNameRef.current.value = data.name;
+        setPhone(data.phone);
+        phoneRef.current.value = data.phone;
+        onChangeNickName;
       } catch (error) {
         console.log(error);
       }
@@ -203,52 +210,89 @@ function page() {
     }
   }
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const selectFile = event.target.files;
-    if (selectFile) {
-      setSelectedImages(selectFile[0]);
+    const file = event.target.files ? event.target.files[0] : null;
+    if (file) {
+      setSelectedImages(file);
+
+      // 이미지 URL 생성
+      const imageUrl = URL.createObjectURL(file);
+
+      // 프로필 상태 업데이트
+      setProfile((prev: any) => ({
+        ...prev,
+        profileImage: imageUrl,
+      }));
     }
   }
 
   const editProfile = async () => {
-    const userData = {
-      existingPassword: existingPassword,
-      newPassword: newPassword,
+    let userData: any = {
       nickName: nickName,
-      address: address,
-      addressDetail: addressDetail,
       phone: phone,
     };
-    if (
-      isNickName &&
-      (address.jibunAddr || address.roadAddr) &&
-      address &&
-      isAddress &&
-      isPhone &&
-      isExistingPassword &&
-      isNewPassword
-    ) {
+
+    if (isEditPassword) {
+      userData = {
+        ...userData,
+        existingPassword: existingPassword,
+        newPassword: newPassword,
+      };
+    }
+
+    if (isEditAddress) {
+      userData = {
+        ...userData,
+        address: address,
+        addressDetail: addressDetail,
+      };
+    }
+
+    // 이제 여기서 각 입력값에 대한 유효성 검사를 수행합니다.
+
+    let isValid = isNickName && isPhone;
+
+    if (isEditPassword) {
+      console.log('패스워드가 비어있음');
+      isValid = isValid && isExistingPassword && isNewPassword;
+      if (!isValid) {
+        checkExistingPassword(existingPassword);
+        checkNewPassword(newPassword);
+      }
+    }
+
+    if (isEditAddress) {
+      console.log('주소가 비어있음');
+
+      const isAddressValid =
+        address.jibunAddr.trim() !== '' || address.roadAddr.trim() !== '';
+      isValid = isValid && isAddressValid && isAddress;
+      if (!isValid) {
+        checkAddress(addressDetail);
+      }
+    }
+
+    // 모든 조건이 충족된 경우에만 프로필 업데이트를 진행합니다.
+    if (isValid) {
       try {
         console.log(userData);
         const formData = new FormData();
         // 기타 데이터를 JSON 형태로 FormData에 추가
         formData.append(
-          'userUpdateDTO',
+          'userUpdateDto',
           new Blob([JSON.stringify(userData)], { type: 'application/json' })
         );
         // 이미지 파일을 FormData에 추가
         if (selectedImages instanceof File) {
           formData.append('file', selectedImages);
         }
+        console.log(formData);
+        await putEditUser(formData);
+        router.push('/profile');
       } catch (error) {
         alert('회원수정 실패');
       }
     } else {
-      //alert("입력한 정보를 다시 확인해주세요.");
-      checkNickname(nickName);
-      checkPhone(phone);
-      checkExistingPassword(existingPassword);
-      checkNewPassword(newPassword);
-      checkAddress(addressDetail);
+      alert('입력한 정보를 다시 확인해주세요.');
     }
   };
 
@@ -271,23 +315,23 @@ function page() {
             )}
           </div>
           <div
-            className="relative w-[120px] m-[2px] my-[5px] h-[120px] overflow-hidden flex items-center justify-center border-base border-solid border-[1px] rounded-[10px] cursor-pointer"
+            className="relative cursor-pointer mt-auto text-subtitle"
             onClick={openFileInput}
           >
-            <MdAddCircleOutline size={30} color={'#e00685'} />
+            사진 변경
           </div>
           <input
             id="fileInput" // 파일 입력 엘리먼트에 ID 추가
             type="file"
-            multiple
             accept=".jpg, .png"
             onChange={handleFileChange}
             style={{ display: 'none' }} // 화면에 표시되지 않도록 함
           />
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600]">닉네임</div>
+          <div className="text-header my-[10px] font-[600]">닉네임</div>
           <InputBox
+            ref={nickNameRef}
             onChange={onChangeNickName}
             message="닉네임을 입력해주세요."
           ></InputBox>
@@ -312,8 +356,9 @@ function page() {
           </span>
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600]">전화번호</div>
+          <div className="text-header my-[10px] font-[600]">전화번호</div>
           <InputBox
+            ref={phoneRef}
             onChange={onChangePhone}
             message="전화번호를 작성해주세요."
           ></InputBox>
@@ -337,7 +382,7 @@ function page() {
           </span>
         </div>
         <div className="">
-          <div className="text-[20px] my-[10px] font-[600] flex justify-between">
+          <div className="text-header my-[10px] font-[600] flex justify-between">
             <div>주소</div>
             <div onClick={toggleEditAddress}>
               주소 변경하기 {isEditAddress ? '▼' : '▲'}
@@ -401,7 +446,7 @@ function page() {
           )}
         </div>
         <div className="my-[20px]">
-          <div className="text-[20px] my-[10px] font-[600] flex justify-between">
+          <div className="text-header my-[10px] font-[600] flex justify-between">
             <div>비밀번호</div>
             <div onClick={toggleEditPassword}>
               비밀번호 변경하기 {isEditPassword ? '▼' : '▲'}
@@ -439,7 +484,7 @@ function page() {
               </span>
 
               <div className="my-[20px]">
-                <div className="text-[20px] my-[10px] font-[600]">
+                <div className="text-header my-[10px] font-[600]">
                   새 비밀번호
                 </div>
                 <InputBox
