@@ -1,7 +1,7 @@
 "use client";
 export async function postEmailSend(userData: any) {
   try {
-    const res = await fetch("https://itsop.shop/api/email-verification", {
+    const res = await fetch("https://wass.itsop.shop/api/email-verification", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

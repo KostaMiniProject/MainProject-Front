@@ -5,7 +5,7 @@ import { commonFetch } from './commonApi/CommonFetch';
 export async function getBidItemList(id: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts/bids/${id}`,
+      `https://wass.itsop.shop/api/exchange-posts/bids/${id}`,
       {
         method: 'GET',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
@@ -23,7 +23,7 @@ export async function getBidItemList(id: number) {
 export async function postBid(postId: number, body: any) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts/${postId}/bids`,
+      `https://wass.itsop.shop/api/exchange-posts/${postId}/bids`,
       {
         method: 'POST',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
@@ -42,7 +42,7 @@ export async function postBid(postId: number, body: any) {
 export async function deleteBid(id: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts/bids/${id}`,
+      `https://wass.itsop.shop/api/exchange-posts/bids/${id}`,
       {
         method: 'DELETE',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨

@@ -1,7 +1,7 @@
 "use client";
 export async function postEmailCheck(userData: any) {
   try {
-    const res = await fetch("https://itsop.shop/api/authNumCheck", {
+    const res = await fetch("https://wass.itsop.shop/api/authNumCheck", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

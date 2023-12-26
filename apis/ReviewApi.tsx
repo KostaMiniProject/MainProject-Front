@@ -3,7 +3,7 @@ import { commonFetch } from './commonApi/CommonFetch';
 export async function postReview(exchangeId: number, body: any) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/reviews/${exchangeId}`,
+      `https://wass.itsop.shop/api/reviews/${exchangeId}`,
       {
         method: 'POST',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨

@@ -1,7 +1,7 @@
 'use client';
 export async function findId(userData: any) {
   try {
-    const result = await fetch('https://itsop.shop/api/find-id', {
+    const result = await fetch('https://wass.itsop.shop/api/find-id', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

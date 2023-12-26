@@ -3,7 +3,7 @@ import { commonFetch } from './commonApi/CommonFetch';
 export async function deleteUser() {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/users/withdrawal`,
+      `https://wass.itsop.shop/api/users/withdrawal`,
       {
         method: 'DELETE',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨

@@ -4,7 +4,7 @@ import { commonFetch } from './commonApi/CommonFetch';
 
 export async function postExchangePost(jsonData: any) {
   try {
-    const result = await commonFetch('https://itsop.shop/api/exchange-posts', {
+    const result = await commonFetch('https://wass.itsop.shop/api/exchange-posts', {
       method: 'POST',
       checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
       body: jsonData,
@@ -19,7 +19,7 @@ export async function postExchangePost(jsonData: any) {
 export async function getPostList(page: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts?page=${page}`,
+      `https://wass.itsop.shop/api/exchange-posts?page=${page}`,
       {
         method: 'GET',
       }
@@ -34,7 +34,7 @@ export async function getPostList(page: number) {
 export async function getMyPostList(page: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/users/exchange-post-list?page=${page}`,
+      `https://wass.itsop.shop/api/users/exchange-post-list?page=${page}`,
       {
         method: 'GET',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
@@ -50,7 +50,7 @@ export async function getMyPostList(page: number) {
 export async function getSearchPostList(page: number, keyword: string) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts/search?page=${page}&keyword=${keyword}`,
+      `https://wass.itsop.shop/api/exchange-posts/search?page=${page}&keyword=${keyword}`,
       {
         method: 'GET',
         // checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
@@ -67,7 +67,7 @@ export async function getSearchPostList(page: number, keyword: string) {
 export async function getExchangePost(postId: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts/${postId}`,
+      `https://wass.itsop.shop/api/exchange-posts/${postId}`,
       {
         method: 'GET',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
@@ -83,7 +83,7 @@ export async function getExchangePost(postId: number) {
 export async function updateExchangePost(jsonData: any, postId: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts/${postId}`,
+      `https://wass.itsop.shop/api/exchange-posts/${postId}`,
       {
         method: 'PUT',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
@@ -100,7 +100,7 @@ export async function updateExchangePost(jsonData: any, postId: number) {
 export async function deleteExchangePost(postId: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts/${postId}`,
+      `https://wass.itsop.shop/api/exchange-posts/${postId}`,
       {
         method: 'DELETE',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
@@ -117,7 +117,7 @@ export async function deleteExchangePost(postId: number) {
 export async function postdib(postId: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts/${postId}/dibs`,
+      `https://wass.itsop.shop/api/exchange-posts/${postId}/dibs`,
       {
         method: 'POST',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
@@ -133,7 +133,7 @@ export async function postdib(postId: number) {
 export async function getDibList() {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/exchange-posts/dibs`,
+      `https://wass.itsop.shop/api/exchange-posts/dibs`,
       {
         method: 'GET',
         checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨

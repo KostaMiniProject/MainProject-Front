@@ -39,7 +39,7 @@ export async function getMyCommunityPost(page: number = 0) {
 
 export async function postCommunityPost(formData: FormData) {
   try {
-    const result = await commonFetch('https://itsop.shop/api/community-posts', {
+    const result = await commonFetch('https://wass.itsop.shop/api/community-posts', {
       method: 'POST',
       body: formData,
       checkToken: true, // 토큰 체크 활성화
@@ -55,7 +55,7 @@ export async function postCommunityPost(formData: FormData) {
 export async function putCommunityPostLike(postId: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/community-posts/likes/${postId}`,
+      `https://wass.itsop.shop/api/community-posts/likes/${postId}`,
       {
         method: 'PUT',
         checkToken: true, // 토큰 체크 활성화
@@ -72,7 +72,7 @@ export async function putCommunityPostLike(postId: number) {
 export async function getCommunityPostDetail(postId: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/community-posts/${postId}`,
+      `https://wass.itsop.shop/api/community-posts/${postId}`,
       {
         method: 'GET',
         checkToken: true,
@@ -89,7 +89,7 @@ export async function getCommunityPostDetail(postId: number) {
 export async function postCommunityPostComment(postId: number, body: any) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/community-posts/${postId}/comments`,
+      `https://wass.itsop.shop/api/community-posts/${postId}/comments`,
       {
         method: 'POST',
         checkToken: true, // 토큰 체크 활성화
@@ -107,7 +107,7 @@ export async function postCommunityPostComment(postId: number, body: any) {
 export async function deleteCommunityPost(postId: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/community-posts/${postId}`,
+      `https://wass.itsop.shop/api/community-posts/${postId}`,
       {
         method: 'DELETE',
         checkToken: true, // 토큰 체크 활성화
@@ -124,7 +124,7 @@ export async function deleteCommunityPost(postId: number) {
 export async function deleteCommunityComment(commentId: number) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/community-posts/comments/${commentId}`,
+      `https://wass.itsop.shop/api/community-posts/comments/${commentId}`,
       {
         method: 'DELETE',
         checkToken: true, // 토큰 체크 활성화
