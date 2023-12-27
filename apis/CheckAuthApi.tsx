@@ -1,6 +1,6 @@
 export async function postCheckAuth(body: any) {
   try {
-    const res = await fetch('http://localhost:8080/api/oauth/check-token', {
+    const res = await fetch('https://wass.itsop.shop/api/oauth/check-token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
