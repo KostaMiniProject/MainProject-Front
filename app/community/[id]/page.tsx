@@ -265,11 +265,13 @@ function page({ params }: { params: any }) {
     <div className="mx-default">
       <Header backNav title={post?.title}>
         {post?.postOwner && (
-          <div className="cursor-pointer" onClick={handleShowModal}>
-            <Link href={`/exchange/${params.id}/edit`}>
+          <div className="cursor-pointer flex">
+            <Link href={`/community/${params.id}/editing`}>
               <MdEditNote size={40} />
             </Link>
-            <MdDeleteForever size={40} />
+            <div className="" onClick={handleShowModal}>
+              <MdDeleteForever size={40} />
+            </div>
           </div>
         )}
       </Header>
