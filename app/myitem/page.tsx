@@ -6,7 +6,7 @@ import Item from '@/components/item/Item';
 import BottomFixed from '@/components/BottomFixed';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
-import { deleteItemById, getItemList } from '@/apis/ItemApi';
+import { deleteItemById, getItemList, getMyItemList } from '@/apis/ItemApi';
 import InputBox from '@/components/InputBox';
 import { MdDeleteForever, MdOutlineSearch } from 'react-icons/md';
 import Link from 'next/link';
@@ -21,7 +21,7 @@ function page() {
 
   const fetchData = async () => {
     try {
-      const data = await getItemList();
+      const data = await getMyItemList();
       setItemList(data.data);
     } catch (error) {
       console.log(error);
