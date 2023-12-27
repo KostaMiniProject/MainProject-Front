@@ -9,7 +9,8 @@ function ButtonClass(
 ) {
   let roundedResult = `rounded-[20px]`;
   if (rounded === 'rounded') {
-    roundedResult = `rounded-[20px]`;
+    // roundedResult = `rounded-[20px]`;
+    roundedResult = `rounded-[5px]`;
   } else if (rounded === 'soft') {
     roundedResult = `rounded-[5px]`;
   } else if (rounded === 'none') {
@@ -45,7 +46,11 @@ function Button({
     <div
       className={ButtonClass(height, fontSize, btnStyle, rounded)}
       onClick={onClick}
-      style={{ padding: `${height}px`, fontSize: `${fontSize}px`, textAlign: 'center' }}
+      style={{
+        padding: `${height}px`,
+        fontSize: `${fontSize}px`,
+        textAlign: 'center',
+      }}
     >
       {text}
     </div>
