@@ -1,10 +1,10 @@
-"use client";
+'use client';
 export async function postEmailCheck(userData: any) {
   try {
-    const res = await fetch("https://itsop.shop/api/authNumCheck", {
-      method: "POST",
+    const res = await fetch('https://wass.itsop.shop/api/authNumCheck', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(userData),
     });
@@ -13,7 +13,7 @@ export async function postEmailCheck(userData: any) {
       // 로그인 실패 처리
       throw new Error(`이메일 인증 실패: ${res.status}`);
     } else {
-      alert("이메일 인증이 완료되었습니다.");
+      alert('이메일 인증이 완료되었습니다.');
     }
 
     // const data = await res.json();
@@ -22,7 +22,7 @@ export async function postEmailCheck(userData: any) {
     // return [data];
   } catch (error) {
     // 오류 처리
-    console.error("이메일 인증 오류 발생:", error);
+    console.error('이메일 인증 오류 발생:', error);
     throw error; // 호출자에게 오류 전파
   }
 }

@@ -1,7 +1,7 @@
 'use client';
 export async function postSignUp(userData: any) {
   try {
-    const res = await fetch('https://itsop.shop/api/signup', {
+    const res = await fetch('https://wass.itsop.shop/api/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

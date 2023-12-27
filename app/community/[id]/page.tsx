@@ -6,6 +6,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import {
   MdClose,
   MdDeleteForever,
+  MdEditNote,
   MdOutlineReply,
   MdOutlineSend,
 } from 'react-icons/md';
@@ -23,6 +24,7 @@ import Modal from '@/components/Modal';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 function Comment({
   comment,
@@ -264,6 +266,9 @@ function page({ params }: { params: any }) {
       <Header backNav title={post?.title}>
         {post?.postOwner && (
           <div className="cursor-pointer" onClick={handleShowModal}>
+            <Link href={`/exchange/${params.id}/edit`}>
+              <MdEditNote size={40} />
+            </Link>
             <MdDeleteForever size={40} />
           </div>
         )}

@@ -45,7 +45,7 @@ function Page({ params }: { params: any }) {
 
   const handleBlockUser = async () => {
     try {
-      await putBlockUser(params.id);
+      await putBlockUser(profile.userId);
       alert('차단되었습니다');
       router.push('/profile/block');
     } catch (error) {
