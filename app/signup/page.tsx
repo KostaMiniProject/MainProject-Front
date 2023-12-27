@@ -187,7 +187,14 @@ function page() {
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     setPassword(passwordCurrent);
     checkPassword(passwordCurrent);
-
+    if (passwordConfirm !== passwordCurrent) {
+      setPasswordConfirmMessage('비밀번호와 비밀번호 확인이 동일하지 않습니다.');
+      setIsPasswordConfirm(false);
+    } else {
+      setPasswordConfirmMessage('비밀번호와 비밀번호 확인이 동일합니다.');
+      setIsPasswordConfirm(true);
+    }
+  
     if (!passwordRegex.test(passwordCurrent)) {
       setPasswordMessage(
         '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요.'
@@ -197,7 +204,7 @@ function page() {
       setPasswordMessage('올바른 비밀번호 형식입니다.');
       setIsPassword(true);
     }
-  }, []);
+  }, [passwordConfirm]);
 
   const onChangePasswordConfirm = useCallback(
     (passwordConfirmCurrent: string) => {
