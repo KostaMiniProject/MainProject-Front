@@ -44,10 +44,13 @@ function Page() {
           </div>
         </div>
         <div>
-          {postData &&
+          {postData ? (
             postData.map((e: any, i: any) => {
               return <CommunityPost post={e} key={i}></CommunityPost>;
-            })}
+            })
+          ) : (
+            <div>작성한 게시글이 없습니다.</div>
+          )}
         </div>
       </div>
     </div>

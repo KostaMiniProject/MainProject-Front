@@ -86,10 +86,13 @@ function Page() {
         <Header title="차단 목록"></Header>
       </div>
       {/* 차단 리스트 */}
-      {blockData &&
+      {blockData ? (
         blockData.map((user: blockType, i: number) => {
           return <BlockedUser key={i} user={user} />;
-        })}
+        })
+      ) : (
+        <div>차단 리스트가 없습니다.</div>
+      )}
     </div>
   );
 }

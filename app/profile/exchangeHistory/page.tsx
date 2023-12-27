@@ -53,7 +53,7 @@ function Page() {
   return (
     <div className="mx-default">
       <Header backNav title="교환 내역 확인" />
-      {history &&
+      {history ? (
         history.map((e: historyType, i: any) => {
           return (
             <div className="mx-default" key={i}>
@@ -116,7 +116,10 @@ function Page() {
               </div>
             </div>
           );
-        })}
+        })
+      ) : (
+        <div>교환 내역이 없습니다</div>
+      )}
     </div>
   );
 }
