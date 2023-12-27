@@ -95,40 +95,39 @@ function page() {
             SNS 로그인
           </div>
           <div className="flex items-center justify-center text-[14px] text-gray">
-            
-            <Link href={'https://wass.itsop.shop/oauth2/authorization/naver'}>
-              <Image
-                src={NaverButton}
-                width={60}
-                height={60}
-                alt="네이버 버튼"
-                priority
-              ></Image>
-            </Link>
+            {/* <Link href={'https://wass.itsop.shop/oauth2/authorization/naver'}> */}
+            <Image
+              src={NaverButton}
+              width={60}
+              height={60}
+              alt="네이버 버튼"
+              priority
+            ></Image>
+            {/* </Link> */}
             <div className="mx-[20px]">|</div>
-            <Link href={'https://wass.itsop.shop/oauth2/authorization/kakao'}>
-              <Image
-                src={KakaoButton}
-                width={60}
-                height={60}
-                alt="카카오 버튼"
-                priority
-              ></Image>
-            </Link>
+            {/* <Link href={'https://wass.itsop.shop/oauth2/authorization/kakao'}> */}
+            <Image
+              src={KakaoButton}
+              width={60}
+              height={60}
+              alt="카카오 버튼"
+              priority
+            ></Image>
+            {/* </Link> */}
             <div className="mx-[20px]">|</div>
-            <Link
+            {/* <Link
               href={
                 'https://wass.itsop.shop/oauth2/authorization/google?redirect_uri=http://wass.itsop.shop/login/oauth2/code/google'
               }
-            >
-              <Image
-                src={GoogleButton}
-                width={60}
-                height={60}
-                alt="구글 버튼"
-                priority
-              ></Image>
-            </Link>
+            > */}
+            <Image
+              src={GoogleButton}
+              width={60}
+              height={60}
+              alt="구글 버튼"
+              priority
+            ></Image>
+            {/* </Link> */}
           </div>
         </div>
       </div>
