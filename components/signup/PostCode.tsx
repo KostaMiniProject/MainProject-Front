@@ -13,11 +13,11 @@ interface Props {
 export const PostCode = ({ info, setInfo }: Props): void => {
   const scriptUrl =
     'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+  const script = document.createElement('script');
 
   // 스크립트가 이미 로드되었는지 확인합니다.
   if (!(window as any).daum) {
     // 로드되지 않았다면 동적으로 스크립트를 문서에 추가합니다.
-    const script = document.createElement('script');
     script.src = scriptUrl;
     script.async = true;
     script.onload = () => {
