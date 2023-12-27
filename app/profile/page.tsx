@@ -19,6 +19,7 @@ interface profileType {
   phone: string;
   profileImage: string;
   userStatus: string;
+  rating: number;
 }
 
 function page() {
@@ -103,10 +104,15 @@ function page() {
               />
             )}
           </div>
-          <div className="ml-default flex-1">
-            <div className=" text-header font-[600]">
-              {/* {myProfile.name} */}
-              {profile?.name}
+          <div className="ml-default ">
+            <div className="flex">
+              <div className=" text-header font-[600] flex-1">
+                {/* {myProfile.name} */}
+                {profile?.name}
+              </div>
+              <div className="text-gray text-title">
+                점수 : {profile?.rating}
+              </div>
             </div>
             <div className=" text-title font-[600]">
               {/* {myProfile.name} */}
