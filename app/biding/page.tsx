@@ -35,12 +35,18 @@ function Page() {
   }, []);
 
   const handleItemClick = (itemId: number) => {
-    // 이미 선택된 아이템이면 제거, 아니면 추가
-    setSelectedItems((prevSelectedItems) =>
-      prevSelectedItems.includes(itemId)
-        ? prevSelectedItems.filter((id) => id !== itemId)
-        : [...prevSelectedItems, itemId]
-    );
+    setSelectedItems((prevSelectedItems) => {
+      if (prevSelectedItems.includes(itemId)) {
+        // 이미 선택된 아이템이면 제거
+        return prevSelectedItems.filter((id) => id !== itemId);
+      } else if (prevSelectedItems.length < 5) {
+        // 아직 선택된 아이템이 5개 미만이면 추가
+        return [...prevSelectedItems, itemId];
+      } else {
+        // 그 외의 경우(선택된 아이템이 5개이고, 새 아이템을 추가하는 경우) 현재 상태 유지
+        return prevSelectedItems;
+      }
+    });
   };
 
   const handleSendData = async () => {

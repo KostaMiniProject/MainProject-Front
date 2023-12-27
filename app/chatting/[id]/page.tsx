@@ -53,7 +53,7 @@ interface IRoomMessages {
 }
 
 function Page({ params }: { params: any }) {
-  const testUrl = 'https://itsop.shop'; //http://localhost:8080
+  const testUrl = 'https://wass.itsop.shop'; //http://localhost:8080
   // const testUrl = 'http://localhost:8080'; //http://localhost:8080
 
   const [stompClient, setStompClient] = useState<Client | null>(null);

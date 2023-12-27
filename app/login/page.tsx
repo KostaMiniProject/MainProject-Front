@@ -36,7 +36,7 @@ function page() {
   async function handleLogin(email: string, password: string) {
     try {
       const loginToken: any = await Login(email, password);
-      console.log(loginToken);
+      // console.log(loginToken);
       // 토큰을 저장하고 필요한 작업 수행
       setAccessToken(loginToken.token);
       setAccessUserId(loginToken.userId);
