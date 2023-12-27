@@ -27,7 +27,7 @@ export async function postSignUp(userData: any) {
 
 export async function putSignUp(userData: any) {
   try {
-    const res = await fetch('http://localhost:8080/api/oauth-signup', {
+    const res = await fetch('https://wass.itsop.shop/api/oauth-signup', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

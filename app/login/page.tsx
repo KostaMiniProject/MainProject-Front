@@ -96,7 +96,7 @@ function page() {
           </div>
           <div className="flex items-center justify-center text-[14px] text-gray">
             
-            <Link href={'https://itsop.shop/oauth2/authorization/naver'}>
+            <Link href={'https://wass.itsop.shop/oauth2/authorization/naver'}>
               <Image
                 src={NaverButton}
                 width={60}
@@ -106,7 +106,7 @@ function page() {
               ></Image>
             </Link>
             <div className="mx-[20px]">|</div>
-            <Link href={'https://itsop.shop/oauth2/authorization/kakao'}>
+            <Link href={'https://wass.itsop.shop/oauth2/authorization/kakao'}>
               <Image
                 src={KakaoButton}
                 width={60}
@@ -118,7 +118,7 @@ function page() {
             <div className="mx-[20px]">|</div>
             <Link
               href={
-                'https://itsop.shop/oauth2/authorization/google?redirect_uri=https://www.itsop.shop'
+                'https://wass.itsop.shop/oauth2/authorization/google?redirect_uri=http://wass.itsop.shop/login/oauth2/code/google'
               }
             >
               <Image
