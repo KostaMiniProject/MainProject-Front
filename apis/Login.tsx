@@ -16,7 +16,7 @@ export async function Login(email: string, password: string) {
       // 로그인 실패 처리
       throw new Error(`로그인 실패: ${res.status}`);
     }
-    console.log(res.headers);
+    console.log(res);
     // 응답 헤더에서 토큰 추출
     const token = res.headers.get('Authorization');
     // const token = getCookie('Set-Cookie');

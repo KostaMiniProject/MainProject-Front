@@ -443,11 +443,13 @@ function Page({ params }: { params: any }) {
         </div>
         <div className="flex">
           <div className="w-[80px] h-[80px] flex items-center justify-center overflow-hidden rounded-md mr-4">
-            <img
-              src={initRoom?.exchangePostImage}
-              alt="Exchange Post"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
+            {initRoom?.exchangePostImage && (
+              <img
+                src={initRoom.exchangePostImage}
+                alt="Exchange Post"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            )}
           </div>
           <div className="flex-1 flex justify-between">
             <div>

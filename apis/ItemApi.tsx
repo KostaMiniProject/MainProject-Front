@@ -24,6 +24,20 @@ export async function postItem(formData: FormData) {
 }
 export async function getItemList() {
   try {
+    const result = await commonFetch('https://wass.itsop.shop/api/items/bid', {
+      method: 'GET',
+      checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+      // 기타 다른 옵션들...
+    });
+
+    console.log('Fetched data:', result);
+    return result;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+export async function getMyItemList() {
+  try {
     const result = await commonFetch(
       'https://wass.itsop.shop/api/items/my-items',
       {
@@ -39,7 +53,6 @@ export async function getItemList() {
     console.error('Error fetching data:', error);
   }
 }
-
 export async function getItemById(id: number | string) {
   try {
     // 토큰을 쿠키에서 가져오기
