@@ -48,6 +48,7 @@ interface PostContent {
     rating: number;
   };
   isDibs: boolean;
+  exchangePostStatus: string;
   preferItems: string;
   address: string;
   content: string;
@@ -142,9 +143,7 @@ function Page({ params }: { params: any }) {
             </Link>
           </>
         ) : (
-          <div>
-            <MdReport size={40} />
-          </div>
+          <div>{/* <MdReport size={40} /> */}</div>
         )}
       </Header>
       {postContent.postOwner ? (
@@ -182,15 +181,17 @@ function Page({ params }: { params: any }) {
                   </Link>
                   <div className="absolute right-0" onClick={() => {}}>
                     {/* <Link href={`/chatting/${e.bidId}`}> */}
-                    <Button
-                      text="대화하기"
-                      fontSize={16}
-                      height={5}
-                      rounded="soft"
-                      onClick={() => {
-                        handleChatting(e.bidId);
-                      }}
-                    />
+                    {postContent.exchangePostStatus !== 'COMPLETED' && (
+                      <Button
+                        text="대화하기"
+                        fontSize={16}
+                        height={5}
+                        rounded="soft"
+                        onClick={() => {
+                          handleChatting(e.bidId);
+                        }}
+                      />
+                    )}
                     {/* </Link> */}
                   </div>
                 </div>
@@ -250,15 +251,17 @@ function Page({ params }: { params: any }) {
             </div>
           </div>
           <BottomFixed>
-            <div className="flex justify-end mb-[16px] mr-[32px]">
-              <Link href={`/biding?postId=${params.id}`}>
-                <Button
-                  text="입찰 하기"
-                  height={10}
-                  fontSize={14}
-                  rounded="soft"
-                />
-              </Link>
+            <div className="flex justify-end mb-[16px] mr-[32px] ">
+              {postContent.exchangePostStatus !== 'COMPLETED' && (
+                <Link href={`/biding?postId=${params.id}`}>
+                  <Button
+                    text="입찰 하기"
+                    height={10}
+                    fontSize={14}
+                    rounded="soft"
+                  />
+                </Link>
+              )}
             </div>
           </BottomFixed>
         </>

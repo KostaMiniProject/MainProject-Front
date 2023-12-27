@@ -250,19 +250,19 @@ function Page() {
   };
 
   return (
-    <div className=''>
-      <div className='mx-default'>
-      <Header backNav title="지도 페이지"></Header>
-      <div className="relative">
-        <div className="flex justify-between">
-          <div
-            className="map-container"
-            style={{ width: '100vw', height: '75vh' }}
-          >
-            <div id="map" style={{ width: '100%', height: '100%' }}></div>
+    <div className="">
+      <div className="mx-default">
+        <Header title="지도 페이지"></Header>
+        <div className="relative">
+          <div className="flex justify-between">
+            <div
+              className="map-container"
+              style={{ width: '100vw', height: '75vh' }}
+            >
+              <div id="map" style={{ width: '100%', height: '100%' }}></div>
+            </div>
           </div>
         </div>
-      </div>
       </div>
       <div
         style={{

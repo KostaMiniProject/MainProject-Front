@@ -22,7 +22,7 @@ function Page() {
   }, []);
 
   return (
-    <div className='mx-default'>
+    <div className="mx-default">
       <Header title="채팅목록"></Header>
       <ul>
         {roomList && roomList.length > 0 ? (
@@ -33,7 +33,8 @@ function Page() {
               className="flex items-center rounded py-[5px] border-b-[0.5px] border-gray"
             >
               <img
-                src={room.participantProfileImg}
+                // src={room.participantProfileImg}
+                src={room.anotherParticipantProfileImg}
                 alt="Profile"
                 className="w-[80px] h-[80px]"
               />
