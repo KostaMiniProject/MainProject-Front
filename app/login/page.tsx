@@ -36,7 +36,7 @@ function page() {
   async function handleLogin(email: string, password: string) {
     try {
       const loginToken: any = await Login(email, password);
-      console.log(loginToken);
+      // console.log(loginToken);
       // 토큰을 저장하고 필요한 작업 수행
       setAccessToken(loginToken.token);
       setAccessUserId(loginToken.userId);
@@ -95,7 +95,6 @@ function page() {
             SNS 로그인
           </div>
           <div className="flex items-center justify-center text-[14px] text-gray">
-            
             <Link href={'https://itsop.shop/oauth2/authorization/naver'}>
               <Image
                 src={NaverButton}

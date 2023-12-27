@@ -50,7 +50,7 @@ interface postType {
 function Page({ params }: { params: any }) {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [selectedImages, setSelectedImages] = useState<(File | string)[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isMoreView, setIsMoreView] = useState<Boolean>(false);
   const [post, setPost] = useState<postType>();
 
@@ -74,7 +74,12 @@ function Page({ params }: { params: any }) {
     fetchPost();
   }, []);
 
-  useEffect(() => {}, [post]);
+  useEffect(() => {
+    if (post?.imageUrl) {
+      // 이미지 URL을 그대로 사용
+      setSelectedImages(post.imageUrl);
+    }
+  }, [post]);
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -96,9 +101,15 @@ function Page({ params }: { params: any }) {
     setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
   }
 
+  // function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+  //   const files = event.target.files;
+  //   if (!files || files.length === 0) return;
+  //   setSelectedImages((prevImages) => [...prevImages, ...Array.from(files)]);
+  // }
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
     if (!files || files.length === 0) return;
+    // 새로 추가된 이미지만 File 객체로 관리
     setSelectedImages((prevImages) => [...prevImages, ...Array.from(files)]);
   }
 
@@ -111,12 +122,18 @@ function Page({ params }: { params: any }) {
       const formData = new FormData();
 
       // 기타 데이터를 JSON 형태로 FormData에 추가
+      const images = selectedImages.filter(
+        (image) => typeof image === 'string'
+      );
+
+      // 기타 데이터를 JSON 형태로 FormData에 추가
       const postItemData = {
         title: title,
         content: content,
+        images: images,
       };
       formData.append(
-        'communityPostCreateDTO',
+        'communityPostUpdateDTO',
         new Blob([JSON.stringify(postItemData)], { type: 'application/json' })
       );
 
@@ -129,6 +146,7 @@ function Page({ params }: { params: any }) {
           formData.append('file', image);
         }
       });
+      console.log(selectedImages);
       try {
         // 서버로 POST 요청 보내기
         await putCommunityPost(formData, params.id);
@@ -141,12 +159,12 @@ function Page({ params }: { params: any }) {
     }
   }
   function handlePostingAfter() {
-    const postid = searchParams.get('postId');
-    if (postid) {
-      router.back();
-    } else {
-      router.back();
-    }
+    router.forward();
+    // const postid = searchParams.get('postId');
+    // if (postid) {
+    // } else {
+    // router.back();
+    // }
   }
   function openFileInput() {
     // 파일 입력 엘리먼트를 클릭하여 파일 선택 다이얼로그 열기
@@ -175,8 +193,10 @@ function Page({ params }: { params: any }) {
                 <Image
                   src={imageUrl}
                   alt={`Selected Image ${index + 1}`}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  priority
+
                   // 기타 Image 컴포넌트 속성
                 />
                 <div
