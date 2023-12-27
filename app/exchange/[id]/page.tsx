@@ -4,7 +4,13 @@ import Profile from '@/components/Profile';
 import Carousel from '@/components/carousel/Carousel';
 import BidItem from '@/components/bid/BidItem';
 import Header from '@/components/Header';
-import { MdDeleteForever, MdEditNote, MdReport } from 'react-icons/md';
+import {
+  MdBookmark,
+  MdBookmarkBorder,
+  MdDeleteForever,
+  MdEditNote,
+  MdReport,
+} from 'react-icons/md';
 import {
   deleteExchangePost,
   getExchangePost,
@@ -41,6 +47,7 @@ interface PostContent {
     imageUrl: string;
     rating: number;
   };
+  isDibs: boolean;
   preferItems: string;
   address: string;
   content: string;
@@ -82,6 +89,12 @@ function Page({ params }: { params: any }) {
   const handledib = async () => {
     try {
       await postdib(params.id);
+      if (postContent) {
+        setPostContent((prev: any) => ({
+          ...prev,
+          isDibs: !postContent.isDibs,
+        }));
+      }
     } catch (error) {
       router.push('/login');
     }
@@ -204,7 +217,11 @@ function Page({ params }: { params: any }) {
                   <div className="text-header font-[600] flex justify-between">
                     <div>물건 이름 : {postContent.item.title}</div>
                     <div className="cursor-pointer" onClick={handledib}>
-                      찜하기
+                      {postContent.isDibs ? (
+                        <MdBookmark size={30} color="red" />
+                      ) : (
+                        <MdBookmarkBorder size={30} />
+                      )}
                     </div>
                   </div>
                   <div className="text-subtitle">

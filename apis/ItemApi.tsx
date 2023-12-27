@@ -4,7 +4,7 @@ import { getCookie } from './Cookie';
 import { commonFetch } from './commonApi/CommonFetch';
 export async function postItem(formData: FormData) {
   const token = getCookie('token');
-  const res = await fetch('https://itsop.shop/api/items', {
+  const res = await fetch('https://wass.itsop.shop/api/items', {
     method: 'POST',
     body: formData,
     headers: {
@@ -24,11 +24,14 @@ export async function postItem(formData: FormData) {
 }
 export async function getItemList() {
   try {
-    const result = await commonFetch('https://itsop.shop/api/items/my-items', {
-      method: 'GET',
-      checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
-      // 기타 다른 옵션들...
-    });
+    const result = await commonFetch(
+      'https://wass.itsop.shop/api/items/my-items',
+      {
+        method: 'GET',
+        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // 기타 다른 옵션들...
+      }
+    );
 
     console.log('Fetched data:', result);
     return result;
@@ -42,7 +45,7 @@ export async function getItemById(id: number | string) {
     // 토큰을 쿠키에서 가져오기
     const token = getCookie('token');
 
-    const res = await fetch(`https://itsop.shop/api/items/${id}`, {
+    const res = await fetch(`https://wass.itsop.shop/api/items/${id}`, {
       headers: {
         Authorization: `${token}`,
         // 기타 필요한 헤더도 추가할 수 있습니다.
@@ -96,11 +99,14 @@ export async function getItemById(id: number | string) {
 
 export async function getItemDetailById(id: number) {
   try {
-    const result = await commonFetch(`https://itsop.shop/api/items/${id}`, {
-      method: 'GET',
-      // checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
-      // 기타 다른 옵션들...
-    });
+    const result = await commonFetch(
+      `https://wass.itsop.shop/api/items/${id}`,
+      {
+        method: 'GET',
+        // checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // 기타 다른 옵션들...
+      }
+    );
 
     // const data = await res.json();
     console.log(result);
@@ -114,11 +120,14 @@ export async function getItemDetailById(id: number) {
 }
 export async function deleteItemById(id: number) {
   try {
-    const result = await commonFetch(`https://itsop.shop/api/items/${id}`, {
-      method: 'DELETE',
-      checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
-      // 기타 다른 옵션들...
-    });
+    const result = await commonFetch(
+      `https://wass.itsop.shop/api/items/${id}`,
+      {
+        method: 'DELETE',
+        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // 기타 다른 옵션들...
+      }
+    );
 
     // const data = await res.json();
     console.log(result);
@@ -132,7 +141,7 @@ export async function deleteItemById(id: number) {
 }
 export async function getCategoryList() {
   try {
-    const result = await commonFetch('https://itsop.shop/api/category', {
+    const result = await commonFetch('https://wass.itsop.shop/api/category', {
       method: 'GET',
       // checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
       // 기타 다른 옵션들...

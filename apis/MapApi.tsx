@@ -6,7 +6,7 @@ export async function getExchangePostsForMap(
   latitude: string
 ) {
   try {
-    const url = `https://itsop.shop/api/exchange-posts/exchangePostMap?longitude=${longitude}&latitude=${latitude}`;
+    const url = `https://wass.itsop.shop/api/exchange-posts/exchangePostMap?longitude=${longitude}&latitude=${latitude}`;
     const result = await commonFetch(url, {
       method: 'GET',
       checkToken: true,
