@@ -13,7 +13,7 @@ function Page() {
   const [postData, setPostData] = useState<any[]>([]);
   const [hasMoreData, setHasMoreData] = useState(true);
   const [pageNation, setPageNation] = useState(0);
-  
+
   const fetchPostData = async () => {
     if (!hasMoreData) return;
 
@@ -50,14 +50,18 @@ function Page() {
           </div>
           {/* ExchangePost 리스트 */}
           <div>
-            {postData.map((e: any, i: any) => {
-              return (
-                <Link href={`/exchange/${e.exchangePostId}`} key={i}>
-                  {/* 포스트 아이템 생성 */}
-                  <ExchangePost key={i} bid={e} />
-                </Link>
-              );
-            })}
+            {postData ? (
+              postData.map((e: any, i: any) => {
+                return (
+                  <Link href={`/exchange/${e.exchangePostId}`} key={i}>
+                    {/* 포스트 아이템 생성 */}
+                    <ExchangePost key={i} bid={e} />
+                  </Link>
+                );
+              })
+            ) : (
+              <div>작성한 교환 게시글이 없습니다.</div>
+            )}
             <InfiniteScrollObserver
               onIntersect={fetchPostData}
               hasMoreData={hasMoreData}
