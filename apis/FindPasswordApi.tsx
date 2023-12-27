@@ -3,7 +3,6 @@ export async function findPassword(userData: any) {
   try {
     const result = await fetch('https://wass.itsop.shop/api/find-password', {
       method: 'PUT',
-=======
       headers: {
         'Content-Type': 'application/json',
       },
