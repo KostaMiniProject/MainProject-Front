@@ -24,11 +24,14 @@ export async function postItem(formData: FormData) {
 }
 export async function getItemList() {
   try {
-    const result = await commonFetch('https://wass.itsop.shop/api/items/my-items', {
-      method: 'GET',
-      checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
-      // 기타 다른 옵션들...
-    });
+    const result = await commonFetch(
+      'https://wass.itsop.shop/api/items/my-items',
+      {
+        method: 'GET',
+        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // 기타 다른 옵션들...
+      }
+    );
 
     console.log('Fetched data:', result);
     return result;
@@ -96,11 +99,14 @@ export async function getItemById(id: number | string) {
 
 export async function getItemDetailById(id: number) {
   try {
-    const result = await commonFetch(`https://wass.itsop.shop/api/items/${id}`, {
-      method: 'GET',
-      // checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
-      // 기타 다른 옵션들...
-    });
+    const result = await commonFetch(
+      `https://wass.itsop.shop/api/items/${id}`,
+      {
+        method: 'GET',
+        // checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // 기타 다른 옵션들...
+      }
+    );
 
     // const data = await res.json();
     console.log(result);
@@ -114,11 +120,14 @@ export async function getItemDetailById(id: number) {
 }
 export async function deleteItemById(id: number) {
   try {
-    const result = await commonFetch(`https://wass.itsop.shop/api/items/${id}`, {
-      method: 'DELETE',
-      checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
-      // 기타 다른 옵션들...
-    });
+    const result = await commonFetch(
+      `https://wass.itsop.shop/api/items/${id}`,
+      {
+        method: 'DELETE',
+        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        // 기타 다른 옵션들...
+      }
+    );
 
     // const data = await res.json();
     console.log(result);

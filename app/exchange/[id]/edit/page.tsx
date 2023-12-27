@@ -55,7 +55,7 @@ function page({ params }: { params: any }) {
     }
   }, [postContent]);
 
-  function updatePost() {
+  async function updatePost() {
     const body = {
       title: title,
       preferItems: preferItems,
@@ -63,11 +63,13 @@ function page({ params }: { params: any }) {
       content: content,
     };
     try {
-      updateExchangePost(body, params.id);
+      await updateExchangePost(body, params.id);
       alert('수정완료');
       router.push(`/exchange/${params.id}`);
     } catch (error) {
       console.log(error);
+      alert('수정이 불가능합니다.');
+      router.push(`/exchange/${params.id}`);
     }
   }
 

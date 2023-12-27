@@ -4,12 +4,15 @@ import { commonFetch } from './commonApi/CommonFetch';
 
 export async function postExchangePost(jsonData: any) {
   try {
-    const result = await commonFetch('https://wass.itsop.shop/api/exchange-posts', {
-      method: 'POST',
-      checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
-      body: jsonData,
-      // 기타 다른 옵션들...
-    });
+    const result = await commonFetch(
+      `https://wass.itsop.shop/api/exchange-posts`,
+      {
+        method: 'POST',
+        checkToken: true, // 이 옵션이 있는 경우에만 토큰이 추가됨
+        body: jsonData,
+        // 기타 다른 옵션들...
+      }
+    );
 
     console.log('Fetched data:', result);
   } catch (error) {

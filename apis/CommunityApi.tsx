@@ -4,7 +4,7 @@ import { commonFetch } from './commonApi/CommonFetch';
 export async function getCommunityPost(page: number = 0) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/community-posts?page=${page}`,
+      `https://wass.itsop.shop/api/community-posts?page=${page}`,
       {
         method: 'GET',
         checkToken: true, // 토큰 체크 활성화
@@ -22,7 +22,7 @@ export async function getCommunityPost(page: number = 0) {
 export async function getMyCommunityPost(page: number = 0) {
   try {
     const result = await commonFetch(
-      `https://itsop.shop/api/users/community-post-list?page=${page}`,
+      `https://wass.itsop.shop/api/users/community-post-list?page=${page}`,
       {
         method: 'GET',
         checkToken: true, // 토큰 체크 활성화
@@ -39,11 +39,32 @@ export async function getMyCommunityPost(page: number = 0) {
 
 export async function postCommunityPost(formData: FormData) {
   try {
-    const result = await commonFetch('https://wass.itsop.shop/api/community-posts', {
-      method: 'POST',
-      body: formData,
-      checkToken: true, // 토큰 체크 활성화
-    });
+    const result = await commonFetch(
+      'https://wass.itsop.shop/api/community-posts',
+      {
+        method: 'POST',
+        body: formData,
+        checkToken: true, // 토큰 체크 활성화
+      }
+    );
+
+    console.log('Upload successful:', result);
+    return result;
+  } catch (error) {
+    console.error('Error uploading:', error);
+    throw error;
+  }
+}
+export async function putCommunityPost(formData: FormData, postId: number) {
+  try {
+    const result = await commonFetch(
+      `https://wass.itsop.shop/api/community-posts/${postId}`,
+      {
+        method: 'PUT',
+        body: formData,
+        checkToken: true, // 토큰 체크 활성화
+      }
+    );
 
     console.log('Upload successful:', result);
     return result;

@@ -16,7 +16,7 @@ interface BidType {
   address: string;
   createdAt: string;
   exchangePostStatus: string;
-  imgUrl: string;
+  imgUrl?: string;
   bidCount: number;
 }
 function ExchangePost({ bid }: { bid: BidType }) {
@@ -39,13 +39,15 @@ function ExchangePost({ bid }: { bid: BidType }) {
   return (
     <div className=" flex py-[5px] border-b-[0.5px] border-gray">
       <div className="relative w-[80px] h-[80px] overflow-hidden my-auto mx-[5px] rounded-[8px]">
-        <Image
-          src={bid.imgUrl}
-          alt="Item image"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          style={{ objectFit: 'cover' }}
-        />
+        {bid.imgUrl && (
+          <Image
+            src={bid.imgUrl}
+            alt="Item image"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: 'cover' }}
+          />
+        )}
         {statusElement()}
       </div>
       {/* 우측 데이터부분 */}
