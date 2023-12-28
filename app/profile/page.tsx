@@ -77,7 +77,7 @@ function page() {
   return (
     <div>
       <Header title="내 정보">
-        <div className="mr-[16px]">
+        <div className="mr-[16px] w-[100px]">
           <Button
             text="로그아웃"
             fontSize={16}
