@@ -16,6 +16,7 @@ import {
   deleteCommunityComment,
   deleteCommunityPost,
   getCommunityPostDetail,
+  getCommunityPostSearch,
   postCommunityPostComment,
   putCommunityPostLike,
 } from '@/apis/CommunityApi';
@@ -164,6 +165,7 @@ function page({ params }: { params: any }) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     fetchPost();
   }, []);
