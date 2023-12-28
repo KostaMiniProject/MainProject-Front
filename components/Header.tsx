@@ -1,8 +1,6 @@
 'use client';
 import React from 'react';
 import { MdArrowBack, MdMoreVert } from 'react-icons/md';
-import Logo from '@/image/Logo.png';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 function Header({
@@ -25,7 +23,7 @@ function Header({
             </div>
           </div>
         )}
-        <div className="flex-1 flex items-center m-[10px] text-[24px] font-[800] whitespace-nowrap text-ellipsis overflow-hidden">
+        <div className="w-full items-center m-[10px] text-[24px] font-[800] whitespace-nowrap text-ellipsis overflow-hidden">
           {title}
         </div>
         <div className="bg-gray-300 flex items-center justify-center">
