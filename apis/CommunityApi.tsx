@@ -159,3 +159,23 @@ export async function deleteCommunityComment(commentId: number) {
     throw error;
   }
 }
+export async function getCommunityPostSearch(
+  keyword: string,
+  page: number = 0
+) {
+  try {
+    const result = await commonFetch(
+      `https://wass.itsop.shop/api/community-posts/search?keyword=${keyword}&page=${page}`,
+      {
+        method: 'GET',
+        checkToken: true,
+        // 기타 다른 옵션들...
+      }
+    );
+
+    console.log('Fetched data:', result);
+    return result;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
