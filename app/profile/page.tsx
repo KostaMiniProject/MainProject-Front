@@ -111,7 +111,7 @@ function page() {
                 {profile?.name}
               </div>
               <div className="text-gray text-title">
-                점수 : {profile?.rating}
+                점수 : {profile?.rating.toFixed(1)}
               </div>
             </div>
             <div className=" text-title font-[600]">
