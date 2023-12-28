@@ -39,7 +39,7 @@ function Page() {
                 className="w-[80px] h-[80px]"
               />
               <div>
-                <div className="text-title">{room.participantName}</div>
+                <div className="text-title">{room.anotherParticipantName}</div>
                 <div className="text-subtitle">{room.exchangePostAddress}</div>
                 <div className="text-subtitle">{room.lastMessageContent}</div>
                 <div className="text-subtitle text-gray">
