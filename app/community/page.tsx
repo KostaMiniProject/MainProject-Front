@@ -11,6 +11,12 @@ function Page() {
   const [keyword, setKeyword] = useState('');
   const [postData, setPostData] = useState<[]>([]);
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); // 엔터 키에 의한 줄바꿈 방지
+      fetchKeywordPost(); // 메시지 전송 함수 호출
+    }
+  };
   const fetchKeywordPost = async () => {
     try {
       const data = await getCommunityPostSearch(keyword);
@@ -46,7 +52,10 @@ function Page() {
       <div>
         <div className="border-gray border-solid border-y-[0.5px]">
           <div className="flex my-[5px] ">
-            <InputBox onChange={setKeyword}></InputBox>
+            <InputBox
+              onChange={setKeyword}
+              onKeyDown={handleKeyPress}
+            ></InputBox>
             <div className="items-center justify-center flex">
               <div onClick={fetchKeywordPost}>
                 <MdSearch size={40} />

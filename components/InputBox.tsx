@@ -7,11 +7,20 @@ interface InputBoxProps {
   content?: string;
   message?: string;
   readOnly?: boolean;
+  onKeyDown?: (key: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const InputBox = forwardRef<HTMLInputElement, InputBoxProps>(
   (
-    { onChange, onFocusChange, type = 'text', content, message, readOnly },
+    {
+      onChange,
+      onFocusChange,
+      type = 'text',
+      content,
+      message,
+      readOnly,
+      onKeyDown,
+    },
     ref
   ) => {
     const [color, setColor] = useState('');
@@ -46,6 +55,7 @@ const InputBox = forwardRef<HTMLInputElement, InputBoxProps>(
           value={content}
           placeholder={message}
           readOnly={readOnly}
+          onKeyDown={onKeyDown}
         />
       </div>
     );
