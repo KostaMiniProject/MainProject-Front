@@ -93,11 +93,11 @@ function CommunityPost({
                 </div>
               )}
             </div>
-            <div onClick={clickComment}>
+            {/* <div onClick={clickComment}>
               <Link href={`/community/${post.communityPostId}`}>
                 <MdChatBubbleOutline size={25} />
               </Link>
-            </div>
+            </div> */}
             {/* <IoIosSend size={25} /> */}
           </div>
           <div>{data?.likeCount}명이 좋아합니다</div>
