@@ -31,7 +31,7 @@ function Profile({ profile }: { profile: profileType }) {
       <div className=" ml-auto flex-col items-center mr-[15px] my-auto">
         {/* <MdInsertEmoticon size={50} /> */}
         <div className="text-center text-title text-gray">
-          점수 : {profile.rating}
+          점수 : {profile.rating.toFixed(1)}
         </div>
       </div>
     </div>
